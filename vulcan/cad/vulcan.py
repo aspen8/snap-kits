@@ -116,10 +116,15 @@ SPLIT_Z = -2.6                  # just above the highest point of the intake mou
 # Inboard, over the engines, the wing's top is not an aerofoil hump: it climbs from the intake
 # lip to its crest just behind it and then runs almost straight down to the trailing edge, so it
 # meets the fuselage side on a straight line (Airfix side view, XH558 photos; user review).
-WING_ROOT_UP = [(0.0, 21.6), (14.0, 21.6), (28.0, 18.9), (42.0, 15.0), (57.0, 11.5), (70.0, 10.1)]
+WING_ROOT_UP = [(0.0, 18.2), (14.0, 18.2), (28.0, 16.4), (42.0, 13.6), (57.0, 11.0), (70.0, 10.1)]   # lowered 3.4 at the root (user review, head-on photos)
                                 # (y, depth of the top above the split): a smooth (PCHIP) curve into the outer wing
 WING_CREST = (0.09, 1.25)       # inboard: crest at this fraction of chord, then 1 - u^k to the trailing edge
 WING_UNDER_RAMP = (0.30, 0.8)   # inboard underside: reaches full depth at this fraction of chord, exponent
+# Across the intakes the wing's leading edge IS the lip (user review: the intakes read as separate
+# pieces on a thin wing). Each wing section there starts on the lip's own outer surface, holds the
+# lip's height behind the nose and lets it go over these distances, so the upper surface runs out
+# of the top lip and the underside out of the bottom lip with no rim or shelf.
+WING_NOSE_HOLD = (70.0, 110.0)  # distance over which the lip's height is let go: on top, underneath
 WING_CREST_BLEND = (25.0, 80.0)  # the inboard profile fades into the plain aerofoil over this span
 SPLIT_TIP_Z = -14.0
 WING_JOINT_Y = 59.0             # centre body / outer wing joint: just outboard of the intake lips' outer ends
@@ -132,7 +137,7 @@ FRONT_X = 105.0                 # front fuselage / centre body joint, at the win
 BLEND_R = [(110.0, 4.0), (150.0, 4.0), (190.0, 12.0), (300.0, 12.0), (358.0, 2.0)]   # (x, radius): small
                                 # by the intakes, a soft fillet along the fuselage, fading out at the trailing edge
 BLEND_X = (112.0, 359.0)        # x range of the fill
-BLEND_UNDER_R = [(112.0, 6.0), (190.0, 6.0), (210.0, 4.0), (330.0, 4.0), (358.0, 1.5)]   # the same underneath:
+BLEND_UNDER_R = [(112.0, 14.0), (200.0, 14.0), (225.0, 5.0), (330.0, 4.0), (358.0, 1.5)]   # the same underneath:
                                 # behind the intakes' lower lips and round the jet pipe fairings
 BLEND_UNDER_X = (112.0, 359.0)
 BLEND_Y = 85.0                  # out to this span (the outer wing has no creases)
@@ -262,7 +267,8 @@ NOSE_DOORS = (118.5, 158.5, 7.0)          # x range and how far the two doors ha
 MAIN_DOOR = (212.0, 230.0, 16.0)          # the big door on the bay's outboard edge: x range, drop
 BOMB_ROOF = (2.0, 2.0, 12.0, 1.2, 1.5)   # roof plate: thickness, margin round the bay, rib pitch, rib width, rib depth
 BED = (230.0, 250.0)            # usable plate, printed mm (X2D; 256 mm beds are larger)
-WING_Y = [0.0, 5.0, 10.0, 15.0, 19.8, 24.0, 29.0, 34.0, 39.0, 44.0, 49.8, 54.0, 57.0, 59.0, 63.0, 67.9, 72.0,
+WING_Y = [0.0, 5.0, 10.0, 15.0, 19.8, 21.0, 22.0, 24.0, 26.5, 29.0, 31.5, 34.0, 36.5, 39.0, 41.5, 44.0, 47.0,
+          49.8, 52.0, 54.0, 55.5, 57.0, 58.0, 58.8, 59.0, 59.6, 60.5, 63.0, 67.9, 72.0,
           77.8, 84.0, 90.0, 97.2, 116.5, 135.8, 155.2, 174.5,
           189.0, 193.9, 200.0, 206.9, 213.2, 219.0, 224.3, 229.0, 232.5, 233.5, 234.6, 234.8]
 
@@ -282,7 +288,7 @@ INTAKE_BOW = (38.0, 7.1, -4.6)            # mid-span: y, z of the top lip, z of 
 # Lip thickness round the mouth (its nose is a half-round of this diameter). From the head-on photos:
 # the brow above the mouth is about half the opening's height at the fuselage end and thins outboard;
 # the lower lip is lighter; the inner wall is a thin plate.
-INTAKE_LIP_TOP = (6.2, 3.2)     # upper lip: at the inner end, at the outer end (4.65 to 2.4 mm printed)
+INTAKE_LIP_TOP = (5.0, 3.0)     # upper lip: at the inner end, at the outer end (3.75 to 2.25 mm printed)
 INTAKE_LIP_BOT = (4.4, 2.8)     # lower lip
 INTAKE_LIP = 4.4                # (reference thickness for the plate's rake)
 INTAKE_LIP_OUTER = (2.5, 49.0)  # the lip thins to this at its outer end, from this y: it must end inside the centre part
@@ -295,7 +301,8 @@ INTAKE_WALL_BOW = (3.0, 10.0)   # the lip itself rakes forward this much at the 
 INTAKE_HORN = [(7.0, 12.0), (0.5, 12.0), (-2.5, 7.0), (-5.5, 1.0), (-8.0, -4.5), (-8.6, -8.0), (-7.4, -10.6),
                (-4.5, -9.6), (0.5, -8.6), (7.0, -8.2)]
 INTAKE_HORN_R = 0.8             # corner rounding of that outline
-INTAKE_FAIR = [(8.0, 1.0, 1.0), (22.0, 1.8, 1.0), (45.0, 1.2, 0.8), (70.0, 0.0, 0.5)]   # behind the lip: distance, extra
+INTAKE_FAIR = [(6.0, -0.2, 1.0), (14.0, -1.2, 0.95)]   # (only a short tail, buried in the wing: see WING_NOSE)
+_OLD_INTAKE_FAIR = [(8.0, 1.0, 1.0), (22.0, 1.8, 1.0), (45.0, 1.2, 0.8), (70.0, 0.0, 0.5)]   # behind the lip: distance, extra
                                 # offset, height scale (the fairing sinks into the wing)
 INTAKE_SPLIT = (24.0, 37.6, 1.8)  # the wall between the two engines' ducts: set back, y, thickness
 INTAKE_DEPTH = 90.0             # (the ducts are cut off where the round tunnels start)
@@ -495,7 +502,24 @@ def split_z(y):
 SPLIT_TILT = math.degrees(math.atan2(SPLIT_Z - SPLIT_TIP_Z, SPAN / 2 - WING_JOINT_Y))   # 3.7 deg
 
 
-def wing_ring(y, n=40):
+@cached
+def _lip_polys():
+    from shapely.geometry import Polygon
+    p, nrm = mouth_outline()
+    return Polygon(p + lip_t().reshape(-1, 1) * nrm).buffer(0)
+
+
+def lip_envelope(y):
+    """(z bottom, z top) of the lip's outer surface at span y, or None outside it."""
+    from shapely.geometry import LineString
+    hit = _lip_polys().intersection(LineString([(y, -50.0), (y, 50.0)]))
+    if hit.is_empty:
+        return None
+    b = hit.bounds
+    return (b[1], b[3]) if b[3] - b[1] > 0.3 else None
+
+
+def wing_ring(y, n=56):
     """Section at span y: edges on the split surface, depth below it set by the flat underside."""
     le, te = wing_le(y), wing_te(y)
     c = te - le
@@ -516,11 +540,29 @@ def wing_ring(y, n=40):
     w = float(np.clip((ya - WING_CREST_BLEND[0]) / (WING_CREST_BLEND[1] - WING_CREST_BLEND[0]), 0, 1))
     fu = (1 - w) * fw + w * f
     e = np.minimum(WING_TE_T, t) / 2 * x                  # half the trailing edge thickness, growing aft
-    up = np.c_[x * c, fu * (du - e[-1]) + e][::-1]
+    zu = fu * (du - e[-1]) + e
     # underneath, inboard, the belly comes up to the intake's lower lip on a long ramp, not a blunt nose
     fr = np.where(x < WING_UNDER_RAMP[0], (x / WING_UNDER_RAMP[0]) ** WING_UNDER_RAMP[1], f)
     fl = (1 - w) * np.maximum(np.minimum(fr, f), 0.0) + w * f
-    lo = np.c_[x * c, -(fl * (dl - e[-1]) + e)][1:]
+    zl = fl * (dl - e[-1]) + e
+    env = lip_envelope(ya)
+    if env is not None:                                   # the lip is this section's leading edge
+        z_lo, z_hi = env
+        sd = x * c                                        # distance behind the leading edge
+        rr = (z_hi - z_lo) / 2
+        for sign, edge, hold in ((1, z_hi - zs, WING_NOSE_HOLD[0]), (-1, zs - z_lo, WING_NOSE_HOLD[1])):
+            if edge <= 0.05:
+                continue
+            rn = min(rr, max(edge, 0.3))                  # nose radius: the lip's own half-round
+            nose = np.where(sd < rn, edge - rn + np.sqrt(np.clip(rn * rn - (rn - sd) ** 2, 0, None)), edge)
+            u = np.clip((sd - rn) / hold, 0, 1)
+            nose = nose * (1 - u * u * (3 - 2 * u))
+            if sign > 0:
+                zu = np.maximum(zu, nose)
+            else:
+                zl = np.maximum(zl, nose)
+    up = np.c_[x * c, zu][::-1]
+    lo = np.c_[x * c, -zl][1:]
     sec = np.vstack([up, lo])
     return np.c_[le + sec[:, 0], np.full(len(sec), y), zs + sec[:, 1]]
 
@@ -597,7 +639,8 @@ def mouth_ring(s, offset, z_scale=1.0):
     bow, span = INTAKE_WALL_BOW
     rake = np.clip((zt + INTAKE_LIP - q[:, 1]) / (zt - zb + 2 * INTAKE_LIP), 0, 1) ** 1.4      # 0 at the top, 1 at the bottom
     w = np.clip(1 - (q[:, 0] - yi) / span, 0, 1) ** 2 * rake
-    xl = np.array([lip_x(max(float(v), yi)) for v in p[:, 0]])
+    # the lip line, with the leading edge's kink at the notch rounded off over +-3 mm (a sharp kink folded the loft)
+    xl = np.array([np.mean([lip_x(max(float(v) + d, yi)) for d in (-3.0, -1.5, 0.0, 1.5, 3.0)]) for v in p[:, 0]])
     return np.c_[xl + s - bow * w, q[:, 0], q[:, 1]]
 
 
