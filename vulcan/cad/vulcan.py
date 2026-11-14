@@ -136,7 +136,8 @@ BLEND_UNDER_R = [(112.0, 6.0), (190.0, 6.0), (210.0, 4.0), (330.0, 4.0), (358.0,
                                 # behind the intakes' lower lips and round the jet pipe fairings
 BLEND_UNDER_X = (112.0, 359.0)
 BLEND_Y = 85.0                  # out to this span (the outer wing has no creases)
-BLEND_STEP = (1.5, 0.3)         # grid: x, y
+BLEND_STEP = (0.75, 0.3)        # grid: x, y (1.5 in x left a sawtooth along swept creases)
+BLEND_MIN = 0.2                 # creases shallower than this are left alone
 # Panel lines on the upper surface, starboard, as (x, y) polylines read off the Airfix scheme B top
 # view on a 10 mm grid (ref airfix_b_top.png: 2.3026 px/mm, centreline col 592.5, nose row 28).
 LINE_W, LINE_D = 0.5 * _P, 0.25 * _P        # panel lines: 0.5 mm wide, 0.25 mm deep, printed
@@ -302,8 +303,8 @@ INTAKE_DEPTH = 90.0             # (the ducts are cut off where the round tunnels
 # a separate plate printed face up that drops into a slot between the centre shells.
 # (y centre, z centre, x of the face): all four faces are the same distance back from the nose, deep
 # in the wing (user review), so the inner ducts are long: 70 mm from the lip at the fuselage side.
-ENGINES = [(30.2, 1.3, 192.0), (47.0, 1.0, 192.0)]
-ENGINE_R = 5.5                  # tunnel radius (8.25 mm bore printed)
+ENGINES = [(30.2, 1.3, 192.0, 5.5), (47.0, 1.0, 192.0, 4.5)]   # ..., tunnel radius: each fits inside its duct
+                                # (the outer one at 5.5 broke through the duct's roof and floor)
 ENGINE_TUNNEL = 14.0            # length of the round tunnel ahead of the face
 ENGINE_PLATE = (6.5, 2.0, -6.4, 8.4)   # plate: half-width, thickness, z bottom, z top
 ENGINE_FAN = dict(blades=10, hub_r=1.7, hub_len=2.2, rim=0.5, depth=0.8, swirl=16.0)
@@ -620,18 +621,18 @@ def intake_ducts():
     back, ys, tw = INTAKE_SPLIT
     wall = K.box(lip_x(ys) + back, 230.0, ys - tw / 2, ys + tw / 2, -30.0, 30.0)
     nose = M.cylinder(60.0, tw / 2, tw / 2, 24).translate([lip_x(ys) + back, ys, -30.0])
-    (yi, zi, xi), (yo, zo, xo) = ENGINES
+    (yi, zi, xi, _), (yo, zo, xo, _) = ENGINES
     cells = K.box(-BIG, xi - ENGINE_TUNNEL + 1.0, 0.0, ys, -BIG, BIG) + K.box(-BIG, xo - ENGINE_TUNNEL + 1.0, ys, BIG, -BIG, BIG)
-    tunnels = union([M.cylinder(ENGINE_TUNNEL, ENGINE_R, ENGINE_R, 64).rotate([0, 90, 0]).translate([x - ENGINE_TUNNEL, y, z])
-                     for y, z, x in ENGINES])
+    tunnels = union([M.cylinder(ENGINE_TUNNEL, r, r, 64).rotate([0, 90, 0]).translate([x - ENGINE_TUNNEL, y, z])
+                     for y, z, x, r in ENGINES])
     return ((ring_loft(rings) ^ cells) + tunnels) - wall - nose
 
 
-def engine_face(zc):
+def engine_face(zc, r):
     """One compressor face at x 0, y 0, facing -x: the plate with its fan in relief, centred at zc."""
     hw, t, zb, zt = ENGINE_PLATE
     f = ENGINE_FAN
-    r1 = ENGINE_R - 0.3
+    r1 = r - 0.3
     plate = K.box(0.0, t, -hw, hw, zb, zt)
     blades = []
     n = f["blades"]
@@ -653,12 +654,12 @@ def engine_face(zc):
 def add_engines(parts):
     hw, t, zb, zt = ENGINE_PLATE
     for sgn in (1, -1):
-        for i, (y, z, x) in enumerate(ENGINES):
+        for i, (y, z, x, r) in enumerate(ENGINES):
             slot = K.box(x - KEY_FIT, x + t + KEY_FIT, sgn * y - hw - FIT, sgn * y + hw + FIT, zb - 0.3, zt + 0.3)
             for n in ("centre_upper", "centre_lower"):
                 parts[n] = (parts[n][0] - slot, parts[n][1])
             tag = f"engine_face_{'stbd' if sgn > 0 else 'port'}_{'inner' if i == 0 else 'outer'}"
-            parts[tag] = (engine_face(z).translate([x, sgn * y, 0]), lambda m: m.rotate([0, 90, 0]))
+            parts[tag] = (engine_face(z, r).translate([x, sgn * y, 0]), lambda m: m.rotate([0, 90, 0]))
 
 
 @cached
@@ -782,6 +783,12 @@ def surface_blend(under):
     ky = np.abs(ys) <= BLEND_Y
     C = np.where(Z > -900.0, C, -1e3)
     C, Z = np.maximum(C[keep][:, ky], level), np.maximum(Z[keep][:, ky], level)
+    # fill only where a crease is really being filled (and a little round it): everywhere else the
+    # grid differs from the true surface by its sampling error, which left ragged slivers on curved
+    # surfaces such as the intake lips (user: "this part looks wonky")
+    from scipy import ndimage as ndi
+    crease = ndi.binary_dilation(C - Z > BLEND_MIN, iterations=3)
+    C = np.where(crease, C, level)
     fill = heightfield_solid(xs[keep], ys[ky], C, level) ^ K.box(-BIG, BIG, -BIG, BIG, level + 1.01, BIG)
     fill = fill.simplify(0.02)                   # the 0.3 mm grid makes a very dense mesh: thin it
     # keep the fill inside the planform: at an edge the grid slopes from the surface to "nothing"
