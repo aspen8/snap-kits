@@ -11,7 +11,7 @@ Avro Vulcan B.2 at 1:96: 352 mm span, 317 mm long (336 mm with the refuelling pr
 
 ![shape in grey](docs/shape_grey.png)
 
-> **Status: v22: shape fitted to the Airfix A12011 plan and side views, and split into shells.** No joints, colour or print file yet. Not yet split into parts; no joints, colour or print file.
+> **Status: v23: shape fitted to the Airfix A12011 plan and side views, and split into shells.** Joints, bays, gear, stand and a first colour pass are in; nothing has been printed or sliced. Not yet split into parts; no joints, colour or print file.
 
 Intakes (v22, user: "the spline shape is an important detail to get right"). The mouth is one outline measured on two head-on photos: tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly upright inner edge with rounded corners), tapering through gently bowed lips to a round outer end at y 56 (`INTAKE_INNER`, `INTAKE_OUTER`, `INTAKE_BOW`; `mouth_outline` builds it as a convex hull with rounded corners, 144 points). The lip is a half-round whose thickness varies round the mouth (`lip_t`): a heavy brow on top, 6.2 mm at the fuselage end thinning to 3.2 outboard (4.65 to 2.4 printed), a lighter lower lip (4.4 to 2.8), 2.5 at the outer end. In plan it follows the wing's leading edge, so the notch at y 50-58 is its outer end. The inner wall is a separate hooked plate, 2.2 mm thick, standing 2.7 mm off the fuselage with an open slot behind it: its leading edge runs forward and down from the upper lip to a horn below and 8.6 mm ahead of the lower lip, then hooks back under it (`INTAKE_HORN`, `intake_horn`; photos of the blanked intake and the lip close-up). Behind the lip the fairing carries its shoulders 70 mm back into the wing (`INTAKE_FAIR`).
 
@@ -56,6 +56,20 @@ Joints (v17, untested: print coupons before trusting any fit). Every key is a 3 
 Engine faces (v20, user: "like you can see the engines if you look in the intakes"; silver pieces fitted at assembly). Each duct ends in a round tunnel (8.25 mm bore printed) with a compressor face at its end: a hub cone and 10 swirled blades in relief on a small plate (`engine_face_*`, 4 of them, 11 x 10 x 3 mm), printed face up and dropped into a slot between the centre shells. All four faces are at the same station, x 192 at 1:72 (user review: further back, and the same distance from the nose), so the inner ducts are 70 mm long at the fuselage side; the wall between the two ducts starts 24 mm behind the lip (`ENGINES`, `ENGINE_FAN`, `INTAKE_SPLIT`). The long duct roofs print as bridges up to 24 mm wide in the upper shell: hidden, but check them on the first print. Left: from slightly above; right: straight in.
 
 ![engine faces](docs/engine_faces.png)
+
+## Colour (v23: first pass)
+
+`vulcan/cad/colour.py OUT [camo|white]` paints each part into per-filament volumes and writes the STLs, a preview (`vulcan_<scheme>_preview.glb`) and the Bambu Studio project (`vulcan/kit/vulcan_camo_kit.3mf`). About 20 s.
+
+- **Camouflage (XM594, 1966):** Medium Sea Grey upper shells with the Dark Green areas painted 0.8 mm deep into the upper and side skin. The pattern is traced from the Airfix scheme A top view by `vulcan/tools/trace_camo.py` into `vulcan/tools/camo_xm594_top.json` (10 outlines; the build reads the JSON, not the image). The skin is measured on the whole assembled aircraft, so joint faces, slots and bays stay plain.
+- **Underside:** white lower shells, doors, bay roof and Blue Steel. Because of the shell split there is no colour change on any lower part except the black ducts.
+- **Black:** radome, fin cap, the intake ducts and jet pipe bores, the stand. **Silver:** engine faces and gear.
+- **Plates (9, at most 3 colours each):** upper centre and front (grey, green, black); each upper wing (grey, green); fin (grey, black); lower centre and front (white, black); each lower wing (white); black and silver parts; white small parts and keys.
+- **Not yet:** roundels (upper port wing, nose sides), fin flash, serial, squadron badge, canopy glazing, the fin's own camouflage (plain grey so far), black tyres, the white scheme's pale markings. The camouflage ends at the split between the shells; on the real aircraft it runs a little lower on the nose. The project file has not been sliced (no Bambu Studio in the cloud session): prime tower positions and nozzle reach are unchecked.
+
+Left: the Airfix sheet; right: the model from above; below: 3/4 views.
+
+![camouflage](docs/colour_camo_v1.png)
 
 ## Parts (v6: first split, no joints yet)
 
