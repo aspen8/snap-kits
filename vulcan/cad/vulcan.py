@@ -110,11 +110,13 @@ WING_MIN_T = 1.7 * _P           # no section is thinner than this (the tip)
 # the centreline to WING_JOINT_Y (the centre body), then a plane falling to SPLIT_TIP_Z at the
 # tip (the outer wings). Sections are deeper above it than below inboard, so the underside stays
 # flat and the top slopes down to the tip, as the drawings show.
-SPLIT_Z = -4.0
+SPLIT_Z = -2.6                  # just above the highest point of the intake mouths' floor (z -2.7 at their outer
+                                # ends): the whole lower lip and duct floor are then in the lower shell. At -4 the
+                                # upper shell carried a feather-thin sheet of duct floor, which came loose.
 # Inboard, over the engines, the wing's top is not an aerofoil hump: it climbs from the intake
 # lip to its crest just behind it and then runs almost straight down to the trailing edge, so it
 # meets the fuselage side on a straight line (Airfix side view, XH558 photos; user review).
-WING_ROOT_UP = [(0.0, 23.0), (14.0, 23.0), (28.0, 20.3), (42.0, 16.4), (57.0, 12.9), (70.0, 11.5)]
+WING_ROOT_UP = [(0.0, 21.6), (14.0, 21.6), (28.0, 18.9), (42.0, 15.0), (57.0, 11.5), (70.0, 10.1)]
                                 # (y, depth of the top above the split): a smooth (PCHIP) curve into the outer wing
 WING_CREST = (0.09, 1.25)       # inboard: crest at this fraction of chord, then 1 - u^k to the trailing edge
 WING_UNDER_RAMP = (0.30, 0.8)   # inboard underside: reaches full depth at this fraction of chord, exponent
@@ -180,7 +182,7 @@ UNDER_STBD = [[(360, 32), (298, 32), (285, 39.5), (298, 47), (360, 47)]]        
 # name: (part, outline (x, y) starboard or centred, ledge z, roof z, mirrored to port too?, ledge width)
 BAY_LEDGE_W = 1.4               # width of the bomb bay's ledge (the gear bays' are wider: they carry a frame)
 BAYS = {
-    "bomb": ("centre", [(187, -21.5), (187, 21.5), (310, 21.5), (310, -21.5)], -12.3, -6.0, False, 1.4),
+    "bomb": ("centre", [(187, -21.5), (187, 21.5), (310, 21.5), (310, -21.5)], -12.3, SPLIT_Z - 2.0, False, 1.4),
     "nose": ("centre", [(117, -8), (117, 8), (160, 8), (160, -8)], -11.5, -6.0, False, 2.0),
     "main": ("wing", [(204, 61.5), (204, 71), (232, 75), (258, 75), (258, 61.5)], -12.5, -7.0, True, 2.0),
 }
@@ -246,10 +248,10 @@ KEY_H = [h * _P for h in (5.0, 4.5, 4.0, 3.5, 3.0, 2.5, 2.0, 1.6)]   # half-heig
 KEYS = (
     [(("front",), (x, 0.0), "x", 6.0 * _P) for x in (45.0, 80.0)]
     + [(("front", "centre"), (102.0, 9.0), "x", 18.0 * _P)]
-    + [(("centre",), xy, "x", 6.0 * _P) for xy in ((172.0, 14.0), (201.0, 30.0), (250.0, 42.0), (330.0, 42.0),
+    + [(("centre",), xy, "x", 6.0 * _P) for xy in ((172.0, 14.0), (201.0, 30.0), (250.0, 42.0), (312.0, 42.0),
                                                    (335.0, 0.0), (385.0, 0.0))]
-    + [(("centre", "wing"), (x, WING_JOINT_Y), "y", 30.0 * _P) for x in (199.5, 300.0)]
-    + [(("wing",), xy, "x", 6.0 * _P) for xy in ((245.0, 100.0), (310.0, 100.0), (285.0, 150.0), (305.0, 150.0))]
+    + [(("centre", "wing"), (199.5, WING_JOINT_Y), "y", 22.0 * _P), (("centre", "wing"), (290.0, WING_JOINT_Y), "y", 30.0 * _P)]
+    + [(("wing",), xy, "x", 6.0 * _P) for xy in ((245.0, 100.0), (310.0, 100.0), (280.0, 145.0), (298.0, 145.0))]
 )
 RADOME_TONGUE = (10.0, 5.0, 2.5)   # front shells' tongue into the radome: length, half-width, half-height
 FIN_FIT = 0.10 * _P             # fin root in its slot, per side
@@ -276,12 +278,22 @@ INTAKE_GAP = (2.7, 16.0, -9.0)  # boundary-layer gap between the intake's inner 
 INTAKE_INNER = (23.8, -5.3, 8.2, 2.5)     # y of the inner edge, z bottom, z top, corner radius
 INTAKE_OUTER = (52.4, 0.9, 3.6)          # outer end: centre y, z, radius
 INTAKE_BOW = (38.0, 7.1, -4.6)            # mid-span: y, z of the top lip, z of the bottom lip
-INTAKE_LIP = 4.2                # lip thickness (3.15 mm printed): a fat half-round nose (lip close-up photo)
-INTAKE_LIP_OUTER = (2.5, 46.0)  # the lip thins to this at its outer end, from this y: it must end inside the centre part
+# Lip thickness round the mouth (its nose is a half-round of this diameter). From the head-on photos:
+# the brow above the mouth is about half the opening's height at the fuselage end and thins outboard;
+# the lower lip is lighter; the inner wall is a thin plate.
+INTAKE_LIP_TOP = (6.2, 3.2)     # upper lip: at the inner end, at the outer end (4.65 to 2.4 mm printed)
+INTAKE_LIP_BOT = (4.4, 2.8)     # lower lip
+INTAKE_LIP = 4.4                # (reference thickness for the plate's rake)
+INTAKE_LIP_OUTER = (2.5, 49.0)  # the lip thins to this at its outer end, from this y: it must end inside the centre part
 INTAKE_LIP_INNER = 2.2          # the inner wall is a thinner plate standing off the fuselage
-INTAKE_WALL_BOW = (8.0, 10.0)   # the inner plate's leading edge rakes forward to a horn at its lower corner
-                                # (photo of the blanked intake): this far ahead of the lip at the bottom,    # the inner wall's leading edge bows forward by this much at mid-height
-                                # (side-on photo), fading out over this span outboard
+INTAKE_WALL_BOW = (3.0, 10.0)   # the lip itself rakes forward this much at the bottom of the inner end,
+                                # fading out over this span outboard
+# The inner plate (splitter): a hooked plate standing off the fuselage. Its leading edge runs forward
+# and down from the upper lip to a horn below and ahead of the lower lip, then hooks back under it
+# (photos of the blanked intake and the lip close-up). (x from the lip's nose at the inner end, z).
+INTAKE_HORN = [(7.0, 12.0), (0.5, 12.0), (-2.5, 7.0), (-5.5, 1.0), (-8.0, -4.5), (-8.6, -8.0), (-7.4, -10.6),
+               (-4.5, -9.6), (0.5, -8.6), (7.0, -8.2)]
+INTAKE_HORN_R = 0.8             # corner rounding of that outline
 INTAKE_FAIR = [(8.0, 1.0, 1.0), (22.0, 1.8, 1.0), (45.0, 1.2, 0.8), (70.0, 0.0, 0.5)]   # behind the lip: distance, extra
                                 # offset, height scale (the fairing sinks into the wing)
 INTAKE_SPLIT = (24.0, 37.6, 1.8)  # the wall between the two engines' ducts: set back, y, thickness
@@ -479,7 +491,7 @@ def split_z(y):
     return SPLIT_Z + (SPLIT_TIP_Z - SPLIT_Z) * (y - WING_JOINT_Y) / (SPAN / 2 - WING_JOINT_Y)
 
 
-SPLIT_TILT = math.degrees(math.atan2(SPLIT_Z - SPLIT_TIP_Z, SPAN / 2 - WING_JOINT_Y))   # 3.2 deg
+SPLIT_TILT = math.degrees(math.atan2(SPLIT_Z - SPLIT_TIP_Z, SPAN / 2 - WING_JOINT_Y))   # 3.7 deg
 
 
 def wing_ring(y, n=40):
@@ -544,12 +556,32 @@ def mouth_outline():
 
 
 def lip_t():
-    """Lip thickness at each outline point: the thin inner plate, fat everywhere else."""
-    p, _ = mouth_outline()
-    u = np.clip((p[:, 0] - INTAKE_INNER[0]) / 5.0, 0, 1)
-    t = INTAKE_LIP_INNER + (INTAKE_LIP - INTAKE_LIP_INNER) * u * u * (3 - 2 * u)
-    v = np.clip((p[:, 0] - INTAKE_LIP_OUTER[1]) / (INTAKE_OUTER[0] + INTAKE_OUTER[2] - INTAKE_LIP_OUTER[1]), 0, 1)
+    """Lip thickness at each outline point."""
+    p, n = mouth_outline()
+    yi = INTAKE_INNER[0]
+    yo = INTAKE_OUTER[0] + INTAKE_OUTER[2]
+    f = np.clip((p[:, 0] - yi) / (yo - yi), 0, 1)
+    top = INTAKE_LIP_TOP[0] + (INTAKE_LIP_TOP[1] - INTAKE_LIP_TOP[0]) * f
+    bot = INTAKE_LIP_BOT[0] + (INTAKE_LIP_BOT[1] - INTAKE_LIP_BOT[0]) * f
+    k = (n[:, 1] + 1) / 2                         # 1 on the upper lip, 0 on the lower
+    k = k * k * (3 - 2 * k)
+    t = bot + (top - bot) * k
+    u = np.clip((p[:, 0] - yi) / 5.0, 0, 1) * np.clip(1 - np.abs(n[:, 1]), 0, 1) + np.abs(n[:, 1])   # the inner wall only
+    u = np.clip(u, 0, 1)
+    t = INTAKE_LIP_INNER + (t - INTAKE_LIP_INNER) * u * u * (3 - 2 * u)
+    v = np.clip((p[:, 0] - INTAKE_LIP_OUTER[1]) / (yo - INTAKE_LIP_OUTER[1]), 0, 1)
     return t + (INTAKE_LIP_OUTER[0] - t) * v * v * (3 - 2 * v)
+
+
+@cached
+def intake_horn():
+    """The inner plate with its horn (starboard)."""
+    from shapely.geometry import Polygon
+    yi = INTAKE_INNER[0]
+    x0 = lip_x(yi)
+    r = INTAKE_HORN_R
+    poly = Polygon([(x0 + dx, z) for dx, z in INTAKE_HORN]).buffer(-r, 16).buffer(r, 16)
+    return _plate_xz([list(poly.exterior.coords)[:-1]], yi - INTAKE_LIP_INNER, yi + 0.6)
 
 
 def mouth_ring(s, offset, z_scale=1.0):
@@ -583,7 +615,7 @@ def intake_fairing():
 @cached
 def intake_ducts():
     t = lip_t()
-    rings = [mouth_ring(-2.0, t / 2 + 0.01)] + [mouth_ring(t / 2 * (1 - math.cos(a)), t / 2 * (1 - math.sin(a))) for a in _LIP_TH]
+    rings = [mouth_ring(-0.3, t / 2 + 0.01)] + [mouth_ring(t / 2 * (1 - math.cos(a)), t / 2 * (1 - math.sin(a))) for a in _LIP_TH]
     rings.append(mouth_ring(INTAKE_DEPTH, 0.0))
     back, ys, tw = INTAKE_SPLIT
     wall = K.box(lip_x(ys) + back, 230.0, ys - tw / 2, ys + tw / 2, -30.0, 30.0)
@@ -752,6 +784,9 @@ def surface_blend(under):
     C, Z = np.maximum(C[keep][:, ky], level), np.maximum(Z[keep][:, ky], level)
     fill = heightfield_solid(xs[keep], ys[ky], C, level) ^ K.box(-BIG, BIG, -BIG, BIG, level + 1.01, BIG)
     fill = fill.simplify(0.02)                   # the 0.3 mm grid makes a very dense mesh: thin it
+    # keep the fill inside the planform: at an edge the grid slopes from the surface to "nothing"
+    # over one cell, which left burrs and crumbs along the leading edges and ahead of the lips
+    fill = fill ^ K.prism_z(solid.project().offset(-2.0, mf.JoinType.Round, 2.0, 16))
     print(f"{'under' if under else 'top'} blend: {(fill - solid).volume() / 1000:.2f} cm3 added, "
           f"deepest fill {float((C - Z).max()):.2f} mm")
     return fill.rotate([180, 0, 0]) if under else fill
@@ -761,7 +796,7 @@ def surface_blend(under):
 def raw_airframe():
     """Body, wings, intake fairings and jet pipes as one solid, before blending and cuts."""
     pipes, _ = jet_pipes()
-    half = wing() + intake_fairing() + pipes
+    half = wing() + intake_fairing() + intake_horn() + pipes
     return union([body(), keel(), canopy(), blister(), half, mirror_y(half)])
 
 
