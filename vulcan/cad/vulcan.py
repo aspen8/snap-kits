@@ -75,8 +75,8 @@ FUSE_STATIONS = [
 # Under the wing the body is not a tube: its flat-bottomed keel (bomb bay and its fairing) runs level
 # with the wing's lowest point from the nose gear bay back to the jet pipes (underside photos; the
 # bomb doors would otherwise ride up the tube's sides). x, half-width, z bottom.
-KEEL_STATIONS = [(116.0, 17.0, -15.0), (150.0, 22.5, -15.0), (320.0, 22.5, -15.0), (340.0, 18.0, -15.0),
-                 (356.0, 13.5, -14.9)]
+KEEL_STATIONS = [(116.0, 17.0, -15.0), (150.0, 22.5, -15.0), (312.0, 22.5, -15.0), (336.0, 16.5, -15.0),
+                 (356.0, 11.0, -14.9)]   # (v30: narrowed aft so it doesn't stand as a block where the wing rises to its trailing edge)
 KEEL_TOP = -2.0
 KEEL_N = 5.0
 CANOPY_STATIONS = [             # x, half-width, z top: the small bubble over the flight deck
@@ -119,7 +119,10 @@ SPLIT_Z = -2.6                  # just above the highest point of the intake mou
 WING_ROOT_UP = [(0.0, 18.2), (14.0, 18.2), (28.0, 16.4), (42.0, 13.6), (57.0, 11.0), (70.0, 10.1)]   # lowered 3.4 at the root (user review, head-on photos)
                                 # (y, depth of the top above the split): a smooth (PCHIP) curve into the outer wing
 WING_CREST = (0.06, 1.25)       # inboard: crest at this fraction of chord, then 1 - u^k to the trailing edge
-WING_UNDER_RAMP = (0.30, 0.8)   # inboard underside: reaches full depth at this fraction of chord, exponent
+WING_UNDER_TE = 0.14            # inboard underside: rises to the trailing edge over this fraction of chord
+WING_UNDER_RAMP = (0.10, 0.7)   # inboard underside: reaches full depth at this fraction of chord, exponent
+                                # (v30: at 0.30 the keel stood proud of the wing as flat "shoulders" and the
+                                # underside read as scalloped; user: "should be much flatter")
 # Across the intakes the wing has a blunt nose that holds the mouth (see INTAKES): a quarter-ellipse
 # cap above and below the leading edge, held and then let go, merged with a smooth maximum.
 WING_NOSE_UP = (1.0, 4.0, 60.0)  # top of the nose: cap length / height, hold, ease-out distance
@@ -324,6 +327,9 @@ JET_Z = -7.5                    # the pipes straddle the trailing edge: their to
                                 # upper surface over the last 40 mm, their undersides as the long fairings below
 JET_PROFILE = [(197.0, 1.5), (252.0, 5.0), (302.0, 6.3), (366.5, 6.5)]   # x, radius
 JET_BORE = (5.4, 10.0)          # radius, depth
+JET_UNDER = (3.5, [(197.0, 1.5), (252.0, 5.0), (302.0, 6.3), (338.0, 6.3), (366.0, 3.0)])
+                                # the fairing under each pipe: the pipe's profile dropped this far, closing
+                                # before the nozzle (v30: the flat underside had buried the fairings' fronts)
 
 # Fin: leading and trailing edge lines (x at z), symmetric section, rounded front top corner.
 FIN_LE = ((303.6, 23.7), (362.5, 69.0))
@@ -568,8 +574,12 @@ def wing_ring(y, n=96):
     e = np.minimum(WING_TE_T, t) / 2 * x                  # half the trailing edge thickness, growing aft
     zu = fu * (du - e[-1]) + e
     # underneath, inboard, the belly comes up to the intake's lower lip on a long ramp, not a blunt nose
-    fr = np.where(x < WING_UNDER_RAMP[0], (x / WING_UNDER_RAMP[0]) ** WING_UNDER_RAMP[1], f)
-    fl = (1 - w) * np.maximum(np.minimum(fr, f), 0.0) + w * f
+    # and is then flat, level with the keel, until it rises to the trailing edge (v30: following the
+    # aerofoil it touched the flat bottom only near 30% chord, and the keel stood proud as shoulders)
+    fr = np.where(x < WING_UNDER_RAMP[0], (x / WING_UNDER_RAMP[0]) ** WING_UNDER_RAMP[1], 1.0)
+    tt = WING_UNDER_TE
+    fr = fr * (1 - np.clip((x - (1 - tt)) / tt, 0, 1) ** 1.6)
+    fl = (1 - w) * fr + w * f
     zl = fl * (dl - e[-1]) + e
     nose = wing_nose(ya)
     if nose is not None:                                  # blunt root nose that holds the intake mouth
@@ -726,7 +736,8 @@ def jet_pipes():
     pipe = revolve_x(JET_PROFILE)
     x1 = JET_PROFILE[-1][0]
     bore = revolve_x([(x1 - JET_BORE[1], JET_BORE[0]), (x1 + 1.0, JET_BORE[0])])
-    return (union([pipe.translate([0, y, JET_Z]) for y in JET_Y]),
+    under = revolve_x(JET_UNDER[1]).translate([0, 0, -JET_UNDER[0]])   # the fairing below the wing
+    return (union([(pipe + under).translate([0, y, JET_Z]) for y in JET_Y]),
             union([bore.translate([0, y, JET_Z]) for y in JET_Y]))
 
 
