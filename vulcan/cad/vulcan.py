@@ -118,13 +118,14 @@ SPLIT_Z = -2.6                  # just above the highest point of the intake mou
 # meets the fuselage side on a straight line (Airfix side view, XH558 photos; user review).
 WING_ROOT_UP = [(0.0, 18.2), (14.0, 18.2), (28.0, 16.4), (42.0, 13.6), (57.0, 11.0), (70.0, 10.1)]   # lowered 3.4 at the root (user review, head-on photos)
                                 # (y, depth of the top above the split): a smooth (PCHIP) curve into the outer wing
-WING_CREST = (0.09, 1.25)       # inboard: crest at this fraction of chord, then 1 - u^k to the trailing edge
+WING_CREST = (0.06, 1.25)       # inboard: crest at this fraction of chord, then 1 - u^k to the trailing edge
 WING_UNDER_RAMP = (0.30, 0.8)   # inboard underside: reaches full depth at this fraction of chord, exponent
-# Across the intakes the wing's leading edge IS the lip (user review: the intakes read as separate
-# pieces on a thin wing). Each wing section there starts on the lip's own outer surface, holds the
-# lip's height behind the nose and lets it go over these distances, so the upper surface runs out
-# of the top lip and the underside out of the bottom lip with no rim or shelf.
-WING_NOSE_HOLD = (70.0, 110.0)  # distance over which the lip's height is let go: on top, underneath
+# Across the intakes the wing has a blunt nose that holds the mouth (see INTAKES): a quarter-ellipse
+# cap above and below the leading edge, held and then let go, merged with a smooth maximum.
+WING_NOSE_UP = (1.0, 4.0, 60.0)  # top of the nose: cap length / height, hold, ease-out distance
+WING_NOSE_LO = (1.2, 6.0, 90.0)  # underneath
+WING_NOSE_K = 0.8               # smooth-max width where the nose meets the wing's own surfaces (mm)
+WING_NOSE_FADE = 7.0            # outboard of the mouth's outer end the nose fades out over this span
 WING_CREST_BLEND = (25.0, 80.0)  # the inboard profile fades into the plain aerofoil over this span
 SPLIT_TIP_Z = -14.0
 WING_JOINT_Y = 59.0             # centre body / outer wing joint: just outboard of the intake lips' outer ends
@@ -272,42 +273,34 @@ WING_Y = [0.0, 5.0, 10.0, 15.0, 19.8, 21.0, 22.0, 24.0, 26.5, 29.0, 31.5, 34.0, 
           77.8, 84.0, 90.0, 97.2, 116.5, 135.8, 155.2, 174.5,
           189.0, 193.9, 200.0, 206.9, 213.2, 219.0, 224.3, 229.0, 232.5, 233.5, 234.6, 234.8]
 
-# Intakes: letterbox mouths in the swept inner leading edge, one per engine pair, split in two.
-INTAKE_Y = (20.8, 59.0)         # span of the lip: its inner wall stands off the fuselage
-INTAKE_GAP = (2.7, 16.0, -9.0)  # boundary-layer gap between the intake's inner wall and the fuselage
-                                # skin: width, how far it runs back from the lip, and its floor (z);
-                                # it is open at the top (XH558 photos; user: "almost a separation")
-# The mouth, measured on the colour head-on photo (12.2 px per model mm; belly z -15 at the bottom
-# of the fuselage): one opening a side, tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly
-# upright inner edge with rounded corners) and tapering to a round outer end (y 56, z -2 to 3.7),
-# with gently bowed top and bottom lips. A thick round lip runs all the way round it. In plan the
-# lip follows the wing's leading edge, including the notch at y 50-58, which is its outer end.
+# Intakes (v28, user: "start with a wing shape that flows neatly into the fuselage, then treat the
+# intakes as a cut away of the front of the wing"). The wing's root has a blunt nose (`wing_nose`:
+# the mouth plus a margin all round, merged into the wing's own surfaces with a smooth maximum);
+# the mouth is cut straight back into it, with a rounded edge where the cut meets the nose
+# (`intake_cut_rings`), so the lip is the wing's own skin. Inboard, a C-shaped plate stands off the
+# fuselage across a full-height boundary-layer gap.
+INTAKE_Y = (20.8, 59.0)         # span of the intake, plate to outer end
+INTAKE_GAP = (2.7, 16.0, -16.0)  # gap between the plate and the fuselage skin: width, how far back from
+                                # the leading edge it runs, floor (z): full height, as in the head-on photo
+# The mouth (head-on photos): tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly upright
+# inner edge with rounded corners), the lower edge level (user review, v26), the top sloping gently
+# down to a round outer end at y 56. In plan its edge follows the wing's leading edge.
 INTAKE_INNER = (23.8, -5.3, 8.2, 2.5)     # y of the inner edge, z bottom, z top, corner radius
-INTAKE_OUTER = (51.6, -0.9, 4.4)         # outer end: centre y, z, radius (its bottom level with the inner end)
-INTAKE_BOW = (38.0, 7.2, -5.3)            # mid-span: y, z of the top lip, z of the bottom lip
-# (user review, v26: head-on, the lower lip runs level and only the top slopes gently down outboard;
-#  the outer end used to rise 3.4 mm, which read as the mouth rotated up)
-# Lip thickness round the mouth (its nose is a half-round of this diameter). From the head-on photos:
-# the brow above the mouth is about half the opening's height at the fuselage end and thins outboard;
-# the lower lip is lighter; the inner wall is a thin plate.
-INTAKE_LIP_TOP = (3.2, 2.4)     # upper lip: at the inner end, at the outer end (2.4 to 1.8 mm printed)
-# (v27: the XJ824 close-up and the air-to-air photos show a thin, even rolled lip with the wing
-#  flaring out round it; 5 mm read as a heavy brow)
-INTAKE_LIP_BOT = (2.8, 2.2)     # lower lip
-INTAKE_LIP = 4.4                # (reference thickness for the plate's rake)
-INTAKE_LIP_OUTER = (2.0, 49.0)  # the lip thins to this at its outer end, from this y: it must end inside the centre part
-INTAKE_LIP_INNER = 2.2          # the inner wall is a thinner plate standing off the fuselage
-INTAKE_WALL_BOW = (3.0, 10.0)   # the lip itself rakes forward this much at the bottom of the inner end,
-                                # fading out over this span outboard
-# The inner plate (splitter): a hooked plate standing off the fuselage. Its leading edge runs forward
-# and down from the upper lip to a horn below and ahead of the lower lip, then hooks back under it
-# (photos of the blanked intake and the lip close-up). (x from the lip's nose at the inner end, z).
-INTAKE_HORN = [(7.0, 12.0), (0.5, 12.0), (-2.5, 7.0), (-5.5, 1.0), (-8.0, -4.5), (-8.6, -8.0), (-7.4, -10.6),
-               (-4.5, -9.6), (0.5, -8.6), (7.0, -8.2)]
-INTAKE_HORN_R = 0.8             # corner rounding of that outline
-INTAKE_FAIR = [(6.0, -0.2, 1.0), (14.0, -1.2, 0.95)]   # (only a short tail, buried in the wing: see WING_NOSE)
-_OLD_INTAKE_FAIR = [(8.0, 1.0, 1.0), (22.0, 1.8, 1.0), (45.0, 1.2, 0.8), (70.0, 0.0, 0.5)]   # behind the lip: distance, extra
-                                # offset, height scale (the fairing sinks into the wing)
+INTAKE_OUTER = (51.6, -0.9, 4.4)         # outer end: centre y, z, radius
+INTAKE_BOW = (38.0, 7.2, -5.3)            # mid-span: y, z of the top edge, z of the bottom edge
+# The nose the mouth is cut from reaches this far above and below the mouth (inner end, outer end).
+# Above, the wing's own crest takes over at once; below, the head-on photo shows about 6 mm at the
+# inner end.
+INTAKE_LIP_TOP = (3.2, 2.4)
+INTAKE_LIP_BOT = (4.0, 2.4)
+# The inner plate is a C in side view (Airfix side view at the root; head-on and blanked-intake
+# photos): furthest forward at mid-height, top running back into the wing's shoulder, foot a
+# horn below the lower lip. (x, z) outline, closed inside the wing.
+INTAKE_C = [(140.0, 14.5), (134.0, 15.6), (128.5, 16.0), (123.0, 15.0), (118.5, 12.0), (115.2, 7.5),
+            (113.6, 3.0), (114.0, -1.5), (115.8, -5.5), (119.0, -8.6), (123.5, -10.4), (129.0, -11.2),
+            (134.0, -10.6), (140.0, -8.0)]
+INTAKE_C_Y = (21.6, 23.6)       # its span: 2 mm thick with a half-round edge, clear of the gap (to y 21.6)
+INTAKE_EDGE_R = (1.4, 0.6)      # rounding of the mouth's edge where it is cut from the nose; on the inner wall
 INTAKE_SPLIT = (24.0, 37.6, 1.8)  # the wall between the two engines' ducts: set back, y, thickness
 INTAKE_DEPTH = 90.0             # (the ducts are cut off where the round tunnels start)
 # Engine faces: each duct ends in a round tunnel with a compressor face at its end (hub and blades),
@@ -506,24 +499,50 @@ def split_z(y):
 SPLIT_TILT = math.degrees(math.atan2(SPLIT_Z - SPLIT_TIP_Z, SPAN / 2 - WING_JOINT_Y))   # 3.7 deg
 
 
+def _smax(a, b, k):
+    """Smooth maximum: no crease where two surfaces cross."""
+    m = np.maximum(a, b)
+    return m + k * np.log(np.exp((a - m) / k) + np.exp((b - m) / k))
+
+
 @cached
-def _lip_polys():
+def _mouth_poly():
     from shapely.geometry import Polygon
-    p, nrm = mouth_outline()
-    return Polygon(p + lip_t().reshape(-1, 1) * nrm).buffer(0)
+    return Polygon(mouth_outline()[0]).buffer(0)
 
 
-def lip_envelope(y):
-    """(z bottom, z top) of the lip's outer surface at span y, or None outside it."""
+def mouth_env(y):
+    """(z bottom, z top) of the mouth opening at span y, or None outside it."""
     from shapely.geometry import LineString
-    hit = _lip_polys().intersection(LineString([(y, -50.0), (y, 50.0)]))
-    if hit.is_empty:
+    hit = _mouth_poly().intersection(LineString([(y, -50.0), (y, 50.0)]))
+    if hit.is_empty or hit.bounds[3] - hit.bounds[1] < 0.3:
         return None
-    b = hit.bounds
-    return (b[1], b[3]) if b[3] - b[1] > 0.3 else None
+    return hit.bounds[1], hit.bounds[3]
 
 
-def wing_ring(y, n=56):
+def wing_nose(y):
+    """(height above the split, depth below it, weight) of the blunt nose the intake is cut from,
+    at span y: the mouth plus a lip all round. Inboard of the mouth it keeps the inner end's size
+    (the C-shaped inner plate is cut from it); outboard it fades into the plain leading edge."""
+    yi = INTAKE_INNER[0] + 0.5
+    y_end = INTAKE_OUTER[0] + INTAKE_OUTER[2]
+    ya = abs(y)
+    yq = min(max(ya, yi), y_end - 1.5)
+    env = mouth_env(yq)
+    if env is None:
+        return None
+    zs = split_z(ya)
+    f = np.clip((yq - INTAKE_INNER[0]) / (y_end - INTAKE_INNER[0]), 0, 1)
+    lt = INTAKE_LIP_TOP[0] + (INTAKE_LIP_TOP[1] - INTAKE_LIP_TOP[0]) * f
+    lb = INTAKE_LIP_BOT[0] + (INTAKE_LIP_BOT[1] - INTAKE_LIP_BOT[0]) * f
+    u = float(np.clip((ya - (y_end - 1.5)) / WING_NOSE_FADE, 0, 1))
+    wn = 1 - u * u * (3 - 2 * u)
+    if wn <= 0:
+        return None
+    return env[1] + lt - zs, zs - (env[0] - lb), wn
+
+
+def wing_ring(y, n=96):
     """Section at span y: edges on the split surface, depth below it set by the flat underside."""
     le, te = wing_le(y), wing_te(y)
     c = te - le
@@ -549,22 +568,19 @@ def wing_ring(y, n=56):
     fr = np.where(x < WING_UNDER_RAMP[0], (x / WING_UNDER_RAMP[0]) ** WING_UNDER_RAMP[1], f)
     fl = (1 - w) * np.maximum(np.minimum(fr, f), 0.0) + w * f
     zl = fl * (dl - e[-1]) + e
-    env = lip_envelope(ya)
-    if env is not None:                                   # the lip is this section's leading edge
-        z_lo, z_hi = env
+    nose = wing_nose(ya)
+    if nose is not None:                                  # blunt root nose that holds the intake mouth
+        hu, hl, wn = nose
         sd = x * c                                        # distance behind the leading edge
-        rr = (z_hi - z_lo) / 2
-        for sign, edge, hold in ((1, z_hi - zs, WING_NOSE_HOLD[0]), (-1, zs - z_lo, WING_NOSE_HOLD[1])):
-            if edge <= 0.05:
-                continue
-            rn = min(rr, max(edge, 0.3))                  # nose radius: the lip's own half-round
-            nose = np.where(sd < rn, edge - rn + np.sqrt(np.clip(rn * rn - (rn - sd) ** 2, 0, None)), edge)
-            u = np.clip((sd - rn) / hold, 0, 1)
-            nose = nose * (1 - u * u * (3 - 2 * u))
-            if sign > 0:
-                zu = np.maximum(zu, nose)
+        for edge, (lk, hold, ease) in ((hu, WING_NOSE_UP), (hl, WING_NOSE_LO)):
+            ln = max(lk * edge, 0.3)
+            cap = edge * np.sqrt(np.clip(1 - np.clip(1 - sd / ln, 0, 1) ** 2, 0, 1))
+            u = np.clip((sd - ln - hold) / ease, 0, 1)
+            cap = cap * (1 - u * u * (3 - 2 * u)) - (1 - wn) * 8.0
+            if edge is hu:
+                zu = _smax(zu, cap, WING_NOSE_K)
             else:
-                zl = np.maximum(zl, nose)
+                zl = _smax(zl, cap, WING_NOSE_K)
     up = np.c_[x * c, zu][::-1]
     lo = np.c_[x * c, -zl][1:]
     sec = np.vstack([up, lo])
@@ -602,69 +618,43 @@ def mouth_outline():
     return p, nrm / np.linalg.norm(nrm, axis=1)[:, None]
 
 
-def lip_t():
-    """Lip thickness at each outline point."""
-    p, n = mouth_outline()
-    yi = INTAKE_INNER[0]
-    yo = INTAKE_OUTER[0] + INTAKE_OUTER[2]
-    f = np.clip((p[:, 0] - yi) / (yo - yi), 0, 1)
-    top = INTAKE_LIP_TOP[0] + (INTAKE_LIP_TOP[1] - INTAKE_LIP_TOP[0]) * f
-    bot = INTAKE_LIP_BOT[0] + (INTAKE_LIP_BOT[1] - INTAKE_LIP_BOT[0]) * f
-    k = (n[:, 1] + 1) / 2                         # 1 on the upper lip, 0 on the lower
-    k = k * k * (3 - 2 * k)
-    t = bot + (top - bot) * k
-    u = np.clip((p[:, 0] - yi) / 5.0, 0, 1) * np.clip(1 - np.abs(n[:, 1]), 0, 1) + np.abs(n[:, 1])   # the inner wall only
-    u = np.clip(u, 0, 1)
-    t = INTAKE_LIP_INNER + (t - INTAKE_LIP_INNER) * u * u * (3 - 2 * u)
-    v = np.clip((p[:, 0] - INTAKE_LIP_OUTER[1]) / (yo - INTAKE_LIP_OUTER[1]), 0, 1)
-    return t + (INTAKE_LIP_OUTER[0] - t) * v * v * (3 - 2 * v)
+
+
+def _nose_x(y, z):
+    """x of the wing's front surface at span y and height z (the leading edge if z misses it)."""
+    from shapely.geometry import LineString, Polygon
+    sec = _wing_xz(round(float(y), 2))
+    hit = sec.intersection(LineString([(-1e3, z), (1e3, z)]))
+    return wing_le(y) if hit.is_empty else hit.bounds[0]
 
 
 @cached
-def intake_horn():
-    """The inner plate with its horn (starboard)."""
+def _wing_xz(y):
     from shapely.geometry import Polygon
-    yi = INTAKE_INNER[0]
-    x0 = lip_x(yi)
-    r = INTAKE_HORN_R
-    poly = Polygon([(x0 + dx, z) for dx, z in INTAKE_HORN]).buffer(-r, 16).buffer(r, 16)
-    return _plate_xz([list(poly.exterior.coords)[:-1]], yi - INTAKE_LIP_INNER, yi + 0.6)
+    r = wing_ring(y)
+    return Polygon(r[:, [0, 2]]).buffer(0)
 
 
-def mouth_ring(s, offset, z_scale=1.0):
-    """The mouth outline grown by `offset`, s behind the lip's nose, in the swept lip surface
-    (s and offset: one value, or one per outline point)."""
+def intake_cut_rings():
+    """Rings of the cut that opens the mouth in the wing's nose: from well ahead of the nose,
+    a rounded edge (radius per point) where the outline meets the nose surface, then straight back."""
     p, n = mouth_outline()
-    q = p + np.asarray(offset, float).reshape(-1, 1) * n
-    yi, zb, zt, _ = INTAKE_INNER
-    zc = (zb + zt) / 2
-    if z_scale != 1.0:
-        q[:, 1] = zc + (q[:, 1] - zc) * z_scale
-    bow, span = INTAKE_WALL_BOW
-    rake = np.clip((zt + INTAKE_LIP - q[:, 1]) / (zt - zb + 2 * INTAKE_LIP), 0, 1) ** 1.4      # 0 at the top, 1 at the bottom
-    w = np.clip(1 - (q[:, 0] - yi) / span, 0, 1) ** 2 * rake
-    # the lip line, with the leading edge's kink at the notch rounded off over +-3 mm (a sharp kink folded the loft)
-    xl = np.array([np.mean([lip_x(max(float(v) + d, yi)) for d in (-3.0, -1.5, 0.0, 1.5, 3.0)]) for v in p[:, 0]])
-    return np.c_[xl + s - bow * w, q[:, 0], q[:, 1]]
-
-
-_LIP_TH = np.radians([0.0, 20.0, 40.0, 60.0, 75.0, 90.0])
-
-
-@cached
-def intake_fairing():
-    """The lip and the fairing behind it (solid; the duct is cut from it)."""
-    t = lip_t()
-    rings = [mouth_ring(t / 2 * (1 - math.cos(a)), t / 2 * (1 + math.sin(a))) for a in _LIP_TH]
-    rings += [mouth_ring(sd, t + extra, zs) for sd, extra, zs in INTAKE_FAIR]
-    return ring_loft(rings)
+    rr = INTAKE_EDGE_R[0] + (INTAKE_EDGE_R[1] - INTAKE_EDGE_R[0]) * np.clip(-n[:, 0], 0, 1) ** 2
+    q = p + rr[:, None] * n
+    xe = np.array([_nose_x(y, z) for y, z in q])
+    def ring(x, off):
+        qq = p + off[:, None] * n
+        return np.c_[x, qq]
+    rings = [ring(xe - 20.0, rr + 0.02)]
+    for a in np.radians([0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0]):
+        rings.append(ring(xe + rr * (1 - math.cos(a)), rr * (1 - math.sin(a))))
+    xl = np.array([lip_x(max(float(v), INTAKE_INNER[0])) for v in p[:, 0]])
+    rings.append(ring(np.maximum(xl + INTAKE_DEPTH, xe + 30.0), np.zeros(len(p))))
+    return rings
 
 
 @cached
 def intake_ducts():
-    t = lip_t()
-    rings = [mouth_ring(-0.3, t / 2 + 0.01)] + [mouth_ring(t / 2 * (1 - math.cos(a)), t / 2 * (1 - math.sin(a))) for a in _LIP_TH]
-    rings.append(mouth_ring(INTAKE_DEPTH, 0.0))
     back, ys, tw = INTAKE_SPLIT
     wall = K.box(lip_x(ys) + back, 230.0, ys - tw / 2, ys + tw / 2, -30.0, 30.0)
     nose = M.cylinder(60.0, tw / 2, tw / 2, 24).translate([lip_x(ys) + back, ys, -30.0])
@@ -672,7 +662,24 @@ def intake_ducts():
     cells = K.box(-BIG, xi - ENGINE_TUNNEL + 1.0, 0.0, ys, -BIG, BIG) + K.box(-BIG, xo - ENGINE_TUNNEL + 1.0, ys, BIG, -BIG, BIG)
     tunnels = union([M.cylinder(ENGINE_TUNNEL, r, r, 64).rotate([0, 90, 0]).translate([x - ENGINE_TUNNEL, y, z])
                      for y, z, x, r in ENGINES])
-    return ((ring_loft(rings) ^ cells) + tunnels) - wall - nose
+    return ((ring_loft(intake_cut_rings()) ^ cells) + tunnels) - wall - nose
+
+
+@cached
+def intake_plate():
+    """The C-shaped inner plate (starboard): stands off the fuselage, furthest forward at
+    mid-height, its top running back into the wing's shoulder and its foot a horn below the
+    lower lip (Airfix side view, head-on and blanked-intake photos)."""
+    from shapely.geometry import Polygon
+    base = Polygon(INTAKE_C).buffer(-0.4, 16).buffer(0.4, 16)
+    y0, y1 = INTAKE_C_Y
+    r = (y1 - y0) / 2
+    parts = []
+    for a in np.radians([80.0, 60.0, 40.0, 20.0, 0.0]):   # a stepped half-round edge all round
+        poly = base.buffer(-r * (1 - math.sin(a)), 16)
+        h = r * math.cos(a)
+        parts.append(_plate_xz([list(poly.exterior.coords)[:-1]], y0 + r - h, y0 + r + h))
+    return union(parts)
 
 
 def engine_face(zc, r):
@@ -850,7 +857,7 @@ def surface_blend(under):
 def raw_airframe():
     """Body, wings, intake fairings and jet pipes as one solid, before blending and cuts."""
     pipes, _ = jet_pipes()
-    half = wing() + intake_fairing() + intake_horn() + pipes
+    half = wing() + intake_plate() + pipes
     return union([body(), keel(), canopy(), blister(), half, mirror_y(half)])
 
 
