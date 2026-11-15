@@ -283,8 +283,10 @@ INTAKE_GAP = (2.7, 16.0, -9.0)  # boundary-layer gap between the intake's inner 
 # with gently bowed top and bottom lips. A thick round lip runs all the way round it. In plan the
 # lip follows the wing's leading edge, including the notch at y 50-58, which is its outer end.
 INTAKE_INNER = (23.8, -5.3, 8.2, 2.5)     # y of the inner edge, z bottom, z top, corner radius
-INTAKE_OUTER = (52.4, 0.9, 3.6)          # outer end: centre y, z, radius
-INTAKE_BOW = (38.0, 7.1, -4.6)            # mid-span: y, z of the top lip, z of the bottom lip
+INTAKE_OUTER = (51.6, -0.9, 4.4)         # outer end: centre y, z, radius (its bottom level with the inner end)
+INTAKE_BOW = (38.0, 7.2, -5.3)            # mid-span: y, z of the top lip, z of the bottom lip
+# (user review, v26: head-on, the lower lip runs level and only the top slopes gently down outboard;
+#  the outer end used to rise 3.4 mm, which read as the mouth rotated up)
 # Lip thickness round the mouth (its nose is a half-round of this diameter). From the head-on photos:
 # the brow above the mouth is about half the opening's height at the fuselage end and thins outboard;
 # the lower lip is lighter; the inner wall is a thin plate.
@@ -310,7 +312,7 @@ INTAKE_DEPTH = 90.0             # (the ducts are cut off where the round tunnels
 # a separate plate printed face up that drops into a slot between the centre shells.
 # (y centre, z centre, x of the face): all four faces are the same distance back from the nose, deep
 # in the wing (user review), so the inner ducts are long: 70 mm from the lip at the fuselage side.
-ENGINES = [(30.2, 1.3, 192.0, 5.5), (47.0, 1.0, 192.0, 4.5)]   # ..., tunnel radius: each fits inside its duct
+ENGINES = [(30.2, 1.0, 192.0, 5.5), (47.0, 0.0, 192.0, 4.5)]   # ..., tunnel radius: each fits inside its duct
                                 # (the outer one at 5.5 broke through the duct's roof and floor)
 ENGINE_TUNNEL = 14.0            # length of the round tunnel ahead of the face
 ENGINE_PLATE = (6.5, 2.0, -6.4, 8.4)   # plate: half-width, thickness, z bottom, z top

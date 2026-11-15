@@ -23,6 +23,7 @@ VIEWS = {
     "rear34": ((1.1, -0.9, 0.55), "Rear 3/4"),
     "front": ((-1.0, -0.25, 0.25), "Front"),
     "head": ((-1.0, 0.0, 0.03), "Head-on"),
+    "head0": ((-1.0, 0.0, 0.0), "Head-on, level"),
     "tail": ((1.0, 0.0, 0.03), "From behind"),
     "headhi": ((-1.0, 0.0, 0.18), "Head-on, slightly above"),
     "stbd": ((0.0, 1.0, 0.02), "Starboard side"),

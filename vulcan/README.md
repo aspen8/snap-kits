@@ -11,7 +11,7 @@ Avro Vulcan B.2 at 1:96: 352 mm span, 317 mm long (336 mm with the refuelling pr
 
 ![shape in grey](docs/shape_grey.png)
 
-> **Status: v25: shape fitted to the Airfix A12011 plan and side views, and split into shells.** Joints, bays, gear, stand and a first colour pass are in; nothing has been printed or sliced. Not yet split into parts; no joints, colour or print file.
+> **Status: v26: shape fitted to the Airfix A12011 plan and side views, and split into shells.** Joints, bays, gear, stand and a first colour pass are in; nothing has been printed or sliced. Not yet split into parts; no joints, colour or print file.
 
 Intakes (v22, user: "the spline shape is an important detail to get right"). The mouth is one outline measured on two head-on photos: tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly upright inner edge with rounded corners), tapering through gently bowed lips to a round outer end at y 56 (`INTAKE_INNER`, `INTAKE_OUTER`, `INTAKE_BOW`; `mouth_outline` builds it as a convex hull with rounded corners, 144 points). The lip is a half-round whose thickness varies round the mouth (`lip_t`): a heavy brow on top, 6.2 mm at the fuselage end thinning to 3.2 outboard (4.65 to 2.4 printed), a lighter lower lip (4.4 to 2.8), 2.5 at the outer end. In plan it follows the wing's leading edge, so the notch at y 50-58 is its outer end. The inner wall is a separate hooked plate, 2.2 mm thick, standing 2.7 mm off the fuselage with an open slot behind it: its leading edge runs forward and down from the upper lip to a horn below and 8.6 mm ahead of the lower lip, then hooks back under it (`INTAKE_HORN`, `intake_horn`; photos of the blanked intake and the lip close-up). Behind the lip the fairing carries its shoulders 70 mm back into the wing (`INTAKE_FAIR`).
 
@@ -62,6 +62,8 @@ Tidy-up (v24, user: "this part looks wonky", pointing at the outer end of an int
 ![intake after the tidy-up](docs/intake_tidy.png)
 
 Integrated intakes (v25, user review with three marked-up renders: the intakes read as separate pieces on a thin wing, with an obvious lip; the wing's top line too high; the underside junction with the fuselage not smooth). Across the intakes the wing's leading edge is now the lip itself: each wing section from y 21 to 59 starts on the lip's outer surface (`lip_envelope`), holds the lip's height behind its nose and lets it go over 70 mm on top and 110 mm underneath (`WING_NOSE_HOLD`), so the upper surface runs out of the top lip and the underside out of the bottom lip with no rim or shelf. The separate fairing behind the lip is reduced to a short tail buried in the wing. The wing's top line at the root is 3.4 mm lower (`WING_ROOT_UP`), the top lip thinner (5 to 3 mm), the lip line's kink at the leading-edge notch rounded, and the underside fillet between wing and fuselage ahead of the gear bays widened to a 14 mm ball (`BLEND_UNDER_R`). The image above shows this version.
+
+Level lower lip (v26, user review: "From the front on view, it's as if they are rotated slightly up. The bottom edge should be horizontal and the top should slope down gently"). The mouth's lower lip now runs level at z -5.3 from the inner edge to the outer end (it used to rise 3.4 mm outboard); only the top slopes down, from 8.2 to 3.5. The outer end is a larger, blunter round (radius 4.4, centre y 51.6, z -0.9), and the engines are recentred in the lowered ducts (z 1.0 and 0.0). `render.py` has a `head0` view (exactly head-on) for judging this.
 
 ## Colour (v23: first pass)
 
