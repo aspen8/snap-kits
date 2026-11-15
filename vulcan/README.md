@@ -75,6 +75,8 @@ Flat underside (v30, user: "underside of wing looks scalloped; it should be much
 
 Wing root under the intakes (v31, user markup of the area below the intakes' inner ends). The flat-sided keel started abruptly at x 116, already 17 mm wide, so its square corner stood below the round fuselage ahead of where the wing's underside comes down to the flat: a wedge and a shelf under each intake. The keel now starts 9.5 mm wide at x 112 and widens only as the wing's underside reaches it (`KEEL_STATIONS`: 11.5 at 118, 14 at 135, 19 at 150, full 22.5 from 165), and the underside fillet ahead of the bays is 9 to 10 mm (`BLEND_UNDER_R`). The fence stops at the lower lip (`INTAKE_FENCE_Z`): below it, it read as a jagged hook. Image: `docs/root_underside.png`.
 
+The same at the back (v31, user markup between the fuselage and the inner jet pipes): the keel stayed 16.5 to 11 mm wide right to the trailing edge, wider than the round rear fuselage, so its flat sides stood as walls where the wing's underside rises to the trailing edge. It now narrows from the end of the bomb bay (22.5 at x 312, 17 at 324, 11 at 336, 7 at 348, 5 at 356) inside the fuselage's own section, and the wing's underside rises to the trailing edge over the last 11% of the chord (`WING_UNDER_TE`), with a 5 to 6 mm fillet there (`BLEND_UNDER_R`). Image: `docs/rear_underside.png`.
+
 ## Colour (v23: first pass)
 
 `vulcan/cad/colour.py OUT [camo|white]` paints each part into per-filament volumes and writes the STLs, a preview (`vulcan_<scheme>_preview.glb`) and the Bambu Studio project (`vulcan/kit/vulcan_camo_kit.3mf`). About 20 s.

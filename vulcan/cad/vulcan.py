@@ -76,8 +76,9 @@ FUSE_STATIONS = [
 # with the wing's lowest point from the nose gear bay back to the jet pipes (underside photos; the
 # bomb doors would otherwise ride up the tube's sides). x, half-width, z bottom.
 KEEL_STATIONS = [(112.0, 9.5, -15.0), (118.0, 11.5, -15.0), (135.0, 14.0, -15.0), (150.0, 19.0, -15.0),
-                 (165.0, 22.5, -15.0), (312.0, 22.5, -15.0), (336.0, 16.5, -15.0),
-                 (356.0, 11.0, -14.9)]   # (v30: narrowed aft so it doesn't stand as a block where the wing rises to its trailing edge)
+                 (165.0, 22.5, -15.0), (312.0, 22.5, -15.0), (324.0, 17.0, -15.0), (336.0, 11.0, -15.0),
+                 (348.0, 7.0, -15.0), (356.0, 5.0, -14.9)]   # (v31: aft of the bomb bay it narrows inside the round
+                                # rear fuselage, so it doesn't stand as walls where the wing rises to its trailing edge)
 KEEL_TOP = -2.0
 KEEL_N = 5.0
 CANOPY_STATIONS = [             # x, half-width, z top: the small bubble over the flight deck
@@ -120,7 +121,7 @@ SPLIT_Z = -2.6                  # just above the highest point of the intake mou
 WING_ROOT_UP = [(0.0, 18.2), (14.0, 18.2), (28.0, 16.4), (42.0, 13.6), (57.0, 11.0), (70.0, 10.1)]   # lowered 3.4 at the root (user review, head-on photos)
                                 # (y, depth of the top above the split): a smooth (PCHIP) curve into the outer wing
 WING_CREST = (0.06, 1.25)       # inboard: crest at this fraction of chord, then 1 - u^k to the trailing edge
-WING_UNDER_TE = 0.14            # inboard underside: rises to the trailing edge over this fraction of chord
+WING_UNDER_TE = 0.11            # inboard underside: rises to the trailing edge over this fraction of chord
 WING_UNDER_RAMP = (0.10, 0.7)   # inboard underside: reaches full depth at this fraction of chord, exponent
                                 # (v30: at 0.30 the keel stood proud of the wing as flat "shoulders" and the
                                 # underside read as scalloped; user: "should be much flatter")
@@ -142,7 +143,7 @@ FRONT_X = 105.0                 # front fuselage / centre body joint, at the win
 BLEND_R = [(110.0, 4.0), (150.0, 4.0), (190.0, 12.0), (300.0, 12.0), (358.0, 2.0)]   # (x, radius): small
                                 # by the intakes, a soft fillet along the fuselage, fading out at the trailing edge
 BLEND_X = (112.0, 359.0)        # x range of the fill
-BLEND_UNDER_R = [(112.0, 9.0), (150.0, 10.0), (185.0, 14.0), (200.0, 14.0), (225.0, 5.0), (330.0, 4.0), (358.0, 1.5)]   # the same underneath:
+BLEND_UNDER_R = [(112.0, 9.0), (150.0, 10.0), (185.0, 14.0), (200.0, 14.0), (225.0, 5.0), (300.0, 5.0), (325.0, 6.0), (350.0, 5.0), (358.0, 2.0)]   # the same underneath:
                                 # behind the intakes' lower lips and round the jet pipe fairings
 BLEND_UNDER_X = (112.0, 359.0)
 BLEND_Y = 85.0                  # out to this span (the outer wing has no creases)
