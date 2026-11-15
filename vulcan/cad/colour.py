@@ -11,7 +11,7 @@ camo:  XM594, Scampton 1966 (Airfix A12011 scheme A): Medium Sea Grey and Dark G
 white: anti-flash white overall (scheme B, XM602, 1963).
 
 v1 of the colour: the camouflage pattern, black radome, ducts and fin cap, silver engine faces
-and gear. Not yet: roundels, fin flash, serial, squadron badge, canopy glazing, the fin's own
+and gear. Not yet: roundels, fin flash, serial, squadron badge, the fin's own
 pattern (it is plain grey), tyres. The camouflage ends at the split between the shells: on the
 real aircraft it runs a little lower on the nose.
 """
@@ -87,6 +87,42 @@ def duct_zone():
     return _cache["duct"]
 
 
+# Canopy glazing (side photo, head-on photo): the canopy is metal with small windows. Three flat
+# windscreen panels on its sloping front, a small side window behind each side panel, and a round
+# porthole on each side further back. Painted black into the skin; the frames are the canopy's
+# own colour.
+GLAZE_FRAME = 0.9             # frame width round and between the windscreen panels (0.7 mm printed)
+GLAZE_SCREEN = (69.0, 22.3, 28.8, 2.2)   # windscreen: section at this x, from z to z, centre panel half-width
+GLAZE_DIAG = ((60.0, 22.3), (69.0, 27.5))   # the side panels' lower frame: a diagonal in side view (x, z)
+GLAZE_SIDE = [(63.6, 23.0), (70.4, 23.0), (70.4, 26.4), (68.6, 26.4)]   # side window below it, (x, z)
+GLAZE_PORT = (74.8, 27.0, 2.3)           # porthole: x, z, radius
+
+
+def glazing():
+    if "glaze" not in _cache:
+        from shapely.geometry import Polygon, Point, box as sbox
+        x, z0, z1, hc = GLAZE_SCREEN
+        f = GLAZE_FRAME
+        T = np.array([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, 0]], float)
+        sec = Polygon(np.vstack(V.canopy().transform(T).slice(float(x)).to_polygons()))
+        win = sec.buffer(-f).intersection(sbox(-50, z0, 50, z1))
+        win = win.difference(sbox(hc, -50, hc + f, 50)).difference(sbox(-hc - f, -50, -hc, 50))
+        polys = [np.array(g.exterior.coords)[:-1] for g in getattr(win, "geoms", [win])]
+        # (y, z) outlines extruded along x, from x 50 to the section
+        screen = K.cs(polys).extrude(x - 50.0).transform(np.array([[0, 0, 1, 50.0], [1, 0, 0, 0], [0, 1, 0, 0]], float))
+        (xa, za), (xb, zb) = GLAZE_DIAG                # side panels stop at the diagonal frame
+        k = (zb - za) / (xb - xa)
+        below = V._plate_xz([[(40.0, za - (xa - 40.0) * k - 0.0), (90.0, za + (90.0 - xa) * k), (90.0, -50.0), (40.0, -50.0)]], -50.0, 50.0)
+        below = below - K.box(-V.BIG, V.BIG, -hc - f / 2, hc + f / 2, -V.BIG, V.BIG)
+        screen = screen - below
+        side = Polygon(GLAZE_SIDE)
+        px, pz, pr = GLAZE_PORT
+        xz = [np.array(side.exterior.coords)[:-1], np.array(Point(px, pz).buffer(pr, 24).exterior.coords)[:-1]]
+        sides = V._plate_xz(xz, -30.0, 30.0)
+        _cache["glaze"] = (screen, sides)
+    return _cache["glaze"]
+
+
 def colour_part(name, P):
     """{filament: Manifold} for one part (assembled frame)."""
     upper = name.endswith("_upper")
@@ -111,6 +147,10 @@ def colour_part(name, P):
             base = GREY
             ops.append((GREEN, camo_prism() ^ outer_skin()))
         ops.append((BLACK, duct_zone()))
+        if name == "front_upper":
+            screen, sides = glazing()
+            canopy = V.canopy()
+            ops.append((BLACK, (screen + sides) ^ outer_skin() ^ canopy))
         return K.paint(P, ops, base)
     return {WHITE: P}            # doors, bay roof, Blue Steel, keys, probe
 
