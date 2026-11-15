@@ -91,33 +91,29 @@ def duct_zone():
 # windscreen panels on its sloping front, a small side window behind each side panel, and a round
 # porthole on each side further back. Painted black into the skin; the frames are the canopy's
 # own colour.
-GLAZE_FRAME = 0.9             # frame width round and between the windscreen panels (0.7 mm printed)
-GLAZE_SCREEN = (69.0, 22.3, 28.8, 2.2)   # windscreen: section at this x, from z to z, centre panel half-width
-GLAZE_DIAG = ((60.0, 22.3), (69.0, 27.5))   # the side panels' lower frame: a diagonal in side view (x, z)
-GLAZE_SIDE = [(63.6, 23.0), (70.4, 23.0), (70.4, 26.4), (68.6, 26.4)]   # side window below it, (x, z)
+GLAZE_FRAME = 0.9             # frame width between the panels (0.7 mm printed)
+# Windscreen (v33, user: "the front 3 windows should be 4 sided"): seen head-on, a rectangular
+# centre panel and a trapezoid each side, its outer edge following the canopy's slope. (y, z)
+# outlines, projected along x onto the canopy's sloping front.
+GLAZE_SCREEN = [
+    [(-2.2, 23.0), (2.2, 23.0), (2.2, 27.6), (-2.2, 27.6)],
+    [(3.1, 23.0), (7.8, 23.0), (4.8, 27.6), (3.1, 27.6)],
+    [(-3.1, 23.0), (-3.1, 27.6), (-4.8, 27.6), (-7.8, 23.0)],
+]
+# Side window: a triangle just behind each side panel, its front edge one frame behind the panel's
+# rear edge (which runs from x 65.8, z 23 to x 67.0, z 27.6 on the canopy): user, "line up with the
+# main 3". (x, z)
+GLAZE_SIDE = [(66.7, 23.0), (72.0, 23.0), (67.9, 27.4)]
 GLAZE_PORT = (74.8, 27.0, 2.3)           # porthole: x, z, radius
 
 
 def glazing():
     if "glaze" not in _cache:
-        from shapely.geometry import Polygon, Point, box as sbox
-        x, z0, z1, hc = GLAZE_SCREEN
-        f = GLAZE_FRAME
-        T = np.array([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, 0]], float)
-        sec = Polygon(np.vstack(V.canopy().transform(T).slice(float(x)).to_polygons()))
-        win = sec.buffer(-f).intersection(sbox(-50, z0, 50, z1))
-        win = win.difference(sbox(hc, -50, hc + f, 50)).difference(sbox(-hc - f, -50, -hc, 50))
-        polys = [np.array(g.exterior.coords)[:-1] for g in getattr(win, "geoms", [win])]
-        # (y, z) outlines extruded along x, from x 50 to the section
-        screen = K.cs(polys).extrude(x - 50.0).transform(np.array([[0, 0, 1, 50.0], [1, 0, 0, 0], [0, 1, 0, 0]], float))
-        (xa, za), (xb, zb) = GLAZE_DIAG                # side panels stop at the diagonal frame
-        k = (zb - za) / (xb - xa)
-        below = V._plate_xz([[(40.0, za - (xa - 40.0) * k - 0.0), (90.0, za + (90.0 - xa) * k), (90.0, -50.0), (40.0, -50.0)]], -50.0, 50.0)
-        below = below - K.box(-V.BIG, V.BIG, -hc - f / 2, hc + f / 2, -V.BIG, V.BIG)
-        screen = screen - below
-        side = Polygon(GLAZE_SIDE)
+        from shapely.geometry import Point
+        to_x = np.array([[0, 0, 1, 50.0], [1, 0, 0, 0], [0, 1, 0, 0]], float)   # (y, z) along x, from x 50
+        screen = K.cs([np.array(p) for p in GLAZE_SCREEN]).extrude(19.0).transform(to_x)
         px, pz, pr = GLAZE_PORT
-        xz = [np.array(side.exterior.coords)[:-1], np.array(Point(px, pz).buffer(pr, 24).exterior.coords)[:-1]]
+        xz = [np.array(GLAZE_SIDE), np.array(Point(px, pz).buffer(pr, 24).exterior.coords)[:-1]]
         sides = V._plate_xz(xz, -30.0, 30.0)
         _cache["glaze"] = (screen, sides)
     return _cache["glaze"]
