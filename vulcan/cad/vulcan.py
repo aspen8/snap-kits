@@ -282,32 +282,35 @@ WING_Y = [0.0, 5.0, 10.0, 15.0, 19.8, 21.0, 22.0, 24.0, 26.5, 29.0, 31.5, 34.0, 
 INTAKE_Y = (20.8, 59.0)         # span of the intake, plate to outer end
 INTAKE_GAP = (2.7, 16.0, -16.0)  # gap between the plate and the fuselage skin: width, how far back from
                                 # the leading edge it runs, floor (z): full height, as in the head-on photo
-# The mouth (head-on photos): tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly upright
-# inner edge with rounded corners), the lower edge level (user review, v26), the top sloping gently
-# down to a round outer end at y 56. In plan its edge follows the wing's leading edge.
+# The mouth (head-on photos; user review v26, v29): a trapezoid with a round outer end. The inner
+# edge upright (z -5.3 to 8.2 at y 23.8, rounded corners), the lower edge level, the top a straight
+# line sloping down to the round outer end at y 56 (a bowed top read as a pentagon). In plan its
+# edge follows the wing's leading edge.
 INTAKE_INNER = (23.8, -5.3, 8.2, 2.5)     # y of the inner edge, z bottom, z top, corner radius
 INTAKE_OUTER = (51.6, -0.9, 4.4)         # outer end: centre y, z, radius
-INTAKE_BOW = (38.0, 7.2, -5.3)            # mid-span: y, z of the top edge, z of the bottom edge
 # The nose the mouth is cut from reaches this far above and below the mouth (inner end, outer end).
 # Above, the wing's own crest takes over at once; below, the head-on photo shows about 6 mm at the
 # inner end.
-INTAKE_LIP_TOP = (3.2, 2.4)
-INTAKE_LIP_BOT = (4.0, 2.4)
+INTAKE_LIP_TOP = (4.2, 3.2)    # (v29: thicker top and bottom; user: "it looks too thin")
+INTAKE_LIP_BOT = (4.8, 3.2)
 # The inner plate is a C in side view (Airfix side view at the root; head-on and blanked-intake
 # photos): furthest forward at mid-height, top running back into the wing's shoulder, foot a
 # horn below the lower lip. (x, z) outline, closed inside the wing.
 INTAKE_C = [(140.0, 14.5), (134.0, 15.6), (128.5, 16.0), (123.0, 15.0), (118.5, 12.0), (115.2, 7.5),
             (113.6, 3.0), (114.0, -1.5), (115.8, -5.5), (119.0, -8.6), (123.5, -10.4), (129.0, -11.2),
             (134.0, -10.6), (140.0, -8.0)]
-INTAKE_C_Y = (21.6, 23.6)       # its span: 2 mm thick with a half-round edge, clear of the gap (to y 21.6)
-INTAKE_EDGE_R = (1.4, 0.6)      # rounding of the mouth's edge where it is cut from the nose; on the inner wall
+INTAKE_C_Y = (21.8, 23.6)       # its span: 1.8 mm thick with a half-round edge
+INTAKE_FENCE = (0.9, 12.0)      # v29 (user: "fence is too pronounced; without it the wing should join the
+                                # fuselage seamlessly"): no gap; the plate is a rim standing this proud
+                                # of the wing's nose, back to this far behind the leading edge
+INTAKE_EDGE_R = (2.2, 0.6)      # rounding of the mouth's edge where it is cut from the nose; on the inner wall
 INTAKE_SPLIT = (24.0, 37.6, 1.8)  # the wall between the two engines' ducts: set back, y, thickness
 INTAKE_DEPTH = 90.0             # (the ducts are cut off where the round tunnels start)
 # Engine faces: each duct ends in a round tunnel with a compressor face at its end (hub and blades),
 # a separate plate printed face up that drops into a slot between the centre shells.
 # (y centre, z centre, x of the face): all four faces are the same distance back from the nose, deep
 # in the wing (user review), so the inner ducts are long: 70 mm from the lip at the fuselage side.
-ENGINES = [(30.2, 1.0, 192.0, 5.5), (47.0, 0.0, 192.0, 4.5)]   # ..., tunnel radius: each fits inside its duct
+ENGINES = [(30.2, 1.0, 192.0, 5.5), (47.0, -0.4, 192.0, 4.2)]   # ..., tunnel radius: each fits inside its duct
                                 # (the outer one at 5.5 broke through the duct's roof and floor)
 ENGINE_TUNNEL = 14.0            # length of the round tunnel ahead of the face
 ENGINE_PLATE = (6.5, 2.0, -6.4, 8.4)   # plate: half-width, thickness, z bottom, z top
@@ -604,8 +607,7 @@ def mouth_outline():
     from shapely.geometry import Point, Polygon, MultiPoint
     yi, zb, zt, rc = INTAKE_INNER
     yo, zo, ro = INTAKE_OUTER
-    ym, zmt, zmb = INTAKE_BOW
-    pts = [(yi, zb), (yi, zt), (ym, zmt), (ym, zmb)] + list(Point(yo, zo).buffer(ro, 64).exterior.coords)
+    pts = [(yi, zb), (yi, zt)] + list(Point(yo, zo).buffer(ro, 64).exterior.coords)
     poly = MultiPoint(pts).convex_hull.buffer(-rc, 32).buffer(rc, 32)
     ring = poly.exterior
     if not ring.is_ccw:
@@ -667,12 +669,15 @@ def intake_ducts():
 
 @cached
 def intake_plate():
-    """The C-shaped inner plate (starboard): stands off the fuselage, furthest forward at
-    mid-height, its top running back into the wing's shoulder and its foot a horn below the
-    lower lip (Airfix side view, head-on and blanked-intake photos)."""
+    """The inner fence (starboard): a thin rim standing INTAKE_FENCE[0] proud of the wing's blunt
+    nose at the mouth's inner edge; the wing itself runs into the fuselage behind it."""
     from shapely.geometry import Polygon
-    base = Polygon(INTAKE_C).buffer(-0.4, 16).buffer(0.4, 16)
+    from shapely.geometry import box as sbox
     y0, y1 = INTAKE_C_Y
+    proud, run = INTAKE_FENCE
+    yc = (y0 + y1) / 2
+    le = wing_le(yc)
+    base = _wing_xz(round(yc, 2)).buffer(proud, 32).intersection(sbox(le - 10.0, -40.0, le + run, 40.0))
     r = (y1 - y0) / 2
     parts = []
     for a in np.radians([80.0, 60.0, 40.0, 20.0, 0.0]):   # a stepped half-round edge all round
@@ -865,7 +870,7 @@ def raw_airframe():
 def airframe():
     """Everything but the fin and the probe, as one solid."""
     _, bores = jet_pipes()
-    cuts = intake_ducts() + bores + intake_gap()
+    cuts = intake_ducts() + bores
     return (raw_airframe() + surface_blend(False) + surface_blend(True)) - cuts - mirror_y(cuts)
 
 
