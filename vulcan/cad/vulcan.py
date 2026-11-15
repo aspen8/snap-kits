@@ -75,7 +75,8 @@ FUSE_STATIONS = [
 # Under the wing the body is not a tube: its flat-bottomed keel (bomb bay and its fairing) runs level
 # with the wing's lowest point from the nose gear bay back to the jet pipes (underside photos; the
 # bomb doors would otherwise ride up the tube's sides). x, half-width, z bottom.
-KEEL_STATIONS = [(116.0, 17.0, -15.0), (150.0, 22.5, -15.0), (312.0, 22.5, -15.0), (336.0, 16.5, -15.0),
+KEEL_STATIONS = [(112.0, 9.5, -15.0), (118.0, 11.5, -15.0), (135.0, 14.0, -15.0), (150.0, 19.0, -15.0),
+                 (165.0, 22.5, -15.0), (312.0, 22.5, -15.0), (336.0, 16.5, -15.0),
                  (356.0, 11.0, -14.9)]   # (v30: narrowed aft so it doesn't stand as a block where the wing rises to its trailing edge)
 KEEL_TOP = -2.0
 KEEL_N = 5.0
@@ -141,7 +142,7 @@ FRONT_X = 105.0                 # front fuselage / centre body joint, at the win
 BLEND_R = [(110.0, 4.0), (150.0, 4.0), (190.0, 12.0), (300.0, 12.0), (358.0, 2.0)]   # (x, radius): small
                                 # by the intakes, a soft fillet along the fuselage, fading out at the trailing edge
 BLEND_X = (112.0, 359.0)        # x range of the fill
-BLEND_UNDER_R = [(112.0, 14.0), (200.0, 14.0), (225.0, 5.0), (330.0, 4.0), (358.0, 1.5)]   # the same underneath:
+BLEND_UNDER_R = [(112.0, 9.0), (150.0, 10.0), (185.0, 14.0), (200.0, 14.0), (225.0, 5.0), (330.0, 4.0), (358.0, 1.5)]   # the same underneath:
                                 # behind the intakes' lower lips and round the jet pipe fairings
 BLEND_UNDER_X = (112.0, 359.0)
 BLEND_Y = 85.0                  # out to this span (the outer wing has no creases)
@@ -303,6 +304,7 @@ INTAKE_C = [(140.0, 14.5), (134.0, 15.6), (128.5, 16.0), (123.0, 15.0), (118.5, 
             (113.6, 3.0), (114.0, -1.5), (115.8, -5.5), (119.0, -8.6), (123.5, -10.4), (129.0, -11.2),
             (134.0, -10.6), (140.0, -8.0)]
 INTAKE_C_Y = (21.8, 23.6)       # its span: 1.8 mm thick with a half-round edge
+INTAKE_FENCE_Z = -8.0           # its foot: no lower than the lower lip (v31: below it read as a jagged hook)
 INTAKE_FENCE = (0.9, 12.0)      # v29 (user: "fence is too pronounced; without it the wing should join the
                                 # fuselage seamlessly"): no gap; the plate is a rim standing this proud
                                 # of the wing's nose, back to this far behind the leading edge
@@ -687,7 +689,8 @@ def intake_plate():
     proud, run = INTAKE_FENCE
     yc = (y0 + y1) / 2
     le = wing_le(yc)
-    base = _wing_xz(round(yc, 2)).buffer(proud, 32).intersection(sbox(le - 10.0, -40.0, le + run, 40.0))
+    base = _wing_xz(round(yc, 2)).buffer(proud, 32).intersection(sbox(le - 10.0, INTAKE_FENCE_Z, le + run, 40.0))
+    base = base.buffer(-0.8, 16).buffer(0.8, 16)
     r = (y1 - y0) / 2
     parts = []
     for a in np.radians([80.0, 60.0, 40.0, 20.0, 0.0]):   # a stepped half-round edge all round
