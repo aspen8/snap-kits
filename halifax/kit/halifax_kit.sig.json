@@ -1,0 +1,2008 @@
+{
+ "filaments": [
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#1C1C1C"
+  ],
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#6B5638"
+  ],
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#3F4B2E"
+  ],
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#9E2A24"
+  ],
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#24386B"
+  ],
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#E3B21C"
+  ],
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#EDEDED"
+  ],
+  [
+   "Bambu PLA Basic @BBL X2D 0.4 nozzle",
+   "#C7CCD1"
+  ]
+ ],
+ "file": "halifax_kit.3mf",
+ "git": "32662e7",
+ "objects": {
+  "canopy": {
+   "plate": 4,
+   "pos": [
+    81.23,
+    141.035
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    9.823,
+    24.544,
+    7.078
+   ],
+   "slots": [
+    3,
+    8
+   ],
+   "volumes": {
+    "Dark Green": 136.52,
+    "Silk Silver": 715.8
+   }
+  },
+  "canopy_rear": {
+   "plate": 4,
+   "pos": [
+    62.255,
+    110.484
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    19.25,
+    22.552,
+    9.25
+   ],
+   "slots": [
+    3,
+    8
+   ],
+   "volumes": {
+    "Dark Green": 150.3,
+    "Silk Silver": 1471.59
+   }
+  },
+  "canopy_side": {
+   "plate": 4,
+   "pos": [
+    62.255,
+    141.035
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    10.975,
+    25.921,
+    11.136
+   ],
+   "slots": [
+    3,
+    8
+   ],
+   "volumes": {
+    "Dark Green": 313.45,
+    "Silk Silver": 2210.08
+   }
+  },
+  "code_port_1": {
+   "plate": 3,
+   "pos": [
+    152.774,
+    128.974
+   ],
+   "settings": {},
+   "size": [
+    14.962,
+    20.817,
+    2.318
+   ],
+   "slots": [
+    4
+   ],
+   "volumes": {
+    "Red": 429.99
+   }
+  },
+  "code_port_2": {
+   "plate": 3,
+   "pos": [
+    185.317,
+    127.983
+   ],
+   "settings": {},
+   "size": [
+    16.755,
+    20.839,
+    2.386
+   ],
+   "slots": [
+    4
+   ],
+   "volumes": {
+    "Red": 411.6
+   }
+  },
+  "code_port_3": {
+   "plate": 3,
+   "pos": [
+    187.73,
+    81.536
+   ],
+   "settings": {},
+   "size": [
+    19.335,
+    21.173,
+    4.584
+   ],
+   "slots": [
+    4
+   ],
+   "volumes": {
+    "Red": 886.51
+   }
+  },
+  "code_stbd_1": {
+   "plate": 3,
+   "pos": [
+    211.233,
+    126.722
+   ],
+   "settings": {},
+   "size": [
+    17.109,
+    21.103,
+    6.568
+   ],
+   "slots": [
+    4
+   ],
+   "volumes": {
+    "Red": 1148.38
+   }
+  },
+  "code_stbd_2": {
+   "plate": 3,
+   "pos": [
+    215.065,
+    81.536
+   ],
+   "settings": {},
+   "size": [
+    18.767,
+    21.335,
+    4.276
+   ],
+   "slots": [
+    4
+   ],
+   "volumes": {
+    "Red": 953.38
+   }
+  },
+  "code_stbd_3": {
+   "plate": 3,
+   "pos": [
+    118.906,
+    131.228
+   ],
+   "settings": {},
+   "size": [
+    19.209,
+    20.83,
+    2.341
+   ],
+   "slots": [
+    4
+   ],
+   "volumes": {
+    "Red": 484.49
+   }
+  },
+  "df_loop_a": {
+   "plate": 1,
+   "pos": [
+    138.603,
+    196.621
+   ],
+   "settings": {
+    "layer_height": "0.24"
+   },
+   "size": [
+    14.1,
+    10.901,
+    2.1
+   ],
+   "slots": [
+    1,
+    2
+   ],
+   "volumes": {
+    "Black": 49.51,
+    "Dark Earth": 43.02
+   }
+  },
+  "df_loop_b": {
+   "plate": 1,
+   "pos": [
+    126.2,
+    218.168
+   ],
+   "settings": {
+    "layer_height": "0.24"
+   },
+   "size": [
+    14.1,
+    10.901,
+    2.1
+   ],
+   "slots": [
+    1,
+    2
+   ],
+   "volumes": {
+    "Black": 49.46,
+    "Dark Earth": 43.01
+   }
+  },
+  "fin_port": {
+   "plate": 6,
+   "pos": [
+    94.02,
+    160.166
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    36.0,
+    65.5,
+    18.4
+   ],
+   "slots": [
+    1,
+    4,
+    5,
+    6,
+    7
+   ],
+   "volumes": {
+    "Black": 7354.71,
+    "Blue": 100.8,
+    "Red": 100.8,
+    "White": 21.6,
+    "Yellow": 709.03
+   }
+  },
+  "fin_stbd": {
+   "plate": 6,
+   "pos": [
+    50.02,
+    160.166
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    36.0,
+    65.5,
+    18.4
+   ],
+   "slots": [
+    1,
+    4,
+    5,
+    6,
+    7
+   ],
+   "volumes": {
+    "Black": 7354.71,
+    "Blue": 100.8,
+    "Red": 100.8,
+    "White": 21.6,
+    "Yellow": 709.03
+   }
+  },
+  "fuselage_front": {
+   "plate": 1,
+   "pos": [
+    35.135,
+    59.28
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24",
+    "wall_loops": "3"
+   },
+   "size": [
+    48.516,
+    26.807,
+    94.0
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 100061.6,
+    "Dark Earth": 1363.44,
+    "Dark Green": 1017.72
+   }
+  },
+  "fuselage_nose": {
+   "plate": 1,
+   "pos": [
+    92.913,
+    83.141
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24",
+    "wall_loops": "3"
+   },
+   "size": [
+    48.461,
+    26.785,
+    93.2
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 80377.76,
+    "Dark Earth": 459.68,
+    "Dark Green": 655.67
+   }
+  },
+  "fuselage_rear": {
+   "plate": 1,
+   "pos": [
+    147.897,
+    58.209
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "enable_support": "1",
+    "layer_height": "0.24",
+    "support_style": "default",
+    "support_type": "tree(auto)",
+    "wall_loops": "3"
+   },
+   "size": [
+    45.258,
+    25.886,
+    101.5
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 73388.17,
+    "Dark Earth": 1364.18,
+    "Dark Green": 1095.13
+   }
+  },
+  "fuselage_tail": {
+   "plate": 1,
+   "pos": [
+    207.162,
+    70.879
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24",
+    "wall_loops": "3"
+   },
+   "size": [
+    34.335,
+    21.971,
+    64.5
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 22657.37,
+    "Dark Earth": 275.08,
+    "Dark Green": 412.28
+   }
+  },
+  "guns_dorsal_lower": {
+   "plate": 7,
+   "pos": [
+    122.716,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    17.0,
+    9.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 107.78
+   }
+  },
+  "guns_dorsal_upper": {
+   "plate": 7,
+   "pos": [
+    147.716,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    17.0,
+    9.0,
+    2.1
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 100.58
+   }
+  },
+  "guns_tail_lower": {
+   "plate": 7,
+   "pos": [
+    172.716,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    17.0,
+    9.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 107.78
+   }
+  },
+  "guns_tail_upper": {
+   "plate": 7,
+   "pos": [
+    197.716,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    17.0,
+    9.0,
+    2.1
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 100.58
+   }
+  },
+  "key_fuselage_joint_1": {
+   "plate": 7,
+   "pos": [
+    217.745,
+    210.339
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    18.0,
+    29.4,
+    2.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1172.22
+   }
+  },
+  "key_fuselage_joint_2": {
+   "plate": 7,
+   "pos": [
+    213.872,
+    164.383
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    18.0,
+    29.4,
+    2.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1172.22
+   }
+  },
+  "key_fuselage_nose_1": {
+   "plate": 7,
+   "pos": [
+    182.898,
+    165.709
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    18.0,
+    32.7,
+    2.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1313.73
+   }
+  },
+  "key_fuselage_nose_2": {
+   "plate": 7,
+   "pos": [
+    119.848,
+    207.546
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    18.0,
+    32.7,
+    2.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1313.73
+   }
+  },
+  "key_fuselage_tail_1": {
+   "plate": 7,
+   "pos": [
+    216.898,
+    60.256
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    16.0,
+    17.9,
+    2.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 602.95
+   }
+  },
+  "key_fuselage_tail_2": {
+   "plate": 7,
+   "pos": [
+    38.898,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    16.0,
+    17.9,
+    2.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 602.95
+   }
+  },
+  "key_nacelle_1": {
+   "plate": 7,
+   "pos": [
+    66.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    11.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 158.07
+   }
+  },
+  "key_nacelle_2": {
+   "plate": 7,
+   "pos": [
+    85.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    11.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 158.07
+   }
+  },
+  "key_nacelle_nose_1": {
+   "plate": 7,
+   "pos": [
+    104.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    11.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 158.07
+   }
+  },
+  "key_nacelle_nose_2": {
+   "plate": 7,
+   "pos": [
+    123.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    11.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 158.07
+   }
+  },
+  "key_nacelle_nose_3": {
+   "plate": 7,
+   "pos": [
+    142.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    11.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 158.07
+   }
+  },
+  "key_nacelle_nose_4": {
+   "plate": 7,
+   "pos": [
+    161.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    11.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 158.07
+   }
+  },
+  "key_nacelle_outer_1": {
+   "plate": 7,
+   "pos": [
+    180.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    8.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 116.77
+   }
+  },
+  "key_nacelle_outer_2": {
+   "plate": 7,
+   "pos": [
+    196.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    8.0,
+    6.0,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 116.77
+   }
+  },
+  "key_tailplane_1": {
+   "plate": 7,
+   "pos": [
+    38.898,
+    123.556
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    20.0,
+    6.0,
+    1.8
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 172.62
+   }
+  },
+  "key_wing_1": {
+   "plate": 7,
+   "pos": [
+    148.361,
+    213.948
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    24.0,
+    22.6,
+    3.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1669.63
+   }
+  },
+  "key_wing_2": {
+   "plate": 7,
+   "pos": [
+    179.977,
+    213.899
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    24.0,
+    22.6,
+    3.4
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1669.63
+   }
+  },
+  "key_wing_split_1": {
+   "plate": 7,
+   "pos": [
+    64.898,
+    60.256
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    24.0,
+    21.9,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1422.32
+   }
+  },
+  "key_wing_split_2": {
+   "plate": 7,
+   "pos": [
+    96.898,
+    60.256
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    24.0,
+    21.9,
+    3.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1422.32
+   }
+  },
+  "main_gear_port_a": {
+   "plate": 7,
+   "pos": [
+    172.898,
+    60.256
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    14.0,
+    26.5,
+    16.8
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1494.27
+   }
+  },
+  "main_gear_port_b": {
+   "plate": 7,
+   "pos": [
+    194.898,
+    60.256
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    14.0,
+    26.5,
+    8.525
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1160.01
+   }
+  },
+  "main_gear_stbd_a": {
+   "plate": 7,
+   "pos": [
+    128.898,
+    60.256
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    14.0,
+    26.5,
+    16.8
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1494.27
+   }
+  },
+  "main_gear_stbd_b": {
+   "plate": 7,
+   "pos": [
+    150.898,
+    60.256
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    14.0,
+    26.5,
+    8.525
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1160.01
+   }
+  },
+  "main_wheel_port": {
+   "plate": 7,
+   "pos": [
+    148.224,
+    167.552
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    26.0,
+    26.0,
+    9.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 4333.76
+   }
+  },
+  "main_wheel_stbd": {
+   "plate": 7,
+   "pos": [
+    114.931,
+    166.101
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    26.0,
+    26.0,
+    9.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 4333.76
+   }
+  },
+  "nacelle1_port_inboard": {
+   "plate": 2,
+   "pos": [
+    63.45,
+    18.593
+   ],
+   "settings": {},
+   "size": [
+    29.321,
+    118.2,
+    14.281
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 12907.51,
+    "Dark Earth": 390.05,
+    "Dark Green": 75.03
+   }
+  },
+  "nacelle1_port_outboard": {
+   "plate": 2,
+   "pos": [
+    138.09,
+    18.593
+   ],
+   "settings": {},
+   "size": [
+    29.319,
+    118.2,
+    14.281
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 12911.27,
+    "Dark Earth": 116.04,
+    "Dark Green": 351.79
+   }
+  },
+  "nacelle1_stbd_inboard": {
+   "plate": 2,
+   "pos": [
+    100.771,
+    18.593
+   ],
+   "settings": {},
+   "size": [
+    29.319,
+    118.2,
+    14.281
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 12906.17,
+    "Dark Earth": 379.99,
+    "Dark Green": 85.72
+   }
+  },
+  "nacelle1_stbd_outboard": {
+   "plate": 2,
+   "pos": [
+    26.13,
+    18.593
+   ],
+   "settings": {},
+   "size": [
+    29.321,
+    118.2,
+    14.281
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 12911.75,
+    "Dark Earth": 81.19,
+    "Dark Green": 386.52
+   }
+  },
+  "nacelle2_port_inboard": {
+   "plate": 2,
+   "pos": [
+    26.168,
+    144.822
+   ],
+   "settings": {},
+   "size": [
+    23.789,
+    101.735,
+    14.269
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 6273.29,
+    "Dark Earth": 415.0,
+    "Dark Green": 49.2
+   }
+  },
+  "nacelle2_port_outboard": {
+   "plate": 2,
+   "pos": [
+    62.769,
+    141.513
+   ],
+   "settings": {},
+   "size": [
+    23.789,
+    101.735,
+    14.269
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 6562.74,
+    "Dark Earth": 456.74,
+    "Dark Green": 20.52
+   }
+  },
+  "nacelle2_stbd_inboard": {
+   "plate": 2,
+   "pos": [
+    175.408,
+    18.593
+   ],
+   "settings": {},
+   "size": [
+    23.789,
+    101.735,
+    14.269
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 6274.07,
+    "Dark Earth": 202.75,
+    "Dark Green": 262.13
+   }
+  },
+  "nacelle2_stbd_outboard": {
+   "plate": 2,
+   "pos": [
+    207.198,
+    18.593
+   ],
+   "settings": {},
+   "size": [
+    23.789,
+    101.735,
+    14.269
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 6562.01,
+    "Dark Earth": 137.34,
+    "Dark Green": 339.96
+   }
+  },
+  "nose_glazing": {
+   "plate": 8,
+   "pos": [
+    100.533,
+    105.654
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    27.681,
+    17.316,
+    12.805
+   ],
+   "slots": [
+    1,
+    8
+   ],
+   "volumes": {
+    "Black": 206.17,
+    "Silk Silver": 2274.53
+   }
+  },
+  "prop1_port": {
+   "plate": 6,
+   "pos": [
+    106.768,
+    96.173
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    48.748,
+    55.993,
+    8.5
+   ],
+   "slots": [
+    1,
+    6
+   ],
+   "volumes": {
+    "Black": 683.27,
+    "Yellow": 25.99
+   }
+  },
+  "prop1_stbd": {
+   "plate": 6,
+   "pos": [
+    50.02,
+    96.173
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    48.748,
+    55.993,
+    8.5
+   ],
+   "slots": [
+    1,
+    6
+   ],
+   "volumes": {
+    "Black": 683.27,
+    "Yellow": 25.99
+   }
+  },
+  "prop2_port": {
+   "plate": 6,
+   "pos": [
+    160.812,
+    39.46
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    48.748,
+    55.993,
+    8.5
+   ],
+   "slots": [
+    1,
+    6
+   ],
+   "volumes": {
+    "Black": 683.19,
+    "Yellow": 25.99
+   }
+  },
+  "prop2_stbd": {
+   "plate": 6,
+   "pos": [
+    78.798,
+    38.532
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    48.748,
+    55.993,
+    8.5
+   ],
+   "slots": [
+    1,
+    6
+   ],
+   "volumes": {
+    "Black": 683.31,
+    "Yellow": 25.99
+   }
+  },
+  "roundel_fuselage_port": {
+   "plate": 3,
+   "pos": [
+    156.09,
+    81.536
+   ],
+   "settings": {},
+   "size": [
+    23.64,
+    23.895,
+    4.925
+   ],
+   "slots": [
+    4,
+    5,
+    6,
+    7
+   ],
+   "volumes": {
+    "Blue": 1232.32,
+    "Red": 234.28,
+    "White": 114.16,
+    "Yellow": 348.24
+   }
+  },
+  "roundel_fuselage_stbd": {
+   "plate": 3,
+   "pos": [
+    124.442,
+    81.536
+   ],
+   "settings": {},
+   "size": [
+    23.648,
+    23.906,
+    4.906
+   ],
+   "slots": [
+    4,
+    5,
+    6,
+    7
+   ],
+   "volumes": {
+    "Blue": 1225.56,
+    "Red": 234.36,
+    "White": 113.53,
+    "Yellow": 347.32
+   }
+  },
+  "roundel_wing_port": {
+   "plate": 3,
+   "pos": [
+    34.013,
+    81.536
+   ],
+   "settings": {},
+   "size": [
+    37.215,
+    36.956,
+    2.923
+   ],
+   "slots": [
+    4,
+    5
+   ],
+   "volumes": {
+    "Blue": 2166.58,
+    "Red": 462.2
+   }
+  },
+  "roundel_wing_stbd": {
+   "plate": 3,
+   "pos": [
+    79.228,
+    81.536
+   ],
+   "settings": {},
+   "size": [
+    37.215,
+    36.956,
+    2.923
+   ],
+   "slots": [
+    4,
+    5
+   ],
+   "volumes": {
+    "Blue": 2165.84,
+    "Red": 459.3
+   }
+  },
+  "stand_base": {
+   "plate": 5,
+   "pos": [
+    44.296,
+    50.814
+   ],
+   "settings": {},
+   "size": [
+    150.0,
+    95.0,
+    12.99
+   ],
+   "slots": [
+    2,
+    3,
+    6,
+    7
+   ],
+   "volumes": {
+    "Dark Earth": 135846.49,
+    "Dark Green": 2896.35,
+    "White": 760.21,
+    "Yellow": 416.8
+   }
+  },
+  "stand_post": {
+   "plate": 7,
+   "pos": [
+    24.146,
+    132.715
+   ],
+   "settings": {
+    "enable_support": "1",
+    "layer_height": "0.12",
+    "support_style": "default",
+    "support_type": "normal(auto)"
+   },
+   "size": [
+    74.057,
+    110.227,
+    7.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 11403.14
+   }
+  },
+  "tail_gear_a": {
+   "plate": 7,
+   "pos": [
+    231.128,
+    128.167
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    7.5,
+    16.9,
+    9.7
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 368.27
+   }
+  },
+  "tail_gear_b": {
+   "plate": 7,
+   "pos": [
+    222.716,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    7.5,
+    16.9,
+    4.975
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 298.26
+   }
+  },
+  "tail_wheel": {
+   "plate": 7,
+   "pos": [
+    238.216,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    9.0,
+    9.0,
+    4.5
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 217.7
+   }
+  },
+  "tailplane_port": {
+   "plate": 1,
+   "pos": [
+    33.889,
+    169.485
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    40.322,
+    4.108,
+    75.4
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 5366.81,
+    "Dark Earth": 849.03,
+    "Dark Green": 1023.58
+   }
+  },
+  "tailplane_stbd": {
+   "plate": 1,
+   "pos": [
+    183.615,
+    155.447
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    40.322,
+    4.108,
+    75.4
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 5370.82,
+    "Dark Earth": 1163.25,
+    "Dark Green": 718.58
+   }
+  },
+  "turret_dorsal": {
+   "plate": 8,
+   "pos": [
+    82.433,
+    143.091
+   ],
+   "settings": {
+    "enable_support": "1",
+    "layer_height": "0.12",
+    "support_style": "tree_slim",
+    "support_type": "tree(auto)"
+   },
+   "size": [
+    18.0,
+    18.0,
+    12.15
+   ],
+   "slots": [
+    1,
+    8
+   ],
+   "volumes": {
+    "Black": 345.28,
+    "Silk Silver": 2104.73
+   }
+  },
+  "turret_tail": {
+   "plate": 8,
+   "pos": [
+    86.8,
+    187.92
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    17.0,
+    16.8,
+    17.4
+   ],
+   "slots": [
+    1,
+    8
+   ],
+   "volumes": {
+    "Black": 316.26,
+    "Silk Silver": 3161.62
+   }
+  },
+  "wheel_up_port": {
+   "plate": 7,
+   "pos": [
+    92.807,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    21.909,
+    10.999,
+    9.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1014.01
+   }
+  },
+  "wheel_up_stbd": {
+   "plate": 7,
+   "pos": [
+    62.898,
+    97.656
+   ],
+   "settings": {
+    "layer_height": "0.12"
+   },
+   "size": [
+    21.909,
+    10.999,
+    9.0
+   ],
+   "slots": [
+    1
+   ],
+   "volumes": {
+    "Black": 1014.01
+   }
+  },
+  "wing_inner_port": {
+   "plate": 1,
+   "pos": [
+    37.006,
+    21.336
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    82.504,
+    17.089,
+    91.213
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 46982.2,
+    "Dark Earth": 2196.86,
+    "Dark Green": 2295.39
+   }
+  },
+  "wing_inner_stbd": {
+   "plate": 1,
+   "pos": [
+    140.867,
+    28.297
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    82.504,
+    17.089,
+    91.213
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 46985.31,
+    "Dark Earth": 2485.59,
+    "Dark Green": 1961.25
+   }
+  },
+  "wing_mid_port": {
+   "plate": 1,
+   "pos": [
+    112.413,
+    123.984
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    80.464,
+    13.531,
+    65.195
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 30125.59,
+    "Dark Earth": 2337.41,
+    "Dark Green": 1683.15
+   }
+  },
+  "wing_mid_stbd": {
+   "plate": 1,
+   "pos": [
+    160.202,
+    177.83
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    80.464,
+    13.531,
+    65.195
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 30113.68,
+    "Dark Earth": 2685.58,
+    "Dark Green": 1356.44
+   }
+  },
+  "wing_outer_port": {
+   "plate": 1,
+   "pos": [
+    100.479,
+    158.445
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    62.428,
+    10.163,
+    105.419
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 17488.44,
+    "Dark Earth": 1823.82,
+    "Dark Green": 1369.48
+   }
+  },
+  "wing_outer_stbd": {
+   "plate": 1,
+   "pos": [
+    29.79,
+    125.618
+   ],
+   "settings": {
+    "brim_type": "outer_only",
+    "brim_width": "6",
+    "layer_height": "0.24"
+   },
+   "size": [
+    62.428,
+    10.163,
+    105.419
+   ],
+   "slots": [
+    1,
+    2,
+    3
+   ],
+   "volumes": {
+    "Black": 17488.0,
+    "Dark Earth": 1286.36,
+    "Dark Green": 1908.89
+   }
+  }
+ },
+ "plates": {
+  "1": {
+   "mode": "Manual",
+   "name": "Wings and fuselage 1",
+   "nozzle": {
+    "1": 1,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    61.05,
+    196.41
+   ]
+  },
+  "2": {
+   "mode": "Manual",
+   "name": "Nacelles 2",
+   "nozzle": {
+    "1": 1,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    197.12,
+    188.57
+   ]
+  },
+  "3": {
+   "mode": "Manual",
+   "name": "Fin flashes, roundels and codes 3",
+   "nozzle": {
+    "1": 1,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 2,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    138.68,
+    172.53
+   ]
+  },
+  "4": {
+   "mode": "Manual",
+   "name": "Canopies and turrets (silk silver) 4",
+   "nozzle": {
+    "1": 1,
+    "2": 1,
+    "3": 2,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    168.31,
+    93.0
+   ]
+  },
+  "5": {
+   "mode": "Manual",
+   "name": "Display plinth 5",
+   "nozzle": {
+    "1": 1,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    111.28,
+    165.41
+   ]
+  },
+  "6": {
+   "mode": "Manual",
+   "name": "Props, gear, fins, guns and stand blade 6",
+   "nozzle": {
+    "1": 1,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 2,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    191.15,
+    145.47
+   ]
+  },
+  "7": {
+   "mode": "Auto For Flush",
+   "name": "Props, gear, fins, guns and stand blade 7",
+   "nozzle": {
+    "1": 1,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    106.0,
+    82.0
+   ]
+  },
+  "8": {
+   "mode": "Manual",
+   "name": "",
+   "nozzle": {
+    "1": 2,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1
+   },
+   "tower": [
+    94.11,
+    212.1
+   ]
+  }
+ },
+ "written": "2026-11-15"
+}
