@@ -85,8 +85,14 @@ CANOPY_STATIONS = [             # x, half-width, z top: the small bubble over th
     (58.0, 4.0, 20.5), (62.0, 7.5, 25.6), (69.6, 9.5, 29.5), (77.4, 9.5, 29.5),
     (85.0, 9.0, 28.5), (93.0, 8.0, 27.6), (101.0, 6.0, 25.6), (110.0, 3.0, 24.2),
 ]
-CANOPY_DEPTH = 12.0
-CANOPY_N = 2.5
+CANOPY_DEPTH = 18.0              # (v32: was 12: the section's widest point now sits inside the fuselage, no undercut)
+CANOPY_N = 3.0
+# v32 (user: "canopy angle at fuselage join is too steep, should look shallower"; head-on photo): the
+# canopy is a trapezoid, not a dome: a flat top and straight sloping sides, about two thirds of the
+# fuselage's width where it meets it. Each section is the superellipse above, its width scaled from
+# CANOPY_WIDEN at the bottom down to CANOPY_WIDEN * (1 - CANOPY_TAPER) at the top.
+CANOPY_WIDEN = 1.4
+CANOPY_TAPER = 0.5
 BLISTER = (70.0, -14.6, 12.0, 7.0, 3.5)   # bomb aimer's blister: x, z, radii along x, y, z
 PROBE = (26.0, 2.0 * _P)        # refuelling probe: length ahead of the nose tip, diameter (2 mm printed: thicker than scale)
 PROBE_PLUG = (7.0, 0.08 * _P)   # its plug into the radome tip: depth, fit per side
@@ -142,7 +148,7 @@ FRONT_X = 105.0                 # front fuselage / centre body joint, at the win
 # radius had been rolled over it (user: "seamlessly incorporating the engines").
 BLEND_R = [(110.0, 4.0), (150.0, 4.0), (190.0, 12.0), (300.0, 12.0), (358.0, 2.0)]   # (x, radius): small
                                 # by the intakes, a soft fillet along the fuselage, fading out at the trailing edge
-BLEND_X = (112.0, 359.0)        # x range of the fill
+BLEND_X = (112.0, 359.0)
 BLEND_UNDER_R = [(112.0, 9.0), (150.0, 10.0), (185.0, 14.0), (200.0, 14.0), (225.0, 5.0), (300.0, 5.0), (325.0, 6.0), (350.0, 5.0), (358.0, 2.0)]   # the same underneath:
                                 # behind the intakes' lower lips and round the jet pipe fairings
 BLEND_UNDER_X = (112.0, 359.0)
@@ -469,7 +475,13 @@ def keel():
 
 @cached
 def canopy():
-    return ring_loft([x_ring(x, hw, zt, zt - CANOPY_DEPTH, CANOPY_N) for x, hw, zt in dense(CANOPY_STATIONS, 2.0)])
+    rings = []
+    for x, hw, zt in dense(CANOPY_STATIONS, 2.0):
+        r = x_ring(x, hw * CANOPY_WIDEN, zt, zt - CANOPY_DEPTH, CANOPY_N)
+        u = (r[:, 2] - (zt - CANOPY_DEPTH)) / CANOPY_DEPTH
+        r[:, 1] *= 1 - CANOPY_TAPER * u
+        rings.append(r)
+    return ring_loft(rings)
 
 
 @cached
