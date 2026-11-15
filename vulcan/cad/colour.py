@@ -22,6 +22,7 @@ import time
 from pathlib import Path
 
 import manifold3d as mf
+from manifold3d import Manifold as M
 import numpy as np
 import trimesh
 
@@ -101,10 +102,11 @@ GLAZE_SCREEN = [
     [(-3.1, 23.0), (-3.1, 27.6), (-4.8, 27.6), (-7.8, 23.0)],
 ]
 # Side window: a triangle just behind each side panel, its front edge one frame behind the panel's
-# rear edge (which runs from x 65.8, z 23 to x 67.0, z 27.6 on the canopy): user, "line up with the
+# rear edge (which runs from x 68.6, z 23 to x 70.5, z 27.6 on the canopy): user, "line up with the
 # main 3". (x, z)
-GLAZE_SIDE = [(66.7, 23.0), (72.0, 23.0), (67.9, 27.4)]
-GLAZE_PORT = (74.8, 27.0, 2.3)           # porthole: x, z, radius
+GLAZE_SIDE = [(69.5, 23.0), (74.5, 23.0), (71.3, 27.2)]
+GLAZE_PORT = (77.5, 27.0, 2.3, 42.0)     # porthole: x, z, radius, and the angle above the horizon it faces (42: 0.74 as tall as wide from the side, as the side photo):
+                                         # a circle seen from there, an ellipse from the side (user review)
 
 
 def glazing():
@@ -112,9 +114,16 @@ def glazing():
         from shapely.geometry import Point
         to_x = np.array([[0, 0, 1, 50.0], [1, 0, 0, 0], [0, 1, 0, 0]], float)   # (y, z) along x, from x 50
         screen = K.cs([np.array(p) for p in GLAZE_SCREEN]).extrude(19.0).transform(to_x)
-        px, pz, pr = GLAZE_PORT
-        xz = [np.array(GLAZE_SIDE), np.array(Point(px, pz).buffer(pr, 24).exterior.coords)[:-1]]
-        sides = V._plate_xz(xz, -30.0, 30.0)
+        sides = V._plate_xz([np.array(GLAZE_SIDE)], -30.0, 30.0)
+        px, pz, pr, el = GLAZE_PORT
+        from shapely.geometry import Polygon, LineString
+        T = np.array([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, 0]], float)
+        sec = Polygon(np.vstack(V.canopy().transform(T).slice(float(px)).to_polygons()))
+        py = sec.intersection(LineString([(0, pz), (30, pz)])).bounds[2]     # on the canopy's side
+        for sgn in (1, -1):
+            c = M.cylinder(8.0, pr, pr, 48).translate([0, 0, -4.0])      # axis along z, centred
+            c = c.rotate([-(90.0 - el) * sgn, 0, 0]).translate([px, sgn * py, pz])
+            sides = sides + c
         _cache["glaze"] = (screen, sides)
     return _cache["glaze"]
 

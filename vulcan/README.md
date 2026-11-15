@@ -81,6 +81,8 @@ Canopy (v32, user: "canopy angle at fuselage join is too steep, should look shal
 
 Canopy glazing (v33, colour; canopy side photo and head-on photo; user review). The canopy is metal with small windows, painted black into its skin with the frames left in the camouflage colours (`glazing` in `colour.py`). Three four-sided windscreen panels on the sloping front: seen head-on a rectangular centre panel and a trapezoid each side whose outer edge follows the canopy's slope, 0.9 mm frames between them (0.7 printed) (`GLAZE_SCREEN`); a triangular side window just behind each side panel, its front edge one frame behind the panel's rear edge (`GLAZE_SIDE`); a round porthole on each side further back (`GLAZE_PORT`). Black is already on the upper-centre plate (the ducts), so it costs no extra colour. The renderer shows ragged edges on the windscreen where the thin black layer meets the surface; sections through the painted part show clean outlines. Image: `docs/canopy_glazing.png`.
 
+Canopy rake and portholes (v33, user review against the side photo). The windscreen now rises at about 29 degrees from x 58 to 68 and rounds over to the top at x 74.5 (`CANOPY_STATIONS`); it was 38 to 52 degrees and peaked by x 70. The windows moved with it. Each porthole is a circle facing 42 degrees above the horizon (`GLAZE_PORT`): seen from the side it is an ellipse 0.74 as tall as wide, as in the photo.
+
 ## Colour (v23: first pass)
 
 `vulcan/cad/colour.py OUT [camo|white]` paints each part into per-filament volumes and writes the STLs, a preview (`vulcan_<scheme>_preview.glb`) and the Bambu Studio project (`vulcan/kit/vulcan_camo_kit.3mf`). About 20 s.

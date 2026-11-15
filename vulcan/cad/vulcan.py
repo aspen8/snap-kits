@@ -82,7 +82,9 @@ KEEL_STATIONS = [(112.0, 9.5, -15.0), (118.0, 11.5, -15.0), (135.0, 14.0, -15.0)
 KEEL_TOP = -2.0
 KEEL_N = 5.0
 CANOPY_STATIONS = [             # x, half-width, z top: the small bubble over the flight deck
-    (58.0, 4.0, 20.5), (62.0, 7.5, 25.6), (69.6, 9.5, 29.5), (77.4, 9.5, 29.5),
+    (56.0, 3.5, 20.8), (60.0, 6.0, 23.2), (64.0, 7.8, 25.4), (68.0, 9.0, 27.6), (71.0, 9.4, 28.9),
+    (74.5, 9.5, 29.5), (77.4, 9.5, 29.5),   # (v33: the windscreen rakes at about 29 degrees, x 58 to 68, then
+                                            #  rounds over to the top; it was 38 to 52 degrees: side photo, user)
     (85.0, 9.0, 28.5), (93.0, 8.0, 27.6), (101.0, 6.0, 25.6), (110.0, 3.0, 24.2),
 ]
 CANOPY_DEPTH = 18.0              # (v32: was 12: the section's widest point now sits inside the fuselage, no undercut)
