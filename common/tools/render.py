@@ -112,7 +112,8 @@ def render(meshes, d, size=(900, 640), up=(0, 0, 1), focus=None, zoom=1.0, densi
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("src"); ap.add_argument("out")
-    ap.add_argument("--views", default="port34,stbd34,top,port,under,rear34")
+    ap.add_argument("--views", default="port34,stbd34,top,port,under,rear34",
+                    help="names, or view directions as dx:dy:dz (from the model towards the eye)")
     ap.add_argument("--size", default="900x640")
     ap.add_argument("--focus", default=None, help="x,y,z to centre on")
     ap.add_argument("--zoom", type=float, default=1.0)
@@ -122,7 +123,7 @@ if __name__ == "__main__":
     SKIP.extend([k for k in a.skip.split(",") if k])
     meshes = load(a.src)
     focus = [float(v) for v in a.focus.split(",")] if a.focus else None
-    tiles = [render(meshes, VIEWS[v][0], (W, H), focus=focus, zoom=a.zoom) for v in a.views.split(",")]
+    tiles = [render(meshes, VIEWS[v][0] if v in VIEWS else [float(t) for t in v.split(":")], (W, H), focus=focus, zoom=a.zoom) for v in a.views.split(",")]
     cols = min(3, len(tiles))
     rows = (len(tiles) + cols - 1) // cols
     sheet = Image.new("RGB", (W * cols, H * rows), "white")

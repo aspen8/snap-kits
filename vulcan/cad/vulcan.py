@@ -290,10 +290,12 @@ INTAKE_BOW = (38.0, 7.2, -5.3)            # mid-span: y, z of the top lip, z of 
 # Lip thickness round the mouth (its nose is a half-round of this diameter). From the head-on photos:
 # the brow above the mouth is about half the opening's height at the fuselage end and thins outboard;
 # the lower lip is lighter; the inner wall is a thin plate.
-INTAKE_LIP_TOP = (5.0, 3.0)     # upper lip: at the inner end, at the outer end (3.75 to 2.25 mm printed)
-INTAKE_LIP_BOT = (4.4, 2.8)     # lower lip
+INTAKE_LIP_TOP = (3.2, 2.4)     # upper lip: at the inner end, at the outer end (2.4 to 1.8 mm printed)
+# (v27: the XJ824 close-up and the air-to-air photos show a thin, even rolled lip with the wing
+#  flaring out round it; 5 mm read as a heavy brow)
+INTAKE_LIP_BOT = (2.8, 2.2)     # lower lip
 INTAKE_LIP = 4.4                # (reference thickness for the plate's rake)
-INTAKE_LIP_OUTER = (2.5, 49.0)  # the lip thins to this at its outer end, from this y: it must end inside the centre part
+INTAKE_LIP_OUTER = (2.0, 49.0)  # the lip thins to this at its outer end, from this y: it must end inside the centre part
 INTAKE_LIP_INNER = 2.2          # the inner wall is a thinner plate standing off the fuselage
 INTAKE_WALL_BOW = (3.0, 10.0)   # the lip itself rakes forward this much at the bottom of the inner end,
                                 # fading out over this span outboard
