@@ -11,7 +11,7 @@ Avro Vulcan B.2 at 1:96: 352 mm span, 317 mm long (336 mm with the refuelling pr
 
 ![shape in grey](docs/shape_grey.png)
 
-> **Status: v33: shape fitted to the Airfix A12011 plan and side views and refined through user review; split into 61 parts with joints, bays, gear, stand, Blue Steel and a camouflage colour pass with canopy glazing.** Nothing has been printed or sliced yet.
+> **Status: v34: shape fitted to the Airfix A12011 plan and side views and refined through user review; split into 61 parts with joints, bays, gear, stand, Blue Steel and a camouflage colour pass with canopy glazing.** Nothing has been printed or sliced yet.
 
 Intakes (v22, user: "the spline shape is an important detail to get right"). The mouth is one outline measured on two head-on photos: tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly upright inner edge with rounded corners), tapering through gently bowed lips to a round outer end at y 56 (`INTAKE_INNER`, `INTAKE_OUTER`, `INTAKE_BOW`; `mouth_outline` builds it as a convex hull with rounded corners, 144 points). The lip is a half-round whose thickness varies round the mouth (`lip_t`): a heavy brow on top, 6.2 mm at the fuselage end thinning to 3.2 outboard (4.65 to 2.4 printed), a lighter lower lip (4.4 to 2.8), 2.5 at the outer end. In plan it follows the wing's leading edge, so the notch at y 50-58 is its outer end. The inner wall is a separate hooked plate, 2.2 mm thick, standing 2.7 mm off the fuselage with an open slot behind it: its leading edge runs forward and down from the upper lip to a horn below and 8.6 mm ahead of the lower lip, then hooks back under it (`INTAKE_HORN`, `intake_horn`; photos of the blanked intake and the lip close-up). Behind the lip the fairing carries its shoulders 70 mm back into the wing (`INTAKE_FAIR`).
 
@@ -83,6 +83,8 @@ Canopy glazing (v33, colour; canopy side photo and head-on photo; user review). 
 
 Canopy rake and portholes (v33, user review against the side photo). The windscreen now rises at about 29 degrees from x 58 to 68 and rounds over to the top at x 74.5 (`CANOPY_STATIONS`); it was 38 to 52 degrees and peaked by x 70. The windows moved with it. Each porthole is a circle facing 42 degrees above the horizon (`GLAZE_PORT`): seen from the side it is an ellipse 0.74 as tall as wide, as in the photo.
 
+Markings (v34, colour; Airfix A12011 scheme A, XM594 at Scampton, 1966). Camouflage on the sides now comes from the side view (`vulcan/tools/trace_camo_side.py` traces `camo_xm594_side.json`: the green areas and the line where the upper colours meet the white): used on the nose sides (x < 112, below z 13), the tail cone and the fin, so on the nose it runs below the shell split, onto the lower shell, as on the aircraft. One 84-inch Type D roundel (red : white : blue diameters 1 : 2 : 3) on the upper port wing only, as the Airfix notes say, and one 54-inch on each side of the nose. Fin: red, white and blue flash (red leading on both sides) and the serial XM594 (read correctly from each side). Tyres black on the silver gear. Two filaments added, Roundel Red and Roundel Blue; the canopy glazing and the serial are in Roundel Blue (a very dark blue), so every plate stays at five colours or fewer: the front shells now share the wing plates (front upper with the port wing, which carries the other roundel). The starboard fin shows the port side's pattern mirrored (the sheet only shows the port side). The fin cap is camouflaged, as on the sheet (it was black). Image: `docs/markings_camo.png`.
+
 ## Colour (v23: first pass)
 
 `vulcan/cad/colour.py OUT [camo|white]` paints each part into per-filament volumes and writes the STLs, a preview (`vulcan_<scheme>_preview.glb`) and the Bambu Studio project (`vulcan/kit/vulcan_camo_kit.3mf`). About 20 s.
@@ -146,9 +148,7 @@ Still to do on the split: test coupons for every joint, separate jet nozzles, th
 ## Known gaps and next steps
 
 Markings and colour:
-1. Roundels (upper wings, nose sides), fin flash, serial, squadron badge.
-2. The fin's camouflage (plain grey so far); the camouflage line on the nose sides (it ends at the shell split; on the real aircraft it runs lower).
-3. Black tyres on the gear.
+1. Small stencils (the rescue arrow, walkway lines) if they print legibly; a squadron badge if a reference turns up (the Airfix sheet shows none for XM594).
 4. The anti-flash white scheme (XM602) with its pale markings; the optional wrapped-camouflage lower shells; a single-colour version.
 
 Detail:

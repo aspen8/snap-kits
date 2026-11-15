@@ -10,10 +10,12 @@ camo:  XM594, Scampton 1966 (Airfix A12011 scheme A): Medium Sea Grey and Dark G
        (vulcan/tools/trace_camo.py made it from the Airfix top view).
 white: anti-flash white overall (scheme B, XM602, 1963).
 
-v1 of the colour: the camouflage pattern, black radome, ducts and fin cap, silver engine faces
-and gear. Not yet: roundels, fin flash, serial, squadron badge, the fin's own
-pattern (it is plain grey), tyres. The camouflage ends at the split between the shells: on the
-real aircraft it runs a little lower on the nose.
+v2 of the colour: the camouflage from the top view on upper surfaces and from the side view on the
+nose sides, tail cone and fin (vulcan/tools/camo_xm594_side.json, traced by trace_camo_side.py),
+so on the nose it runs below the shell split; one 84-inch Type D roundel on the upper port wing and
+one on each side of the nose (the Airfix notes); fin flash and the serial XM594 on the fin; canopy
+glazing; black radome and ducts; silver engine faces and gear with black tyres. The glazing and
+the serial are in roundel blue (a very dark blue), which keeps every plate to five colours.
 """
 import json
 import os
@@ -46,8 +48,10 @@ FILAMENTS = {
     3: ("White", "#F2F2F0"),
     4: ("Black", "#1C1C1C"),
     5: ("Silver", "#B8BCC0"),
+    6: ("Roundel Red", "#B3262E"),
+    7: ("Roundel Blue", "#22305C"),
 }
-GREY, GREEN, WHITE, BLACK, SILVER = range(1, 6)
+GREY, GREEN, WHITE, BLACK, SILVER, RED, BLUE = range(1, 8)
 MAX_COLOURS = 5
 BED = (168.0, 240.0)          # packing area from BED_MARGIN: x > 190 is left for the prime tower
 BED_MARGIN = (22.0, 6.0)      # the X2D's second nozzle can't reach x < 20.5, and brims need room
@@ -128,44 +132,116 @@ def glazing():
     return _cache["glaze"]
 
 
+def xz_prism(sec, y0=-80.0, y1=80.0):
+    """A CrossSection in (x, z) extruded across the span from y0 to y1."""
+    return sec.extrude(y1 - y0).rotate([90, 0, 0]).translate([0, y1, 0])
+
+
+def side_camo():
+    """(upper colours, green) as prisms across the span, from the side view."""
+    if "side" not in _cache:
+        d = json.load(open(HERE.parent / "tools" / "camo_xm594_side.json"))
+        _cache["side"] = tuple(xz_prism(K.cs([np.array(r) for r in d[k]])) for k in ("upper", "green"))
+    return _cache["side"]
+
+
+# Where the side view's pattern is used rather than the top view's: the nose sides below the
+# top of the fuselage's shoulder, and the tail cone behind the wing.
+SIDE_ZONES = [(-10.0, 112.0, 13.0, 40.0), (361.0, 440.0, 9.0, 16.0)]     # x from, x to, below z, within |y|
+
+
+def side_zone():
+    return mf.Manifold.batch_boolean([K.box(x0, x1, -yw, yw, -V.BIG, z) for x0, x1, z, yw in SIDE_ZONES], mf.OpType.Add)
+
+
+# Roundels: Type D, red : white : blue diameters 1 : 2 : 3 (Airfix A12011 scheme A).
+ROUNDEL_WING = (309.2, -164.2, 30.3)     # x, y, diameter: 84 inches, upper port wing only (Airfix notes)
+ROUNDEL_NOSE = (75.3, 3.7, 18.6)         # x, z, diameter: both sides of the nose
+FIN_FLASH = (336.4, 348.3, 28.0, 36.3)   # x from (red, at the front), x to, z from, z to
+FIN_SERIAL = ("XM594", 342.0, 22.55, 5.7)  # text, x centre, z centre, height (both sides, read from outside)
+
+
+def roundel_ops(discs, prism):
+    """[(colour, region)] for a Type D roundel: blue, then white, then red on top."""
+    return [(c, prism(k)) for c, k in ((BLUE, 1.0), (WHITE, 2 / 3), (RED, 1 / 3))]
+
+
+def wing_roundel():
+    x, y, d = ROUNDEL_WING
+    return roundel_ops(None, lambda k: K.prism_z(K.disc(x, y, d * k)))
+
+
+def nose_roundels():
+    x, z, d = ROUNDEL_NOSE
+    return roundel_ops(None, lambda k: xz_prism(K.disc(x, z, d * k)))
+
+
+def tyres(name):
+    """Black tyres round each wheel's hub (gear halves)."""
+    g = V.NOSE_GEAR if name.startswith("nose") else V.MAIN_GEAR
+    rmax = max(r for _, r in g["wheel_profile"])
+    out = []
+    for x, z in (g.get("wheels") or [g["wheel"]]):
+        ann = K.disc(x, z, 2 * rmax + 2.0) - K.disc(x, z, 2 * rmax * 0.62)
+        out.append(xz_prism(ann, -200.0, 200.0))
+    return mf.Manifold.batch_boolean(out, mf.OpType.Add)
+
+
 def colour_part(name, P):
     """{filament: Manifold} for one part (assembled frame)."""
     upper = name.endswith("_upper")
     lower = name.endswith("_lower")
     if name == "radome":
         return {BLACK: P}
-    if name.startswith("engine_face") or "gear" in name:
+    if name.startswith("engine_face"):
         return {SILVER: P}
+    if "gear" in name:
+        return K.paint(P, [(BLACK, tyres(name))], SILVER)
     if name.startswith("stand"):
         return {BLACK: P}
     if name.startswith("fin_"):
         if SCHEME == "white":
-            base = WHITE
-        else:
-            base = GREY
-        cap = K.box(350.0, 420.0, -10, 10, V.FIN_CAP[1][3] - 0.2, 100.0)       # the fin cap fairing
-        return K.paint(P, [(BLACK, cap)], base)
+            return {WHITE: P}
+        port = name.endswith("port")
+        x0, x1, z0, z1 = FIN_FLASH
+        w = (x1 - x0) / 3
+        text, xc, zc, h = FIN_SERIAL
+        ops = [(GREEN, side_camo()[1])]
+        ops += [(c, xz_prism(K.cs([np.array([(x0 + i * w, z0), (x0 + (i + 1) * w, z0), (x0 + (i + 1) * w, z1), (x0 + i * w, z1)])])))
+                for i, c in enumerate((RED, WHITE, BLUE))]
+        ops.append((BLUE, xz_prism(K.text_section(text, h, xc, zc, mirror=not port))))
+        return K.paint(P, [(c, r ^ outer_skin()) for c, r in ops], GREY)
     if upper or lower:
         ops = []
         base = WHITE
-        if upper and SCHEME == "camo":
-            base = GREY
-            ops.append((GREEN, camo_prism() ^ outer_skin()))
+        skin = outer_skin()
+        if SCHEME == "camo":
+            zone = side_zone()
+            sup, sgreen = side_camo()
+            if upper:
+                base = GREY
+                ops.append((GREEN, (camo_prism() - zone) ^ skin))
+            else:
+                ops.append((GREY, sup ^ zone ^ skin))
+            ops.append((GREEN, sgreen ^ zone ^ skin))
+            if name.startswith("front"):
+                ops += [(c, r ^ skin) for c, r in nose_roundels()]
+            if upper and name.startswith("wing_port"):
+                ops += [(c, r ^ skin) for c, r in wing_roundel()]
         ops.append((BLACK, duct_zone()))
         if name == "front_upper":
             screen, sides = glazing()
-            canopy = V.canopy()
-            ops.append((BLACK, (screen + sides) ^ outer_skin() ^ canopy))
+            ops.append((BLUE, (screen + sides) ^ skin ^ V.canopy()))
         return K.paint(P, ops, base)
     return {WHITE: P}            # doors, bay roof, Blue Steel, keys, probe
 
 
 PLATE_GROUPS = [
-    ("Upper centre", lambda n: n in ("centre_upper", "front_upper")),
-    ("Upper wings", lambda n: n.startswith("wing_") and n.endswith("_upper")),
+    ("Upper centre", lambda n: n == "centre_upper"),
+    ("Upper wings and nose", lambda n: n == "front_upper" or (n.startswith("wing_") and n.endswith("_upper"))),
     ("Fin", lambda n: n.startswith("fin_")),
-    ("Lower centre", lambda n: n in ("centre_lower", "front_lower")),
-    ("Lower wings", lambda n: n.startswith("wing_") and n.endswith("_lower")),
+    ("Lower centre", lambda n: n == "centre_lower"),
+    ("Lower wings and nose", lambda n: n == "front_lower" or (n.startswith("wing_") and n.endswith("_lower"))),
     ("Black and silver", lambda n: n == "radome" or n.startswith(("stand", "engine_face")) or "gear" in n),
     ("White small parts", lambda n: True),
 ]
