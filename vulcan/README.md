@@ -11,7 +11,7 @@ Avro Vulcan B.2 at 1:96: 352 mm span, 317 mm long (336 mm with the refuelling pr
 
 ![shape in grey](docs/shape_grey.png)
 
-> **Status: v33: shape fitted to the Airfix A12011 plan and side views, and split into shells.** Joints, bays, gear, stand and a first colour pass are in; nothing has been printed or sliced. Not yet split into parts; no joints, colour or print file.
+> **Status: v33: shape fitted to the Airfix A12011 plan and side views and refined through user review; split into 61 parts with joints, bays, gear, stand, Blue Steel and a camouflage colour pass with canopy glazing.** Nothing has been printed or sliced yet.
 
 Intakes (v22, user: "the spline shape is an important detail to get right"). The mouth is one outline measured on two head-on photos: tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly upright inner edge with rounded corners), tapering through gently bowed lips to a round outer end at y 56 (`INTAKE_INNER`, `INTAKE_OUTER`, `INTAKE_BOW`; `mouth_outline` builds it as a convex hull with rounded corners, 144 points). The lip is a half-round whose thickness varies round the mouth (`lip_t`): a heavy brow on top, 6.2 mm at the fuselage end thinning to 3.2 outboard (4.65 to 2.4 printed), a lighter lower lip (4.4 to 2.8), 2.5 at the outer end. In plan it follows the wing's leading edge, so the notch at y 50-58 is its outer end. The inner wall is a separate hooked plate, 2.2 mm thick, standing 2.7 mm off the fuselage with an open slot behind it: its leading edge runs forward and down from the upper lip to a horn below and 8.6 mm ahead of the lower lip, then hooks back under it (`INTAKE_HORN`, `intake_horn`; photos of the blanked intake and the lip close-up). Behind the lip the fairing carries its shoulders 70 mm back into the wing (`INTAKE_FAIR`).
 
@@ -89,7 +89,7 @@ Canopy glazing (v33, colour; canopy side photo and head-on photo). The canopy is
 - **Underside:** white lower shells, doors, bay roof and Blue Steel. Because of the shell split there is no colour change on any lower part except the black ducts.
 - **Black:** radome, fin cap, the intake ducts and jet pipe bores, the stand. **Silver:** engine faces and gear.
 - **Plates (9, at most 3 colours each):** upper centre and front (grey, green, black); each upper wing (grey, green); fin (grey, black); lower centre and front (white, black); each lower wing (white); black and silver parts; white small parts and keys.
-- **Not yet:** roundels (upper port wing, nose sides), fin flash, serial, squadron badge, canopy glazing, the fin's own camouflage (plain grey so far), black tyres, the white scheme's pale markings. The camouflage ends at the split between the shells; on the real aircraft it runs a little lower on the nose. The project file has not been sliced (no Bambu Studio in the cloud session): prime tower positions and nozzle reach are unchecked.
+- **Not yet:** roundels (upper port wing, nose sides), fin flash, serial, squadron badge, the fin's own camouflage (plain grey so far), black tyres, the white scheme's pale markings. The camouflage ends at the split between the shells; on the real aircraft it runs a little lower on the nose. The project file has not been sliced (no Bambu Studio in the cloud session): prime tower positions and nozzle reach are unchecked.
 
 Left: the Airfix sheet; right: the model from above; below: 3/4 views.
 
@@ -143,7 +143,19 @@ Still to do on the split: test coupons for every joint, separate jet nozzles, th
 
 ## Known gaps and next steps
 
-1. Still wanted: sharper copies of the Airfix A12011 painting guides (scheme A, and scheme B: XM602 in anti-flash white, 1963; both are in `ref/vulcan/` as screenshots), and for XH558 a straight-down view of its upper camouflage.
-2. Shape still to do: the drooped outer leading edge, the nose gear and main gear bays, the bomb bay, the ECM plate between the starboard jet pipes, the terrain-following radar thimble on the nose.
-3. The wing's height on the fuselage, its root thickness and the intake lips come from a silhouette and one head-on photo: check them against more photos. The intakes are plain slots so far (the real lips are rounded, with a splitter plate at the fuselage).
-4. Agree the brief (markings, display, colours per plate), then split into parts, add joints, colour and the 3MF.
+Markings and colour:
+1. Roundels (upper wings, nose sides), fin flash, serial, squadron badge.
+2. The fin's camouflage (plain grey so far); the camouflage line on the nose sides (it ends at the shell split; on the real aircraft it runs lower).
+3. Black tyres on the gear.
+4. The anti-flash white scheme (XM602) with its pale markings; the optional wrapped-camouflage lower shells; a single-colour version.
+
+Detail:
+5. Panel lines on the fuselage and fin; the airbrakes.
+
+Kit and printing:
+6. Test coupons for every joint (keys, tongues, gear plugs, engine-face slots, stand key), printed before the full kit.
+7. Keys or a lip for the outer wing shells outboard of y 150 and for the fin halves above the slot.
+8. The stand with the Blue Steel fitted (they use the same bomb door panel today).
+9. Bridges and overhangs in the centre shells (duct roofs and floors, bay ledges, jet bores).
+10. Slice every plate in Bambu Studio (prime tower, nozzle reach, supports): not possible in the cloud session.
+11. MakerWorld listing: hero renders, an assembly guide, the print settings.
