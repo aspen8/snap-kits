@@ -472,3 +472,11 @@ The Hawk's leading-edge fences are C-shaped collars that slide onto the wing wit
 Thin white markings from the X2D's second nozzle came out rough. Thicker layers would not have fixed it (0.24 mm was considered and dropped). Two things did:
 - **Calibrate each filament on the nozzle it runs on.** Bambu's Flow Dynamics calibration gave K 0.35 for the white on the right nozzle; the flow-rate calibration confirmed 0.98. K is stored on the printer against the AMS slot, not in the 3MF, so a new filament or slot needs its own run (Bambu Studio: Calibration tab, pick the right nozzle).
 - **Slower speeds on the second nozzle:** outer wall 30, inner wall and top surface 80, internal solid infill 100 mm/s (the last three entries of each speed list in `hawk/cad/bambu_x2d_project_settings.json`). The Halifax's template still has 50 and 200; copy these when its camo colour on that nozzle needs it.
+
+### Check that every part can actually be assembled (Halifax print 1)
+
+The Halifax's nacelles were split into halves down their length so each printed flat, but the wing runs straight through both halves: neither could be pushed on, and nothing in the build noticed. For every joint, name the direction the part moves to go on and test it: translate the part back along that path in steps and check it never overlaps its neighbour. Use the neighbour's own frame (the Halifax wing is pitched 2.75 deg, so a slide along world x hits after 5 mm). A dovetail rail centred on a two-half part's split holds the halves together as well as holding the part on; a loose key between two halves never pulls them tight.
+
+### Measure markings against each other, not only against the drawing
+
+The Halifax's code letters were placed at their measured centres but drawn in a full-width font, so "NP" ran 5 mm into the fuselage roundel on both sides, and the inlay sockets overlapped. Check each marking's extent against its neighbours (and joints) in the build; RAF code letters are about 0.6 of a full-width bold font.

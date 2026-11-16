@@ -15,7 +15,7 @@ Kit layout (no supports needed except where noted):
   canopy      cockpit glazing, drops into the roof
   turrets     dorsal (Type A) and tail (Type E) + separate gun packs
   wings       inner, mid and outer (tip) panel per side, flat underside, keyed joints
-  nacelles    clamshell halves that close around the wing
+  nacelles    halves below the wing, sliding aft onto a dovetail rail (the top is part of the wing)
   props       4 x 3-blade, spin on a 1.75 mm filament axle
   tail        tailplane in two halves (keyed inside the fuselage slot), fins with dovetail rods
 """
@@ -54,6 +54,19 @@ NACELLE_KEY_UP = (4.0, 3.5)      # how far each lock goes up into the wing
 NOSE_KEY_X = 10.5            # nose key (KEY_NAC) across the nacelle split, this far behind the nose, on
                              # the centreline: holds the halves at the front (test plate round 3)
 NOSE_KEY_FIT = 0.1           # per side: a touch tighter than KEY_FIT (round 3 fit test)
+# Nacelles after print 1 (2026-11-16): the clamshell halves could not go on at all (the wing runs
+# through both), and a loose key between the halves never held them tight. Now the nacelle splits
+# at the wing's flat underside: everything of it above the underside and behind the leading edge
+# is printed with the wing; the rest (the nose ahead of the LE, and everything below the wing)
+# slides aft onto the wing on a dovetail rail centred on the halves' split. The rail's undercuts
+# hold the halves together; the nose stops on the wing's leading edge. A bow-tie key pushed into
+# the nose's back face holds the nose halves; the wing traps it there once the nacelle is on.
+NAC_RAIL = (8.0, 1.0, 3.0)   # width at the underside, undercut each side, height into the wing
+NAC_RAIL_LEN = (34.0, 15.0)  # inner, outer: from the leading edge aft (the outer nacelle narrows fast)
+NAC_RAIL_FIT = 0.15          # per side, as the fin rods (tail test 3)
+BOWTIE_FIT = 0.10            # per side, round a bow-tie key in its pocket
+BOWTIE_NAC = (10.0, 3.0, 5.0, 3.0)   # nose key: length across the split, neck and end width, thickness
+BOWTIE_NAC_Z = 6.0           # its centre above the wing underside, in the nose's back face
 FIN_POCKET_FIT = FIT         # per side, round the tailplane tip in its pocket
 # Fin to tailplane, from tail test 2 (2026-11-10): a tab and pocket were never enough. Each fin
 # carries a dovetail rod on its inner face that slides 16 mm into a slot in its tailplane half.
@@ -68,9 +81,13 @@ FIN_ROD_SLIT = (1.2, 10.0)   # width, length in from the rod's free end
 FIN_ROD_TOOTH = (0.3, 2.5, 1.8)   # proud of each side, centre from the free end, length along the rod
 # The tailplane is two halves (each prints on end, root down, like the wings) joined on the
 # centreline inside the fuselage slot by one flexing key where the root is thickest.
-TAIL_KEY = (20.0, 6.0, 1.8)  # length across the joint, width (x), thickness (z): 0.8 mm walls
-TAIL_KEY_X = 311.0           # its centre: the root is >= 3.9 mm thick over 308-314
+TAIL_KEY = (20.0, 6.0, 1.8)  # (the flat key until print 1: held the halves in line, not together)
+TAIL_KEY_X = 311.0           # key centre: the root is >= 3.9 mm thick over 308-314
 TAIL_KEY_FIT = 0.10
+# Print 1 (2026-11-16): the halves pulled apart at the middle. A bow-tie key pushed up into a pocket
+# open on the underside, across the root joint: its wide ends can't pass the neck, so the halves
+# can't separate; the fuselage slot's floor keeps it in.
+BOWTIE_TAIL = (20.0, 4.0, 7.0, 2.2)   # length across the joint, neck and end width (x), thickness
 
 AXLE_HOLE_TIGHT = 3.05       # mm, printed 2.5 mm pins grip here (fit-test clearance +0.55)
 AXLE_HOLE_LOOSE = 3.35       # mm, ...and spin freely here (fit-test clearance +0.85)
@@ -116,7 +133,9 @@ WINDSCREEN_KINK_X = 51.3     # station where the windscreen meets the nose deck 
 NOSE_SPLIT_X = 12.8          # perspex nose dome ends at this frame (Revell)
 NOSE_GLASS_TOP = 50.0        # mm, dome covers the full section
 NOSE_SPIGOT_BOX = (4.0, 4.5, -26.0, -16.0)   # length, half-width, z0, z1 of the dome's plug
-FUSE_SPLIT_X = 196.0         # front / rear fuselage joint (just ahead of the codes and roundel)
+FUSE_SPLIT_X = 184.0         # front / rear fuselage joint: ahead of the dorsal turret's ring (187-203).
+                             # It was 196, through the turret, which then couldn't turn (print 1). The
+                             # wing root's last 8 mm now sits against the rear section
 # Further joints (2026-11-08) so no section stands taller than ~105 mm on the wing plate: half the
 # layers, so half the colour swaps. 102: behind the rear glazing, ahead of the D/F loop.
 # 297.5: behind the serial (ends 295), ahead of the tailplane slot (301.5): every marking stays
@@ -124,8 +143,9 @@ FUSE_SPLIT_X = 196.0         # front / rear fuselage joint (just ahead of the co
 FUSE_CUTS = (102.0, FUSE_SPLIT_X, 297.5)
 FUSE_SECTIONS = ("fuselage_nose", "fuselage_front", "fuselage_rear", "fuselage_tail")
 FUSE_CUT_KEYS = ("key_fuselage_nose", "key_fuselage_joint", "key_fuselage_tail")
-FUSE_KEY_LEN = (18.0, 18.0, 16.0)   # key length across each joint (half in each piece); was 12. The
-                             # tail's stops 0.8 mm short of the starboard "P" socket
+FUSE_KEY_LEN = (30.0, 30.0, 30.0)   # key length across each joint (half in each piece); was 18 and
+                             # too short (print 1). Clear of the wing tongues (to x 160) and, at the
+                             # tail, under the tailplane slot; the code-letter sockets are gone
 FUSE_KEY_FIT = (0.10, KEY_FIT, 0.10)   # per side; joint tests 1-2: nose and tail wanted tighter than KEY_FIT
 # Fuselage printed Lancaster-style: full-width black sections on end, with the camouflaged
 # spine as separate single-colour pieces sitting on the demarcation line.
@@ -198,6 +218,11 @@ TT_TOP_R = 11.0                         # rounded rear-top edge (side view)
 TT_GUN_Z = 3.8                          # gun pack height
 TT_TOP_FILLET = 6.0                     # rounding of the turret's top edges
 TT_BOSS = (9.0, 3.0)                    # diameter, height of the boss the turret presses over (no pin)
+# Turrets turn (print 1, 2026-11-16): each snaps over a sprung boss, as the props do. The boss (on
+# the fuselage) is a neck and a wider head, split by a slot so its two prongs squeeze in as the
+# turret's lip rides over the head; the turret then spins on the neck and can't lift off.
+TURRET_SNAP = dict(neck_d=6.5, head_d=7.6, head_l=1.2, lip_t=1.0, gap=0.3, spin=0.3, cav=0.3,
+                   slot_w=1.2, slot_below=3.0)
 TAIL_CONE = [(344.0, 9.5, 2.0, -14.0, 2.6), (352.0, 9.0, 1.0, -13.0, 2.5), (356.0, 8.4, 0.0, -10.5, 2.4),
              (359.0, 7.2, -1.0, -8.0, 2.3), (361.0, 5.2, -1.6, -5.4, 2.1), (362.0, 2.8, -2.2, -4.0, 2.0)]
 TT_FAIRING = [(336.0, 2.5, 10.8, 6.0, 2.2), (341.0, 4.5, 12.6, 6.0, 2.4), (345.2, 6.0, 14.0, 6.0, 2.6)]
@@ -464,6 +489,8 @@ def key_slots(points, axis, split, key, width_axis):
 
 
 def connector_key(key):
+    if key[0] == "bowtie":
+        return bowtie_key(*key[1])
     return K.connector_key(key)
 
 
@@ -603,7 +630,10 @@ def fuselage_parts(wing_tongues):
         return K.box(x0, x1, y0, y1, z0, z1)
 
     B = M(body) + M(tail_cone()) + M(tail_fairing())        # OCC's union of these isn't watertight
-    B = B + M(cyl((TT_PIVOT, 0, TT_FLOOR - 0.5), TT_BOSS[0], TT_BOSS[1] + 0.5, "z"))   # turret boss
+    # turret bosses (sprung: the turrets snap on and turn)
+    _, _, top_dt, _, _ = interp(FUSE_STATIONS, DORSAL_X)
+    for bx, z0, zb in ((TT_PIVOT, TT_FLOOR, TT_FLOOR), (DORSAL_X, top_dt - 3.0, top_dt - 3.0 + FIT)):
+        B = (B - M(snap_boss_slot(bx, 0, z0))) + M(snap_boss(bx, 0, z0, zb))
     pts = [(float(x), float(spine_z(x))) for x in np.arange(-6.0, 401.0, 0.5)] + [(400.0, 80.0), (-6.0, 80.0)]
     upper = K.prism_y(K.cs([np.array(pts)]))
     cap, Bb = B ^ upper, B - upper
@@ -759,6 +789,36 @@ def gun_slot(at, direction):
     return box(x - 2, x + bx + FIT, y - by / 2 - FIT, y + by / 2 + FIT, z - FIT, z + bz + FIT)
 
 
+def snap_boss(x, y, z0, zb):
+    """Sprung boss standing on the floor at z0, for a turret whose underside is at zb."""
+    b = TURRET_SNAP
+    zn = zb + b["lip_t"] + b["gap"]                       # neck top: head starts here
+    neck = cyl((x, y, z0 - 0.5), b["neck_d"], zn - z0 + 0.5, "z")
+    head = cyl((x, y, zn), b["head_d"], b["head_l"], "z").faces(">Z").edges().chamfer(0.5)
+    # 45 deg underside: the boss prints sideways (the fuselage stands on end), and a square step
+    # under the head started in mid-air (Bambu: "floating regions", and its tree supports clashed
+    # with the next part). The turret's lip still has to ride over the full head
+    dr = (b["head_d"] - b["neck_d"]) / 2
+    cone = wp(cq.Solid.makeCone(b["neck_d"] / 2, b["head_d"] / 2, dr, cq.Vector(x, y, zn - dr), cq.Vector(0, 0, 1)))
+    return neck.union(cone).union(head).cut(box(x - b["head_d"], x + b["head_d"], y - b["slot_w"] / 2, y + b["slot_w"] / 2,
+                                    z0 - b["slot_below"], zn + b["head_l"] + 1))
+
+
+def snap_boss_slot(x, y, z0):
+    """The slot carried on below the floor, so the prongs are long enough to flex."""
+    b = TURRET_SNAP
+    return box(x - b["neck_d"] / 2 + 0.6, x + b["neck_d"] / 2 - 0.6, y - b["slot_w"] / 2, y + b["slot_w"] / 2,
+               z0 - b["slot_below"], z0 + 0.01)
+
+
+def snap_socket(x, y, zb):
+    """Socket in a turret's underside (at zb): a lip the neck spins in, a wider cavity over the head."""
+    b = TURRET_SNAP
+    lip = cyl((x, y, zb - 1.0), b["neck_d"] + 2 * b["spin"], b["lip_t"] + 1.0, "z")
+    cav = cyl((x, y, zb + b["lip_t"]), b["head_d"] + 2 * b["cav"], b["gap"] + b["head_l"] + b["cav"], "z")
+    return lip.union(cav)
+
+
 def dorsal_turret():
     _, _, top, _, _ = interp(FUSE_STATIONS, DORSAL_X)
     base_z = top - 1.2                       # sits on the roof edges
@@ -770,8 +830,8 @@ def dorsal_turret():
     # guns point aft out of a slot at the back of the dome
     t = t.cut(gun_slot((DORSAL_X + DORSAL_DOME_R - 2.0, 0, base_z + DORSAL_GUN_Z), +1))
     t = t.cut(fuselage_solid().cut(cyl((DORSAL_X, 0, top - 3.0), 2 * DORSAL_R, 20, "z")))
-    # no pin: the wide plug turns in the roof hole
-    return t
+    # the plug turns in the roof hole, snapped over the boss in its floor
+    return t.cut(snap_socket(DORSAL_X, 0, top - 3.0 + FIT))
 
 
 def tail_cone():
@@ -800,7 +860,7 @@ def tail_turret():
     t = plan.intersect(side)
     t = t.faces(">Z").edges().fillet(TT_TOP_FILLET)   # domed top all round (photos)
     t = t.cut(gun_slot((TT_REAR - 1.5, 0, TT_GUN_Z), +1))
-    t = t.cut(cyl((TT_PIVOT, 0, TT_FLOOR - 0.1), TT_BOSS[0] + 2 * KEY_FIT, TT_BOSS[1] + 0.3, "z"))   # sits over the boss
+    t = t.cut(snap_socket(TT_PIVOT, 0, TT_FLOOR))         # snaps over the boss and turns on it
     return t
 
 
@@ -994,28 +1054,89 @@ def nacelle_body(zc, x0, length):
     return body.union(rad).translate((0, 0, zc))
 
 
-def nacelle_lock_slot(index, side, wing_panel):
-    """Slot for the nacelle lock key: 4 mm up into the wing underside, 7 mm down into the nacelle,
-    centred on the nacelle split plane (half of its thickness in each half)."""
-    yc = NACELLES[index][0] * side
-    s = abs(yc)
-    if s <= PLANFORM[1][0] or s < WING_JOINT_Y:
-        _, le, c = interp(PLANFORM, s)
-    else:
-        le, c, _ = outer_planform(s)
-    x = le + NACELLE_KEY_AT[index] * c
-    probe = wing_panel.intersect(box(x - 0.05, x + 0.05, yc - 0.05, yc + 0.05, -100, 100))
-    wb = probe.val().BoundingBox().zmin            # wing underside at the key
-    key = KEY_NAC if index == 0 else KEY_NAC_OUTER
-    zc = wb + NACELLE_KEY_UP[index] - key[0] / 2
-    return key_slots([(x, yc, zc)], "z", zc, key, "x")
+def nac_frame(w, index, side):
+    """From the wing's build frame (starboard, before dihedral and pitch: the panel's flat underside
+    at Z_FLOOR) to the world, as wing_parts moves its panels."""
+    if index == 1:
+        w = w.rotate((0, WING_JOINT_Y, Z_FLOOR), (1, WING_JOINT_Y, Z_FLOOR), DIHEDRAL)
+    w = w.rotate(*pitch_axis(), -wing_pitch())
+    return w if side > 0 else w.mirror("XZ")
 
 
-def nose_key_slot(index, side):
-    """Slot for the flexing nose key: across the split, on the centreline, behind the prop boss."""
-    yc, zc, x0, _ = NACELLES[index]
-    return K.key_slots([(x0 + NOSE_KEY_X, yc * side, zc)], "y", yc * side, KEY_NAC, "x",
-                       NOSE_KEY_FIT, KEY_END_GAP)
+def nac_local(index):
+    """(y, x_cut) of a nacelle in the wing's build frame: its centre span, and the most forward
+    point of the leading edge across its width (the nose's back face)."""
+    yc = NACELLES[index][0]
+    hw = NACELLE_W / 2
+    if index == 0:
+        les = [interp(PLANFORM, y)[1] for y in np.linspace(yc - hw, yc + hw, 9)]
+        return yc, min(les)
+    yl = WING_JOINT_Y + (yc - WING_JOINT_Y) / math.cos(math.radians(DIHEDRAL))
+    return yl, min(outer_planform(y)[0] for y in np.linspace(yl - hw, yl + hw, 9))
+
+
+def nac_dovetail(index, x0, x1, grow=0.0, below=0.3):
+    """Dovetail along x on the wing underside (build frame), centred on the nacelle: wider at the
+    top, carried on `below` under the underside; grow widens the sides and raises the top."""
+    w, u, h = NAC_RAIL
+    yl, _ = nac_local(index)
+    k = u / h
+    top, bot = Z_FLOOR + h + grow, Z_FLOOR - below
+    hw_top, hw_bot = w / 2 + u + grow, w / 2 - k * below + grow
+    pts = [(yl - hw_bot, bot), (yl + hw_bot, bot), (yl + hw_top, top), (yl - hw_top, top)]
+    return W("YZ").polyline(pts).close().extrude(x1 - x0).translate((x0, 0, 0))
+
+
+def nacelle_regions(index, side):
+    """(lower, upper) regions in the world: lower is the slide-on nacelle (ahead of the leading edge,
+    or below the underside, with FIT clear of the wing), upper goes with the wing."""
+    _, xc = nac_local(index)
+    lower = box(-200, xc - FIT, -400, 400, -200, 200).union(box(-200, 600, -400, 400, -200, Z_FLOOR - FIT))
+    upper = box(xc, 600, -400, 400, Z_FLOOR, 200)
+    return nac_frame(lower, index, side), nac_frame(upper, index, side)
+
+
+def nacelle_rail(index, side):
+    _, xc = nac_local(index)
+    return nac_frame(nac_dovetail(index, xc - FIT - 0.5, xc + NAC_RAIL_LEN[index]), index, side)
+
+
+def nacelle_rail_slot(index, side):
+    """The rail's slot in the wing (and the nacelle top printed with it): open at the front, on the
+    underside, KEY_END_GAP past the rail's end."""
+    _, xc = nac_local(index)
+    s = nac_dovetail(index, xc - 3.0, xc + NAC_RAIL_LEN[index] + KEY_END_GAP, grow=NAC_RAIL_FIT, below=2.0)
+    return nac_frame(s, index, side)
+
+
+def bowtie(L, neck, end, t, grow=0.0):
+    """Bow-tie key outline across a split (length L along the plan x, widths along y), t thick in z,
+    centred on the origin; grow widens it all round and thickens it (both faces)."""
+    pts = [(-L / 2 - grow, -end / 2 - grow), (0, -neck / 2 - grow), (L / 2 + grow, -end / 2 - grow),
+           (L / 2 + grow, end / 2 + grow), (0, neck / 2 + grow), (-L / 2 - grow, end / 2 + grow)]
+    return W("XY").polyline(pts).close().extrude(t + 2 * grow).translate((0, 0, -t / 2 - grow))
+
+
+def bowtie_key(L, neck, end, t):
+    """The printed key, lying flat, its top edges eased."""
+    k = bowtie(L, neck, end, t).translate((0, 0, t / 2))
+    try:
+        k = k.faces(">Z").edges().chamfer(0.3)
+    except Exception:
+        pass
+    return k
+
+
+def nose_bowtie_pocket(index, side):
+    """Pocket for the nose key in the back face of the nose (the face that stops on the leading
+    edge): across the halves' split, open aft, BOWTIE_FIT round it and 0.3 deeper."""
+    L, neck, end, t = BOWTIE_NAC
+    yl, xc = nac_local(index)
+    d = t + 0.3                                               # pocket depth (forward)
+    p = bowtie(L, neck, end, d + 1.0, grow=BOWTIE_FIT)        # 1 mm past the face: open aft
+    p = p.rotate((0, 0, 0), (0, 0, 1), 90).rotate((0, 0, 0), (0, 1, 0), 90)   # L along y, t along x
+    x_mid = xc - FIT - d + (d + 1.0) / 2
+    return nac_frame(p.translate((x_mid, yl, Z_FLOOR + BOWTIE_NAC_Z)), index, side)
 
 
 def wing_underside(wing_panel, x, y):
@@ -1052,10 +1173,6 @@ def nacelle_parts(index, side, wing_panel):
     if index == 0:   # undercarriage housing under the inner nacelles
         body = body.union(gear_bath(yc * side, zc))
     body = body.union(nacelle_tail(index, side, wing_panel))   # lower fairing back to the trailing edge
-    # notch for the wing, with clearance top and bottom
-    body = (body.cut(wing_panel)
-            .cut(wing_panel.translate((0, 0, FIT)))
-            .cut(wing_panel.translate((0, 0, -FIT))))
     if index == 0:   # socket for the wheels-up insert (stand display)
         px, py, pd = WHEEL_UP_PLUG
         zb = nacelle_bottom(0, WHEEL_UP_X)
@@ -1080,16 +1197,16 @@ def nacelle_parts(index, side, wing_panel):
                               .intersect(nacelle_body(zc, x0, length).translate((0, Y, 0))))
     # prop boss: neck and head on the nose, slotted so it springs (the prop pushes on over the head)
     body = body.union(prop_boss(x0, yc * side, zc)).cut(prop_boss_slot(x0, yc * side, zc))
-    # one upright lock: joins the two halves and pins the nacelle into a pocket in the wing
+    # split at the wing underside (nacelle_regions): the top goes with the wing, the rest slides on
     y = yc * side
-    holes = nacelle_lock_slot(index, side, wing_panel)
-    kname, key = ("key_nacelle", KEY_NAC) if index == 0 else ("key_nacelle_outer", KEY_NAC_OUTER)
-    KEY_COUNTS[kname] = (key, KEY_COUNTS.get(kname, (key, 0))[1] + 1)
-    holes = holes.union(nose_key_slot(index, side))
-    KEY_COUNTS["key_nacelle_nose"] = (KEY_NAC, KEY_COUNTS.get("key_nacelle_nose", (KEY_NAC, 0))[1] + 1)
+    lower, upper = nacelle_regions(index, side)
+    top = body.intersect(upper)
+    low = body.intersect(lower).union(nacelle_rail(index, side)).cut(nose_bowtie_pocket(index, side))
+    key = ("bowtie", BOWTIE_NAC)
+    KEY_COUNTS["key_nacelle_nose"] = (key, KEY_COUNTS.get("key_nacelle_nose", (key, 0))[1] + 1)
     inboard = box(-10, 400, y - 50, y, -80, 80) if side > 0 else box(-10, 400, y, y + 50, -80, 80)
     outboard = box(-10, 400, y, y + 50, -80, 80) if side > 0 else box(-10, 400, y - 50, y, -80, 80)
-    return body.intersect(inboard).cut(holes), body.intersect(outboard).cut(holes)
+    return low.intersect(inboard), low.intersect(outboard), top
 
 
 def nacelle_halfwidth(index, x):
@@ -1382,8 +1499,10 @@ def fin_rod_slot(side, fit=None):
 
 
 def tail_key_slot():
-    zc = TAIL_FLOOR + 2.05
-    return key_slots_fit([(TAIL_KEY_X, 0.0, zc)], "y", 0.0, TAIL_KEY, "x", TAIL_KEY_FIT)
+    """Pocket for the bow-tie key: across the root joint, open on the flat underside."""
+    L, neck, end, t = BOWTIE_TAIL
+    p = bowtie(L, neck, end, t + 1.0, grow=BOWTIE_FIT).rotate((0, 0, 0), (0, 0, 1), 90)   # L along y
+    return p.translate((TAIL_KEY_X, 0, TAIL_FLOOR + (t - 1.0) / 2))       # top at floor + t + fit
 
 
 def key_slots_fit(points, axis, split, key, width_axis, fit):
@@ -1395,7 +1514,7 @@ def tail_half(side, rod_fit=None):
     half = box(TAIL_ROOT[0] - 5, TAIL_ROOT[0] + TAIL_ROOT[1] + 5, 0, 100, -50, 50)
     if side < 0:
         half = half.mirror("XZ")
-    KEY_COUNTS["key_tailplane"] = (TAIL_KEY, 1)
+    KEY_COUNTS["key_tailplane"] = (("bowtie", BOWTIE_TAIL), 1)
     return tailplane().intersect(half).cut(tail_key_slot()).cut(fin_rod_slot(side, rod_fit))
 
 
@@ -1625,10 +1744,9 @@ def build():
                                           u(w).rotate(*jp, -DIHEDRAL * s))
         for i in range(len(NACELLES)):
             pnl = inner.union(outer)          # tongue pocket must stay clear too
-            inb, outb = nacelle_parts(i, side, pnl)
-            lock = nacelle_lock_slot(i, side, pnl)     # matching pocket in the wing underside
-            parts[f"wing_inner_{tag}"] = parts[f"wing_inner_{tag}"].cut(lock)
-            parts[f"wing_outer_{tag}"] = parts[f"wing_outer_{tag}"].cut(lock)
+            inb, outb, top = nacelle_parts(i, side, pnl)
+            wn = f"wing_inner_{tag}" if i == 0 else f"wing_outer_{tag}"
+            parts[wn] = parts[wn].union(top).cut(nacelle_rail_slot(i, side))   # nacelle top on the wing
             parts[f"nacelle{i + 1}_{tag}_inboard"] = inb
             parts[f"nacelle{i + 1}_{tag}_outboard"] = outb
             poses[f"nacelle{i + 1}_{tag}_inboard"] = lambda w, s=side: rot(w, "x", -90 * s)
@@ -1721,7 +1839,8 @@ def build():
                 else:                                  # one piece with the nacelle half
                     import trimesh
                     n = f"nacelle{i + 1}_{tag}_{half}"
-                    u = K.largest_piece(K.to_manifold(mesh(parts[n])) + K.to_manifold(ex))[0]
+                    ex = K.to_manifold(ex) ^ K.to_manifold(mesh(nacelle_regions(i, side)[0]))   # not on the wing's part
+                    u = K.largest_piece(K.to_manifold(mesh(parts[n])) + ex)[0]
                     parts[n] = trimesh.Trimesh(*K.mesh_of(u))
     parts["turret_dorsal"] = dorsal_turret()
     poses["turret_dorsal"] = lambda w: w

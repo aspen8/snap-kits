@@ -1,10 +1,3 @@
 # kitlint rules and accepted findings for the Halifax. See common/briefs/kit-lint-design.md.
 base = "Black"            # the colour that isn't paint
 aux_colours = 1           # colours the second nozzle may carry (silk doesn't print cleanly there)
-
-[[accept]]
-check = "pairs"
-part = "code_"
-match = "volume"
-reason = "code letters differ port and starboard (NP-G reads from the front on both sides)"
-date = 2026-11-16

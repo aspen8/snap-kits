@@ -56,7 +56,7 @@ def raster_section(mask, to_xy, smooth=0.0):
     return sec.offset(smooth, mf.JoinType.Round).offset(-smooth, mf.JoinType.Round) if smooth else sec
 
 
-def text_section(text, height, x_centre, z_centre, mirror=False):
+def text_section(text, height, x_centre, z_centre, mirror=False, xscale=1.0):
     from matplotlib.font_manager import FontProperties
     from matplotlib.textpath import TextPath
     tp = TextPath((0, 0), text, size=100, prop=FontProperties(family="DejaVu Sans", weight="bold"))
@@ -66,7 +66,7 @@ def text_section(text, height, x_centre, z_centre, mirror=False):
     k = height / (hi[1] - lo[1])
     out = []
     for r in rings:
-        x = (r[:, 0] - (lo[0] + hi[0]) / 2) * k
+        x = (r[:, 0] - (lo[0] + hi[0]) / 2) * k * xscale     # xscale < 1: narrower letters
         z = (r[:, 1] - (lo[1] + hi[1]) / 2) * k
         out.append(np.c_[x_centre + (-x if mirror else x), z_centre + z])
     return cs(out)
@@ -585,8 +585,11 @@ def write_3mf(path, objects, plates, template, filaments, title, overrides=None,
     overrides: print settings replacing the template's (e.g. {"layer_height": "0.16"});
     an object may carry "settings": {key: value} for per-object overrides (layer height, brim...);
     filaments: {slot: (name, hex)}; title: model title.
-    nozzle_map: {slot: nozzle} pins filaments to nozzles (Manual grouping; others on nozzle 1). Without
-    it every filament is on nozzle 1 and Bambu may regroup (Auto For Flush)."""
+    nozzle_map: {slot: nozzle} pins filaments to nozzles (Manual grouping; others on nozzle 1), or a
+    list of those, one per plate (the first is the project default). Without it every filament is on
+    nozzle 1 and Bambu may regroup (Auto For Flush)."""
+    plate_maps = nozzle_map if isinstance(nozzle_map, list) else [nozzle_map] * len(plates)
+    nozzle_map = plate_maps[0] if plate_maps else None
     plates = [safe_name(p) for p in plates]       # Bambu Studio rejects <>:/\|?*" in names
     ns = ('xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" '
           'xmlns:BambuStudio="http://schemas.bambulab.com/package/2021" '
@@ -655,9 +658,10 @@ def write_3mf(path, objects, plates, template, filaments, title, overrides=None,
                + "".join(rels) + '</Relationships>\n')
     plate_xml = []
     nfil = len(filaments)
-    fmaps = " ".join(str((nozzle_map or {}).get(i, 1)) for i in range(1, nfil + 1))
-    fmode = "Manual" if nozzle_map else "Auto For Flush"
     for pi, items in enumerate(plates):
+        pm = plate_maps[pi]
+        fmaps = " ".join(str((pm or {}).get(i, 1)) for i in range(1, nfil + 1))
+        fmode = "Manual" if pm else "Auto For Flush"
         inst = "".join(f'    <model_instance>\n      <metadata key="object_id" value="{o["oid"]}"/>\n'
                        '      <metadata key="instance_id" value="0"/>\n'
                        f'      <metadata key="identify_id" value="{1000 + o["oid"]}"/>\n    </model_instance>\n'

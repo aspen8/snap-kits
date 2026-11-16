@@ -22,6 +22,8 @@ from kitlib import dots_along as _dots
 GROOVE_W = 0.5               # mm, panel line width
 GROOVE_D = 0.25              # mm, panel line depth
 HINGE_D = 0.4                # mm, control-surface hinge lines read a little deeper
+TAIL_GROOVE_D = 0.2          # mm, every line on the tailplane (thin: 0.4 cut through, print 1)
+TAIL_WALL = 0.8              # mm of material kept under a tailplane line
 RIVET_D = 0.7                # mm
 RIVET_H = 0.2                # mm, raised
 RIVET_PITCH = 10.0           # mm along a row
@@ -196,13 +198,16 @@ def apply(name, P):
         groove(prism_z(doors) - clear, "-z", GROOVE_D)
         adds.append((raised(P, "-z") ^ prism_z(dots)) - clear)
     elif name.startswith("tailplane"):
+        # print 1 (2026-11-16): the 0.4 mm hinge lines cut through the thin trailing edge (a trim
+        # tab corner fell off) and over the fin-rod slot. Now one shallow depth, and no line where
+        # less than TAIL_WALL of material would be left under it (towards the other face or a slot)
         segs = tail_layout()
-        for kind, depth in (("panel", GROOVE_D), ("hinge", HINGE_D)):
-            sec = mf.CrossSection()
+        sec = mf.CrossSection()
+        for kind in ("panel", "hinge"):
             for p0, p1 in segs[kind]:
                 sec = sec + band(p0, p1, GROOVE_W)
-            for axis in ("z", "-z"):                 # underside too (it prints on it: shallow lines)
-                groove(prism_z(sec), axis, depth if axis == "z" else GROOVE_D)
+        for axis, dz in (("z", TAIL_WALL), ("-z", -TAIL_WALL)):
+            cuts.append(skin(P, axis, TAIL_GROOVE_D) ^ prism_z(sec) ^ P.translate([0, 0, dz]))
     elif name.startswith("fin_"):
         x = H.FIN_X_LE + RUDDER_HINGE * H.FIN_CHORD
         sec = band((x, H.FIN_Z_BOTTOM + 2), (x, H.FIN_Z_TOP - 2), GROOVE_W)

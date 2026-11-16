@@ -68,6 +68,9 @@ MARKINGS = os.environ.get("HALIFAX_MARKINGS", "NP-G")
 MK = PRESETS[MARKINGS]
 SQN_CODE, AC_LETTER = MK["sqn"], MK["letter"]
 CODE_HEIGHT, CODE_Z = MK["code_h"], MK["code_z"]
+CODE_XSCALE = 0.6            # letter width: DejaVu Sans Bold at full width ran 5 mm into the roundel on
+                             # both sides (NP 192-234 against the roundel's 228.5); RAF code letters are
+                             # narrower. At 0.6 every letter keeps 3 mm or more off the roundel
 SQN_CODE_X, AC_LETTER_X = MK["sqn_x"], MK["letter_x"]
 FUSE_ROUNDEL = MK["roundel"]
 # 4 Group fin stripes: two yellow bands, (x, z) corners on the fin side
@@ -85,6 +88,8 @@ PEG_GRIP = 0.2               # mm on the diameter: test print 1 had +0.55 (AXLE_
 CODE_DEPTH = 1.8             # mm, code letter inlays (deeper than 1.2 for the peg's hole)
 INLAY_FIT = 0.1              # mm, radial clearance (test print 1: the G stayed in at 0.15 but loosely)
 FUSE_INLAY_DEPTH = 2.4       # fuselage roundels sit deeper, to take the locating peg
+FUSE_INLAY_FIT = 0.2         # radial clearance: print 1 found them hard to fit on the curved side; the
+                             # peg holds them, the rim only locates
 ROUNDEL_PEG = (4.0, 3.0, 3.0, 3.2, 1.4)   # off-centre peg (x, z offset), peg dia, hole dia (grip), length
 WING_INLAY_DEPTH = 2.0       # wing roundels: a little deeper too, for their peg
 BACK_MIRROR = {"z": True, 1: False, -1: True}   # so the L/R on each inlay's back reads correctly
@@ -102,12 +107,16 @@ CAMO_CL_PX = 1995            # page x of the centreline
 # Demarcation (top of the black on the fuselage sides), from the profile
 DEMARCATION = MK["demarcation"]
 
-BED = (209.0, 250.0)         # packing area (the X2D bed is 256 square; its second nozzle reaches x 20.5-256)
+BED = (209.0, 243.5)         # packing area (the X2D bed is 256 square; its second nozzle reaches x 20.5-256),
+                             # inside BED_Y0 and a 6 mm brim at the back edge
+BED_Y0 = 6.5                 # every plate starts this far in from the front edge: a 6 mm brim on a part
+                             # at y 0 ran off the bed (kitlint, 2026-11-16)
 BED_X0 = 27.5                # every plate starts here: past the second nozzle's 20.5 plus a 6 mm brim and
                              # 1 mm spare. Bambu prints a brim with whichever filament starts the first
                              # layer; when that was Dark Earth (second nozzle), a brim on a part at x 21
                              # reached x 15 and the plate would not slice (2026-11-09)
 PLATE_GAP = 8.0
+PACK_MARGIN = {}             # name -> extra room all round on the plate
 NOZZLE = {EARTH: 2}            # filament slot -> nozzle: Dark Earth alone on the second (auxiliary) nozzle,
                              # which takes one colour; black/earth swaps become nozzle changes, with no
                              # flush (2026-11-08)
@@ -289,13 +298,23 @@ def colour_part(name, P, pat):
     sock_op = [(BLACK, sock)] if sock is not None else []
     if name.startswith(("wing_", "tailplane")):
         return paint(P, list(camo_up) + sock_op)
-    if name in H.FUSE_SECTIONS:                          # codes are inlays
+    if name in H.FUSE_SECTIONS:
         if H.SPINE_PIECES:
             return {BLACK: P}                           # black body; camo on the clip-on spine
         # camo painted on above the line, as the spine pieces were: the plan pattern across the
         # roof, each colour carried straight down the sides to the black
         skin = (up + S["+y"] + S["-y"]) ^ spine_region()
-        return paint(P, [(EARTH, skin), (GREEN, skin ^ prism_z(pat["spine_plan"]))] + sock_op)
+        ops = [(EARTH, skin), (GREEN, skin ^ prism_z(pat["spine_plan"]))]
+        # codes painted on the black sides (print 1, 2026-11-16: the press-in letters were fiddly
+        # and fitted badly); they read nose-to-tail from both sides
+        rx = FUSE_ROUNDEL[0]
+        for sg in (1, -1):
+            sx = SQN_CODE_X if sg < 0 else 2 * rx - SQN_CODE_X
+            ax = AC_LETTER_X if sg < 0 else 2 * rx - AC_LETTER_X
+            for txt, cx in ((SQN_CODE, sx), (AC_LETTER, ax)):
+                ops.append((RED, S["+y" if sg > 0 else "-y"] ^ prism_y(text_section(txt, CODE_HEIGHT, cx, CODE_Z, sg > 0,
+                                                                                     CODE_XSCALE))))
+        return paint(P, ops + sock_op)
     if name.startswith("spine_"):
         # camo painted on (the purge is worth it): the plan pattern across the roof, each colour
         # carried straight down the sides to the black, so from above the colours cross the
@@ -360,7 +379,7 @@ def colour_part(name, P, pat):
         return {EARTH: P}
     if name in ("canopy", "canopy_side", "canopy_rear"):   # cockpit glazing: frames in the camo
         f = frames(name, P)
-        return paint(P, [(EARTH, f), (GREEN, f ^ prism_z(pat["spine_plan"]))], base=CLEAR)
+        return paint(P, [(GREEN, f)], base=CLEAR)   # green frames only (user, 2026-11-13: saves a colour)
     if name in CLEAR_PARTS:
         return paint(P, [(BLACK, frames(name, P))], base=CLEAR)
     if name == "stand_base":
@@ -681,22 +700,8 @@ def inlays_for(name, P):
             x, z, d = FUSE_ROUNDEL
             hand = "R" if s > 0 else "L"
             P, vols, plug, prot = K.make_inlay(P, (x, z), d, C1_RINGS(d), "y", s, FUSE_INLAY_DEPTH,
-                                         INLAY_FIT, ROUNDEL_PEG, (hand, 6.0, -4.0, -3.0, BACK_MIRROR[s]))
+                                         FUSE_INLAY_FIT, ROUNDEL_PEG, (hand, 6.0, -4.0, -3.0, BACK_MIRROR[s]))
             out.append((f"roundel_fuselage_{tag}", vols, prot, plug))
-            # squadron code and aircraft letter as red press-in inlays, read nose-to-tail
-            rx = FUSE_ROUNDEL[0]
-            sx = SQN_CODE_X if s < 0 else 2 * rx - SQN_CODE_X
-            ax = AC_LETTER_X if s < 0 else 2 * rx - AC_LETTER_X
-            n = 0
-            for txt, cx in ((SQN_CODE, sx), (AC_LETTER, ax)):
-                for letter in sorted(text_section(txt, CODE_HEIGHT, cx, CODE_Z, s > 0).decompose(),
-                                     key=lambda q: q.bounds()[0]):
-                    n += 1
-                    P, plug, lrot, floor = K.make_section_inlay(P, letter, s, CODE_DEPTH, INLAY_FIT)
-                    (px, pz), r = thickest_point(letter)
-                    if r >= (FLASH_PEG[0] + PEG_GRIP) / 2 + 0.6:            # peg where the stroke is thickest
-                        P, plug = add_peg(P, plug, floor, px, pz)
-                    out.append((f"code_{tag}_{n}", {RED: plug}, lrot, plug))
     return P, out
 
 
@@ -740,14 +745,19 @@ def pack(items):
 
 
 # Print settings: the template is the X2D 0.20 mm Standard profile; these replace it
-PRINT_OVERRIDES = {
-    "layer_height": "0.16",
-    "sparse_infill_pattern": "gyroid",
+PRINT_OVERRIDES = {          # layer height and infill as the user's own re-save (2026-11-13)
+    "layer_height": "0.2",
+    "sparse_infill_pattern": "grid",
     "sparse_infill_density": "15%",
     "enable_support": "0",
     "brim_type": "auto_brim",
 }
 TALL_BRIM = {"brim_type": "outer_only", "brim_width": "6"}
+
+
+USER_SUPPORT = {"stand_post": ("normal(auto)", "default"), "turret_dorsal": ("tree(auto)", "tree_slim")}
+# (fuselage_rear had tree supports in the user's print, when the joint at x 196 cut through the turret
+# hole; with the hole now whole they found only the new turret boss, and clashed with fuselage_front)
 
 
 def object_settings(name):
@@ -767,14 +777,18 @@ def object_settings(name):
         s.update(TALL_BRIM)
     if name.startswith("tailplane_"):               # halves stand on their root faces
         s.update(TALL_BRIM)
+    if name in USER_SUPPORT:                        # the user's own choices in Bambu Studio (2026-11-13)
+        s.update(enable_support="1", support_type=USER_SUPPORT[name][0], support_style=USER_SUPPORT[name][1])
     return s
 
 
-def write_3mf(path, objects, plates, template):
+def write_3mf(path, objects, plates, template, nozzle_maps=None):
+    """nozzle_maps: one {slot: nozzle} per plate (None: NOZZLE, for a single-colour plate)."""
     for o in objects:
         o["settings"] = object_settings(o["name"])
+    maps = [m or NOZZLE for m in nozzle_maps] if nozzle_maps else NOZZLE
     K.write_3mf(path, objects, plates, template, FILAMENTS, "Halifax B.II Srs IA snap kit 1:60",
-                PRINT_OVERRIDES, nozzle_map=NOZZLE)
+                PRINT_OVERRIDES, nozzle_map=maps)
 
 
 # ============================================================
@@ -789,6 +803,7 @@ def write_3mf(path, objects, plates, template):
 # the colour runs on across the join. Nacelles are black wherever the wing is above them.
 GAP_CLOSE = 0.18             # mm: closes fit gaps up to 0.36 between parts; 0.5 mm panel lines stay open
 INNER_BLACK = 0.45           # mm of black kept next to an internal face (about one line width)
+ROOT_CAMO = (SKIN + 0.5, 14.0)   # |y| band of the tailplane kept painted through the fuselage slot
 UNMASKED = ("stand_base", "spine_")   # no black base, or not on the aircraft
 
 
@@ -853,6 +868,12 @@ class Outside:
         m = self.mask(name, P)
         if name.startswith("nacelle"):
             m = m - self.wing_shadow(P, name.split("_")[1])
+        if name.startswith("tailplane"):
+            # print 1: the camo stopped short of the fuselage side and showed a black band at the
+            # root. Keep it on the top right up to the root (in the slot it is hidden), only off the
+            # root face itself
+            m = m + (P ^ (K.box(-500, 500, ROOT_CAMO[0], ROOT_CAMO[1], -500, 500)
+                          + K.box(-500, 500, -ROOT_CAMO[1], -ROOT_CAMO[0], -500, 500)))
         out, black = {}, vols.get(BLACK)
         for c, v in vols.items():
             if c == BLACK:
@@ -884,17 +905,22 @@ def add_object(objs, name, posed, out, whole):
                                       for c, v in sorted(posed.items())), flush=True)
 
 
-PLATE_GROUPS = [            # parts kept together by colour set (max 5 colours a plate)
-    ("Fuselage", lambda n: H.SPINE_PIECES and n.startswith("fuselage")),
-    ("Spine", lambda n: n.startswith("spine_") or (H.SPINE_PIECES and n.startswith("df_loop"))),
+PLATE_GROUPS = [            # parts kept together by colour set (max 5 colours a plate), and the one
+    # colour on the second (auxiliary) nozzle there. Layout and nozzles from the user's own re-save
+    # of the first full print (2026-11-13): silk silver prints cleanest on the main nozzle, so the
+    # glazing plates put the other colour on the aux; canopies apart from the turrets saves swaps.
+    ("Fuselage", lambda n: H.SPINE_PIECES and n.startswith("fuselage"), EARTH),
+    ("Spine", lambda n: n.startswith("spine_") or (H.SPINE_PIECES and n.startswith("df_loop")), EARTH),
     # painted fuselage on the wing plate: the wings already swap colours on almost every layer
     # up to 170 mm, so the fuselage's camo mostly shares those swaps (one long plate)
-    ("Wings and fuselage", lambda n: n.startswith(("wing_", "tailplane", "fuselage", "df_loop"))),
-    ("Nacelles", lambda n: n.startswith("nacelle")),
-    ("Fin flashes, roundels and codes", lambda n: n.startswith(("flash_", "roundel_", "code_"))),
-    ("Canopies and turrets (silk silver)", lambda n: n in CLEAR_PARTS),
-    ("Display plinth", lambda n: n == "stand_base"),
-    ("Props, gear, fins, guns and stand blade", lambda n: True),
+    ("Wings and fuselage", lambda n: n.startswith(("wing_", "tailplane", "fuselage", "df_loop")), EARTH),
+    ("Nacelles", lambda n: n.startswith("nacelle"), EARTH),
+    ("Fin flashes and roundels", lambda n: n.startswith(("flash_", "roundel_")), YELLOW),
+    ("Canopies", lambda n: n in ("canopy", "canopy_side", "canopy_rear"), GREEN),
+    ("Display plinth", lambda n: n == "stand_base", EARTH),
+    ("Fins and props", lambda n: n.startswith(("fin_", "prop")), YELLOW),
+    ("Keys, gear, guns and stand blade", lambda n: n not in CLEAR_PARTS, None),
+    ("Nose glazing and turrets", lambda n: n in CLEAR_PARTS, BLACK),
 ]
 MAX_COLOURS = 5
 
@@ -958,11 +984,12 @@ if __name__ == "__main__":
             add_object(objs, jname, {c: pose(v) for c, v in jvols.items()}, out, pose(whole))
     # plates
     order, plates_all, seen = [], [], set()
-    for gname, pred in PLATE_GROUPS:
+    for gname, pred, _ in PLATE_GROUPS:
         group = [n for n in objs if n not in seen and pred(n)]
         seen.update(group)
         group.sort(key=lambda n: -objs[n]["size"][0] * objs[n]["size"][1])
-        for items in pack([(n, tuple(objs[n]["size"])) for n in group]):
+        m = lambda n: PACK_MARGIN.get(n, 0.0)
+        for items in pack([(n, tuple(c + 2 * m(n) for c in objs[n]["size"])) for n in group]):
             plates_all.append((gname, items))
     objects = []
     for pi, (gname, items) in enumerate(plates_all):
@@ -972,7 +999,8 @@ if __name__ == "__main__":
             if rot90:
                 sx, sy = o["size"]
                 vols = {c: v.rotate([0, 0, 90]).translate([sy, 0, 0]) for c, v in vols.items()}
-            objects.append({"name": n, "placement": (pi, x + BED_X0, y),
+            mg = PACK_MARGIN.get(n, 0.0)
+            objects.append({"name": n, "placement": (pi, x + mg + BED_X0, y + mg + BED_Y0),
                             "volumes": [(c, *mesh_of(v)) for c, v in sorted(vols.items())]})
     import trimesh
     scene = trimesh.Scene()
@@ -988,7 +1016,9 @@ if __name__ == "__main__":
         print(f"plate {i + 1} colours: " + ", ".join(FILAMENTS[c][0] for c in cols))
         assert len(cols) <= MAX_COLOURS, f"plate {i + 1} needs {len(cols)} colours"
     kit_name = "halifax_kit.3mf" if H.WING_POSE == "end" else "halifax_kit_wings_flat.3mf"
-    write_3mf(out / kit_name, objects, names, template)
+    aux = {g: a for g, _, a in PLATE_GROUPS}
+    write_3mf(out / kit_name, objects, names, template,
+              [{aux[g]: 2} if aux[g] else None for g, _ in plates_all])
     for i, (gname, items) in enumerate(plates_all):
         print(f"plate {i + 1} ({gname}): " + ", ".join(n for n, *_ in items))
     print("wrote", out / kit_name)

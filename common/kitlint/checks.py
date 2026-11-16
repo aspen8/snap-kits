@@ -104,7 +104,7 @@ def solid(kit, rules):
 
 AUX_X = 20.5            # the X2D's second nozzle can't reach x < 20.5 (extruder_printable_area)
 AUX_MARGIN = 0.5
-GAP = 2.0               # parts apart, plus both brims
+GAP = 2.0               # parts apart, plus the wider brim (brims that touch merge)
 TOWER_W = 35.0          # prime_tower_width; depth below is kitlib.TOWER_DEPTH
 TOWER_D = 50.0
 TOWER_CLEAR = 12.0      # kitlib.TOWER_CLEAR
@@ -200,9 +200,9 @@ def plate(kit, rules):
         for i, (a, (ha, ba)) in enumerate(items):
             for b, (hb, bb) in items[i + 1:]:
                 d = ha.distance(hb)
-                if d < GAP + ba + bb:
+                if d < GAP + max(ba, bb) - 0.05:    # brims that meet just merge
                     out.append(Finding(WARN, "plate", f"{a} x {b}", f"{tag}: outlines {d:.1f} mm apart "
-                                                                    f"(want {GAP + ba + bb:g} with brims)", d))
+                                                                    f"(want {GAP + max(ba, bb):g} with the brim)", d))
         if p.tower and len(slots) > 1:
             x, y = p.tower
             if x < aux_x + 1.5 or y < by0 + 2 or x + tower_w > bx1 - 15 or y + TOWER_D > by1 - 2:
