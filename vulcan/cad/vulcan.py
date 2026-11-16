@@ -1094,6 +1094,9 @@ def key_plate(length, height, t):
     return mf.CrossSection.batch_boolean([a, b], mf.OpType.Add).hull().extrude(t)
 
 
+KEY_AT = {}                     # (x, y) of each key -> its part name (for the test coupons)
+
+
 def add_joints(parts):
     """Cut the key slots, the radome tongue and socket, the probe hole and the fin slot, and add the
     keys and fin halves to parts."""
@@ -1127,6 +1130,7 @@ def add_joints(parts):
     for (lp, hp), where in sorted(sizes.items()):
         for i in range(len(where)):
             parts[f"key_{lp:g}x{hp:g}_{i + 1}"] = (key_plate(lp * _P, hp * _P, KEY_T), lambda m: m)
+            KEY_AT[(round(where[i][0], 1), round(where[i][1], 1))] = f"key_{lp:g}x{hp:g}_{i + 1}"
             n_keys += 1
     print(f"keys: {n_keys} in {len(sizes)} sizes (length x height, printed): "
           + ", ".join(f"{len(w)} of {lp:g} x {hp:g}" for (lp, hp), w in sorted(sizes.items())))

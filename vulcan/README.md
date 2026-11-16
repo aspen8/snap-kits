@@ -153,6 +153,24 @@ Still to do on the split: test coupons for every joint, separate jet nozzles, th
 - **Photos (in `ref/vulcan/`, not in git):** XH558 from below with the bomb bay open (camouflage wraps round the underside), a head-on photo from 1982 (intakes, nose, probe), a top view of a camouflaged Vulcan on a runway (2024, airframe not identified), a straight-down top view (watermarked stock photo: measure only, mind the watermarks when tracing), a top-view camouflage illustration, a wrapped-camouflage underside in flight, XH558's nose and intakes (roundel, badge, lettering, nose gear), XH558's fin (fin flash without white, Union flag, shield, serial, fin cap, jet pipes), and model photos from aircraftinplastic.com.
 - The trailing edge is the outermost line of a plan view. The line inboard of it is the elevon hinge line.
 
+## Test coupons (print these first)
+
+`vulcan/kit/vulcan_test_coupons.3mf`: one plate, one colour, 33 pieces cut from the real kit parts with the kit's fits and print poses (`vulcan/cad/test_coupons.py`; `KEY_AT` in `vulcan.py` names each key by position). Image: `docs/test_coupons.png`.
+
+| Coupon | Tests | Fit constant |
+|---|---|---|
+| c1 shell key | a 6 x 10 key in the centre upper and lower shells | `KEY_FIT` |
+| c2 wing joint | the centre body / outer wing joint and its 22 mm key (four shell pieces) | `KEY_FIT` |
+| c3 radome | the radome on the front shells' tongue; the probe in the radome | `FIT` |
+| c4 fin | the fin halves' root in the centre upper shell's slot | `FIN_FIT` |
+| c5 nose gear | the nose leg halves' plug in its socket, with the gear-down door frame | `GEAR_PLUG_FIT`, `FIT` |
+| c6 main gear | the starboard main leg in the wing shells, with its door frame | `GEAR_PLUG_FIT`, `FIT` |
+| c7 engine face | an engine face plate in its slot between the centre shells (also the duct roof and floor bridges) | `KEY_FIT`, `FIT` |
+| c8 stand | the stand post's key through its bomb door panel into the bay roof plate | `FIT` |
+| c9 Blue Steel | the missile's key on its door panel | `FIT` |
+
+What to report: each joint as loose / good / tight / won't go, and whether anything printed badly (the duct bridges in c7, the probe).
+
 ## Known gaps and next steps
 
 Markings and colour:
@@ -163,7 +181,7 @@ Detail:
 5. Panel lines on the fuselage and fin; the airbrakes.
 
 Kit and printing:
-6. Test coupons for every joint (keys, tongues, gear plugs, engine-face slots, stand key), printed before the full kit.
+6. Print the test coupons and set the fits from the results.
 7. Keys or a lip for the outer wing shells outboard of y 150 and for the fin halves above the slot.
 8. The stand with the Blue Steel fitted (they use the same bomb door panel today).
 9. Bridges and overhangs in the centre shells (duct roofs and floors, bay ledges, jet bores).
