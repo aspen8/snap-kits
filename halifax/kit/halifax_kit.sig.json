@@ -34,7 +34,7 @@
   ]
  ],
  "file": "halifax_kit.3mf",
- "git": "a95542b",
+ "git": "a4f8579",
  "objects": {
   "canopy": {
    "plate": 4,
@@ -124,8 +124,8 @@
     2
    ],
    "volumes": {
-    "Black": 49.51,
-    "Dark Earth": 43.02
+    "Black": 48.65,
+    "Dark Earth": 43.88
    }
   },
   "df_loop_b": {
@@ -147,8 +147,8 @@
     2
    ],
    "volumes": {
-    "Black": 49.46,
-    "Dark Earth": 43.01
+    "Black": 48.59,
+    "Dark Earth": 43.86
    }
   },
   "fin_port": {
@@ -232,9 +232,9 @@
     3
    ],
    "volumes": {
-    "Black": 85377.6,
-    "Dark Earth": 1159.6,
-    "Dark Green": 1017.72
+    "Black": 85376.91,
+    "Dark Earth": 1160.59,
+    "Dark Green": 1017.7
    }
   },
   "fuselage_nose": {
@@ -260,9 +260,9 @@
     3
    ],
    "volumes": {
-    "Black": 79348.28,
-    "Dark Earth": 459.68,
-    "Dark Green": 655.67
+    "Black": 79346.62,
+    "Dark Earth": 460.56,
+    "Dark Green": 656.43
    }
   },
   "fuselage_rear": {
@@ -289,10 +289,10 @@
     4
    ],
    "volumes": {
-    "Black": 88076.2,
-    "Dark Earth": 1562.36,
-    "Dark Green": 1095.36,
-    "Red": 711.38
+    "Black": 88075.09,
+    "Dark Earth": 1563.38,
+    "Dark Green": 1095.47,
+    "Red": 711.2
    }
   },
   "fuselage_tail": {
@@ -318,9 +318,9 @@
     3
    ],
    "volumes": {
-    "Black": 21865.75,
-    "Dark Earth": 275.08,
-    "Dark Green": 412.3
+    "Black": 21864.66,
+    "Dark Earth": 275.63,
+    "Dark Green": 412.8
    }
   },
   "guns_dorsal_lower": {
@@ -866,9 +866,9 @@
     3
    ],
    "volumes": {
-    "Black": 13184.96,
-    "Dark Earth": 325.37,
-    "Dark Green": 108.73
+    "Black": 13180.46,
+    "Dark Earth": 325.47,
+    "Dark Green": 108.89
    }
   },
   "nacelle1_port_outboard": {
@@ -889,9 +889,9 @@
     3
    ],
    "volumes": {
-    "Black": 13184.23,
-    "Dark Earth": 97.26,
-    "Dark Green": 336.13
+    "Black": 13179.86,
+    "Dark Earth": 97.71,
+    "Dark Green": 336.67
    }
   },
   "nacelle1_stbd_inboard": {
@@ -912,9 +912,9 @@
     3
    ],
    "volumes": {
-    "Black": 13187.92,
-    "Dark Earth": 350.6,
-    "Dark Green": 82.53
+    "Black": 13178.51,
+    "Dark Earth": 351.44,
+    "Dark Green": 82.97
    }
   },
   "nacelle1_stbd_outboard": {
@@ -935,9 +935,9 @@
     3
    ],
    "volumes": {
-    "Black": 13183.75,
-    "Dark Earth": 107.87,
-    "Dark Green": 324.62
+    "Black": 13183.81,
+    "Dark Earth": 109.39,
+    "Dark Green": 324.97
    }
   },
   "nacelle2_port_inboard": {
@@ -958,9 +958,9 @@
     3
    ],
    "volumes": {
-    "Black": 6200.24,
-    "Dark Earth": 402.54,
-    "Dark Green": 6.25
+    "Black": 6198.63,
+    "Dark Earth": 403.16,
+    "Dark Green": 6.53
    }
   },
   "nacelle2_port_outboard": {
@@ -980,8 +980,8 @@
     2
    ],
    "volumes": {
-    "Black": 6413.43,
-    "Dark Earth": 400.9
+    "Black": 6402.13,
+    "Dark Earth": 401.53
    }
   },
   "nacelle2_stbd_inboard": {
@@ -1002,9 +1002,9 @@
     3
    ],
    "volumes": {
-    "Black": 6200.83,
-    "Dark Earth": 182.36,
-    "Dark Green": 225.99
+    "Black": 6200.01,
+    "Dark Earth": 182.43,
+    "Dark Green": 227.43
    }
   },
   "nacelle2_stbd_outboard": {
@@ -1025,9 +1025,9 @@
     3
    ],
    "volumes": {
-    "Black": 6409.66,
-    "Dark Earth": 113.66,
-    "Dark Green": 286.9
+    "Black": 6408.01,
+    "Dark Earth": 113.97,
+    "Dark Green": 287.63
    }
   },
   "nose_glazing": {
@@ -1371,9 +1371,9 @@
     3
    ],
    "volumes": {
-    "Black": 5189.15,
-    "Dark Earth": 873.59,
-    "Dark Green": 1194.05
+    "Black": 5189.22,
+    "Dark Earth": 873.05,
+    "Dark Green": 1193.12
    }
   },
   "tailplane_stbd": {
@@ -1398,9 +1398,9 @@
     3
    ],
    "volumes": {
-    "Black": 5187.29,
-    "Dark Earth": 1253.91,
-    "Dark Green": 818.74
+    "Black": 5178.24,
+    "Dark Earth": 1253.85,
+    "Dark Green": 818.55
    }
   },
   "turret_dorsal": {
@@ -1516,9 +1516,9 @@
     3
    ],
    "volumes": {
-    "Black": 46741.24,
-    "Dark Earth": 2201.54,
-    "Dark Green": 2339.97
+    "Black": 46748.14,
+    "Dark Earth": 2200.38,
+    "Dark Green": 2326.58
    }
   },
   "wing_inner_stbd": {
@@ -1543,9 +1543,9 @@
     3
    ],
    "volumes": {
-    "Black": 46748.63,
-    "Dark Earth": 2528.87,
-    "Dark Green": 1996.92
+    "Black": 46743.92,
+    "Dark Earth": 2530.48,
+    "Dark Green": 1996.34
    }
   },
   "wing_mid_port": {
@@ -1570,9 +1570,9 @@
     3
    ],
    "volumes": {
-    "Black": 30658.05,
-    "Dark Earth": 2371.16,
-    "Dark Green": 1758.79
+    "Black": 30652.93,
+    "Dark Earth": 2376.81,
+    "Dark Green": 1756.52
    }
   },
   "wing_mid_stbd": {
@@ -1597,9 +1597,9 @@
     3
    ],
    "volumes": {
-    "Black": 30661.25,
-    "Dark Earth": 2730.58,
-    "Dark Green": 1407.18
+    "Black": 30661.05,
+    "Dark Earth": 2730.38,
+    "Dark Green": 1408.36
    }
   },
   "wing_outer_port": {
@@ -1624,9 +1624,9 @@
     3
    ],
    "volumes": {
-    "Black": 17487.79,
-    "Dark Earth": 1824.33,
-    "Dark Green": 1369.45
+    "Black": 17485.01,
+    "Dark Earth": 1825.47,
+    "Dark Green": 1369.35
    }
   },
   "wing_outer_stbd": {
@@ -1651,9 +1651,9 @@
     3
    ],
    "volumes": {
-    "Black": 17488.79,
-    "Dark Earth": 1286.0,
-    "Dark Green": 1909.15
+    "Black": 17486.89,
+    "Dark Earth": 1285.97,
+    "Dark Green": 1907.61
    }
   }
  },

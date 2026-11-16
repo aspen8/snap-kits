@@ -751,6 +751,12 @@ PRINT_OVERRIDES = {          # layer height and infill as the user's own re-save
     "sparse_infill_density": "15%",
     "enable_support": "0",
     "brim_type": "auto_brim",
+    # print 1 (2026-11-16): the wing pieces' joint faces lifted at the edges, most at the thin
+    # trailing edge, and the wing and fuselage plates (tall parts on end) gave step-loss warnings.
+    # Fans off for the first 3 layers (was 1) so the bed face cools slowly and stays flat; avoid
+    # crossing walls so travel goes round the parts rather than over an edge that has curled up.
+    "close_fan_the_first_x_layers": ["3"] * 6,      # per filament (the template has 6)
+    "reduce_crossing_wall": "1",
 }
 TALL_BRIM = {"brim_type": "outer_only", "brim_width": "6"}
 
@@ -803,6 +809,11 @@ def write_3mf(path, objects, plates, template, nozzle_maps=None):
 # the colour runs on across the join. Nacelles are black wherever the wing is above them.
 GAP_CLOSE = 0.18             # mm: closes fit gaps up to 0.36 between parts; 0.5 mm panel lines stay open
 INNER_BLACK = 0.45           # mm of black kept next to an internal face (about one line width)
+CORE_EPS = 0.02              # mm: the cores below sit this much deeper than the skins they trim. At
+                             # exactly SKIN, the core's face lay on the camo skin's inner face, and
+                             # wherever the union with a neighbour had re-split the part's triangles
+                             # differently, the cut came out in wedges: on wing_inner, the 10 mm by
+                             # the joint lost camo in triangular teeth with black at the surface (print 1)
 ROOT_CAMO = (SKIN + 0.5, 14.0)   # |y| band of the tailplane kept painted through the fuselage slot
 UNMASKED = ("stand_base", "spine_")   # no black base, or not on the aircraft
 
@@ -850,8 +861,8 @@ class Outside:
             [P] + [dilate(Q, 2 * GAP_CLOSE) for Q in near], mf.OpType.Add)
         # enclosed slots (keys between joined parts) come out as negative shells: fill them
         L = mf.Manifold.batch_boolean([q for q in L.decompose() if q.volume() > 0], mf.OpType.Add)
-        core_skin = K.inner_core(L, SKIN)
-        core_in = K.inner_core(L, INNER_BLACK)
+        core_skin = K.inner_core(L, SKIN + CORE_EPS)
+        core_in = K.inner_core(L, INNER_BLACK + CORE_EPS)
         near_inner = (P - K.inner_core(P, INNER_BLACK)) ^ core_in   # near P's faces, deep in the aircraft
         return (P - core_skin) - near_inner
 

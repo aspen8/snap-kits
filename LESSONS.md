@@ -480,3 +480,7 @@ The Halifax's nacelles were split into halves down their length so each printed 
 ### Measure markings against each other, not only against the drawing
 
 The Halifax's code letters were placed at their measured centres but drawn in a full-width font, so "NP" ran 5 mm into the fuselage roundel on both sides, and the inlay sockets overlapped. Check each marking's extent against its neighbours (and joints) in the build; RAF code letters are about 0.6 of a full-width bold font.
+
+### Never let two booleans meet on the same offset surface (Halifax print 1)
+
+The Halifax's paint mask eroded the assembled envelope by exactly the skin depth, so the mask's inner face lay exactly on the camo skin's inner face. Where joining a part to its neighbour had re-split the part's triangles, the two copies of that surface were triangulated differently, and the cut came out as triangular teeth with black at the surface. It printed that way on both inner wings, in the 10 mm next to the joint. Offset one of two such surfaces slightly (0.02 mm is enough), and when paint looks wrong in triangles, suspect coincident faces before the camo pattern.
