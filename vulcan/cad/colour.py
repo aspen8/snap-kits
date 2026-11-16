@@ -110,17 +110,17 @@ GLAZE_FRAME = 0.9             # frame width between the panels (0.7 mm printed)
 # centre panel and a trapezoid each side, its outer edge following the canopy's slope. (y, z)
 # outlines, projected along x onto the canopy's sloping front. v34: from the Airfix top and side views,
 # the bottom frame just above the fuselage (z 21.4; the canopy meets it at about z 20.3), panels at x 55 to 64.
-GLAZE_SCREEN = [
-    [(-1.9, 21.4), (1.9, 21.4), (1.9, 27.8), (-1.9, 27.8)],
-    [(2.8, 21.4), (7.6, 21.4), (5.4, 27.8), (2.8, 27.8)],
-    [(-2.8, 21.4), (-2.8, 27.8), (-5.4, 27.8), (-7.6, 21.4)],
+GLAZE_SCREEN = [                # v34 (user: "not the shape of the windows"; head-on photo at 12.1 px/mm):
+    [(-1.5, 22.2), (1.5, 22.2), (1.5, 25.9), (-1.5, 25.9)],          # centre: an upright rectangle
+    [(3.0, 22.4), (6.0, 21.6), (6.0, 24.3), (3.0, 25.4)],            # sides: upright inner and outer edges,
+    [(-3.0, 22.4), (-3.0, 25.4), (-6.0, 24.3), (-6.0, 21.6)],        # top and bottom sloping down outboard
 ]
 # Side window: a triangle just behind each side panel, its front edge one frame behind the panel's
-# rear edge (which runs from x 62.5, z 21.4 to x 68.8, z 27.8 on the canopy): user, "line up with the
+# rear edge (which runs from x 59.8, z 21.6 to x 62.6, z 24.3 on the canopy): user, "line up with the
 # main 3". (x, z)
-GLAZE_SCREEN_X = 56.0          # the panels start no further forward (Airfix top view: x 58)
-GLAZE_SIDE = [(63.7, 21.4), (68.3, 21.4), (67.9, 25.4)]
-GLAZE_PORT = (71.5, 26.4, 2.3, 42.0)     # porthole: x, z, radius, and the angle above the horizon it faces (42: 0.74 as tall as wide from the side, as the side photo):
+GLAZE_SCREEN_X = 54.0          # the panels start no further forward (Airfix top view: x 58)
+GLAZE_SIDE = [(61.0, 21.4), (65.0, 21.4), (64.6, 25.2)]
+GLAZE_PORT = (68.8, 26.0, 2.3, 42.0)     # porthole: x, z, radius, and the angle above the horizon it faces (42: 0.74 as tall as wide from the side, as the side photo):
                                          # a circle seen from there, an ellipse from the side (user review)
 
 
