@@ -108,25 +108,28 @@ def duct_zone():
 GLAZE_FRAME = 0.9             # frame width between the panels (0.7 mm printed)
 # Windscreen (v33, user: "the front 3 windows should be 4 sided"): seen head-on, a rectangular
 # centre panel and a trapezoid each side, its outer edge following the canopy's slope. (y, z)
-# outlines, projected along x onto the canopy's sloping front.
+# outlines, projected along x onto the canopy's sloping front. v34: from the Airfix top and side views,
+# the bottom frame just above the fuselage (z 21.4; the canopy meets it at about z 20.3), panels at x 55 to 64.
 GLAZE_SCREEN = [
-    [(-2.2, 23.0), (2.2, 23.0), (2.2, 27.6), (-2.2, 27.6)],
-    [(3.1, 23.0), (7.8, 23.0), (4.8, 27.6), (3.1, 27.6)],
-    [(-3.1, 23.0), (-3.1, 27.6), (-4.8, 27.6), (-7.8, 23.0)],
+    [(-1.9, 21.4), (1.9, 21.4), (1.9, 27.8), (-1.9, 27.8)],
+    [(2.8, 21.4), (7.6, 21.4), (5.4, 27.8), (2.8, 27.8)],
+    [(-2.8, 21.4), (-2.8, 27.8), (-5.4, 27.8), (-7.6, 21.4)],
 ]
 # Side window: a triangle just behind each side panel, its front edge one frame behind the panel's
-# rear edge (which runs from x 68.6, z 23 to x 70.5, z 27.6 on the canopy): user, "line up with the
+# rear edge (which runs from x 62.5, z 21.4 to x 68.8, z 27.8 on the canopy): user, "line up with the
 # main 3". (x, z)
-GLAZE_SIDE = [(69.5, 23.0), (74.5, 23.0), (71.3, 27.2)]
-GLAZE_PORT = (77.5, 27.0, 2.3, 42.0)     # porthole: x, z, radius, and the angle above the horizon it faces (42: 0.74 as tall as wide from the side, as the side photo):
+GLAZE_SCREEN_X = 56.0          # the panels start no further forward (Airfix top view: x 58)
+GLAZE_SIDE = [(63.7, 21.4), (68.3, 21.4), (67.9, 25.4)]
+GLAZE_PORT = (71.5, 26.4, 2.3, 42.0)     # porthole: x, z, radius, and the angle above the horizon it faces (42: 0.74 as tall as wide from the side, as the side photo):
                                          # a circle seen from there, an ellipse from the side (user review)
 
 
 def glazing():
     if "glaze" not in _cache:
         from shapely.geometry import Point
-        to_x = np.array([[0, 0, 1, 50.0], [1, 0, 0, 0], [0, 1, 0, 0]], float)   # (y, z) along x, from x 50
-        screen = K.cs([np.array(p) for p in GLAZE_SCREEN]).extrude(19.0).transform(to_x)
+        to_x = np.array([[0, 0, 1, 45.0], [1, 0, 0, 0], [0, 1, 0, 0]], float)   # (y, z) along x, from x 50
+        screen = K.cs([np.array(p) for p in GLAZE_SCREEN]).extrude(22.0).transform(to_x)
+        screen = screen ^ K.box(GLAZE_SCREEN_X, V.BIG, -V.BIG, V.BIG, -V.BIG, V.BIG)
         sides = V._plate_xz([np.array(GLAZE_SIDE)], -30.0, 30.0)
         px, pz, pr, el = GLAZE_PORT
         from shapely.geometry import Polygon, LineString
