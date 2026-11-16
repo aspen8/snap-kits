@@ -1,5 +1,10 @@
 # To do
 
+## Next build (user's notes, 2026-11-16; build once more feedback is in)
+
+- [ ] **No colour on the prop mushroom bosses.** The boss on each nacelle nose (`prop_boss`, both nacelle halves) must be all black: colour volumes inside a snap feature make it weaker. Keep the camo off it in `colour.Outside.keep_paint_outside` (or paint the boss region black). Do the same for the turret snap bosses (`snap_boss`) on `fuselage_rear` and `fuselage_tail`.
+- [ ] **Gun packs as two separate pieces, one per side.** Each piece is one stacked pair (one gun above the other), so the pair looks as if it could travel up and down in the turret. Today each pack is split top/bottom into `guns_*_upper` / `guns_*_lower` (`gun_half`, `GUN_PEG`), each half holding one gun from each side. Split it left/right instead (`GUN_SIDE` 3.2 either side of the centreline), and check how each piece prints and fits in the turret slot.
+
 ## After the test print of the current iteration (flexing keys, built-in pegs, D/F pop-in)
 
 - [ ] **Rear fuselage and the code letters.** The codes are now press-in inlays in the on-end rear section. Consider instead:
