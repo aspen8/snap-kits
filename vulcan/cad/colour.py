@@ -119,7 +119,7 @@ GLAZE_SCREEN = [                # v34 (user: "not the shape of the windows"; hea
 # rear edge (which runs from x 59.8, z 21.6 to x 62.6, z 24.3 on the canopy): user, "line up with the
 # main 3". (x, z)
 GLAZE_SCREEN_X = 54.0          # the panels start no further forward (Airfix top view: x 58)
-GLAZE_SIDE = [(61.0, 21.4), (65.0, 21.4), (64.6, 25.2)]
+GLAZE_SIDE = [(60.9, 21.6), (66.2, 21.6), (63.7, 24.3)]   # (user: "in line": its bottom and top level with the side panel's outer corners, front edge parallel to it)
 GLAZE_PORT = (68.8, 26.0, 2.3, 42.0)     # porthole: x, z, radius, and the angle above the horizon it faces (42: 0.74 as tall as wide from the side, as the side photo):
                                          # a circle seen from there, an ellipse from the side (user review)
 
