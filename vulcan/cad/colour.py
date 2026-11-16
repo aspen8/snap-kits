@@ -105,6 +105,7 @@ def duct_zone():
 # windscreen panels on its sloping front, a small side window behind each side panel, and a round
 # porthole on each side further back. Painted black into the skin; the frames are the canopy's
 # own colour.
+CANOPY_GREEN_X = 73.0          # the canopy is dark green ahead of this (Airfix side view; user review)
 GLAZE_FRAME = 0.9             # frame width between the panels (0.7 mm printed)
 # Windscreen (v33, user: "the front 3 windows should be 4 sided"): seen head-on, a rectangular
 # centre panel and a trapezoid each side, its outer edge following the canopy's slope. (y, z)
@@ -248,6 +249,11 @@ def colour_part(name, P):
             if upper and name.startswith("wing_port"):
                 ops += [(c, r ^ skin) for c, r in wing_roundel()]
         ops.append((BLACK, duct_zone()))
+        if name == "front_upper" and SCHEME == "camo":
+            # the canopy and round its base: the part's own outer layer there (the whole-aircraft skin
+            # misses the crease where the canopy meets the fuselage)
+            near = K.box(48.0, CANOPY_GREEN_X, -14.0, 14.0, 16.5, V.BIG)
+            ops.append((GREEN, (near ^ P) - K.inner_core(P ^ near.translate([0, 0, -2.0]), SKIN)))
         if name == "front_upper":
             screen, sides = glazing()
             ops.append((BLUE, (screen + sides) ^ skin ^ V.canopy()))
