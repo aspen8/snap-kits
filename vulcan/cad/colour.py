@@ -40,6 +40,8 @@ from kitlib import mesh_of    # noqa: E402
 SCHEME = sys.argv[2] if len(sys.argv) > 2 else "camo"
 _P = V._P
 SKIN = 0.8 * _P               # coloured skin depth (0.8 mm printed)
+LIP_CLEAR = 10.0              # the black starts this far behind the end of the lips' rounding: the mouth of
+                              # the duct is in the surface colours, dark deeper in (head-on photo)
 SKIN_OUT = 0.05               # regions reach just past the surface (no zero-thickness sheets)
 
 FILAMENTS = {
@@ -79,16 +81,23 @@ def outer_skin():
 
 
 def duct_zone():
-    """Everything within SKIN of the intake ducts and the jet pipe bores: black."""
+    """Everything within SKIN of the intake ducts and the jet pipe bores: black. The intakes' rounded
+    lips are left in the surface colours (user review against the head-on photo): the black starts
+    just behind the end of the lip's rounding, inside the duct."""
     if "duct" not in _cache:
         d = V.intake_ducts()
         _, bores = V.jet_pipes()
         void = d + bores
-        void = void + void.mirror([0, 1, 0])
         grown = void
         for v in ([0, SKIN, 0], [0, -SKIN, 0], [0, 0, SKIN], [0, 0, -SKIN], [SKIN, 0, 0]):
             grown = grown + void.translate(v)
-        _cache["duct"] = grown
+        rings = V.intake_cut_rings()
+        p, n = V.mouth_outline()
+        off = np.einsum("ij,ij->i", rings[0][:, 1:] - p, n) + 3 * SKIN
+        q = p + off[:, None] * n
+        lip = V.ring_loft([np.c_[rings[0][:, 0] - 5.0, q], np.c_[rings[7][:, 0] + LIP_CLEAR, q]])
+        grown = grown - lip
+        _cache["duct"] = grown + grown.mirror([0, 1, 0])
     return _cache["duct"]
 
 
@@ -148,6 +157,10 @@ def side_camo():
 # Where the side view's pattern is used rather than the top view's: the nose sides below the
 # top of the fuselage's shoulder, and the tail cone behind the wing.
 SIDE_ZONES = [(-10.0, 112.0, 13.0, 40.0), (361.0, 440.0, 9.0, 16.0)]     # x from, x to, below z, within |y|
+# The intakes' lower lips on the lower shells: the upper colours wrap round them (Airfix side view:
+# the white starts below the intakes), so the side view's pattern is used there too.
+INTAKE_ZONE = (110.0, 185.0, 17.0, 58.8)  # x from, x to, |y| from, |y| to
+INTAKE_LIP_Z = -11.5          # the whole lower lip, down to here, is in the upper colours (user review)
 
 
 def side_zone():
@@ -222,7 +235,10 @@ def colour_part(name, P):
                 base = GREY
                 ops.append((GREEN, (camo_prism() - zone) ^ skin))
             else:
-                ops.append((GREY, sup ^ zone ^ skin))
+                x0, x1, y0, y1 = INTAKE_ZONE
+                iz = K.box(x0, x1, y0, y1, INTAKE_LIP_Z, V.BIG) + K.box(x0, x1, -y1, -y0, INTAKE_LIP_Z, V.BIG)
+                ops.append((GREY, (sup ^ zone ^ skin) + (iz ^ skin)))
+                zone = zone + iz
             ops.append((GREEN, sgreen ^ zone ^ skin))
             if name.startswith("front"):
                 ops += [(c, r ^ skin) for c, r in nose_roundels()]
