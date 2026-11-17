@@ -204,6 +204,24 @@ def tyres(name):
     return mf.Manifold.batch_boolean(out, mf.OpType.Add)
 
 
+# The stand's plinth: the name across its front end, under the nose, and the aircraft's identity in
+# front of it, in white, read from in front of the model. (text, height, distance of the line's
+# centre from the front edge), model mm at 1:72.
+STAND_TEXT = [("AVRO VULCAN B.2", 10.0, 30.0), ("XM594  \u00b7  RAF SCAMPTON  \u00b7  1966", 4.8, 15.0)]
+STAND_TEXT_DEPTH = 0.8 * _P
+
+
+def stand_text():
+    """The lettering's paint region in the assembled frame (on the plinth's top face)."""
+    L, W, T, R = V.STAND_BASE
+    front = V.STAND_BASE_DX - L / 2
+    secs = [K.text_section(text, h, 0.0, 0.0).rotate(-90.0).translate([front + off, 0.0])
+            for text, h, off in STAND_TEXT]
+    local = K.prism_z(mf.CrossSection.batch_boolean(secs, mf.OpType.Add)) ^ K.box(-V.BIG, V.BIG, -V.BIG, V.BIG, -STAND_TEXT_DEPTH, 1.0)
+    foot = (V.STAND_X + V.STAND_SWEEP, V.WING_UNDER_Z - V.STAND_HEIGHT)
+    return local.rotate([0, -V.STAND_PITCH, 0]).translate([foot[0], 0, foot[1]])
+
+
 def colour_part(name, P):
     """{filament: Manifold} for one part (assembled frame)."""
     upper = name.endswith("_upper")
@@ -214,6 +232,8 @@ def colour_part(name, P):
         return {SILVER: P}
     if "gear" in name:
         return K.paint(P, [(BLACK, tyres(name))], SILVER)
+    if name == "stand_base":
+        return K.paint(P, [(WHITE, stand_text())], BLACK)
     if name.startswith("stand"):
         return {BLACK: P}
     if name.startswith("fin_"):
@@ -228,6 +248,24 @@ def colour_part(name, P):
                 for i, c in enumerate((RED, WHITE, BLUE))]
         ops.append((BLUE, xz_prism(K.text_section(text, h, xc, zc, mirror=not port))))
         return K.paint(P, [(c, r ^ outer_skin()) for c, r in ops], GREY)
+    if name in ("front", "tail"):          # whole pieces printed on end (v35)
+        skin = outer_skin()
+        if SCHEME != "camo":
+            ops = []
+        else:
+            zone = side_zone()
+            sup, sgreen = side_camo()
+            ops = [(GREY, (sup + K.box(-V.BIG, V.BIG, -V.BIG, V.BIG, 13.0, V.BIG)) ^ skin),
+                   (GREEN, (camo_prism() - zone) ^ skin ^ K.box(-V.BIG, V.BIG, -V.BIG, V.BIG, V.SPLIT_Z, V.BIG)),
+                   (GREEN, sgreen ^ zone ^ skin)]
+            if name == "front":
+                near = K.box(48.0, CANOPY_GREEN_X, -14.0, 14.0, 16.5, V.BIG)
+                ops.append((GREEN, (near ^ P) - K.inner_core(P ^ near.translate([0, 0, -2.0]), SKIN)))
+                ops += [(c, r ^ skin) for c, r in nose_roundels()]
+        if name == "front":
+            screen, sides = glazing()
+            ops.append((BLUE, (screen + sides) ^ skin ^ V.canopy()))
+        return K.paint(P, ops, WHITE)
     if upper or lower:
         ops = []
         base = WHITE
@@ -263,10 +301,10 @@ def colour_part(name, P):
 
 PLATE_GROUPS = [
     ("Upper centre", lambda n: n == "centre_upper"),
-    ("Upper wings and nose", lambda n: n == "front_upper" or (n.startswith("wing_") and n.endswith("_upper"))),
-    ("Fin", lambda n: n.startswith("fin_")),
+    ("Upper wings", lambda n: n.startswith("wing_") and n.endswith("_upper")),
+    ("Nose, tail and fin", lambda n: n in ("front", "tail") or n.startswith("fin_")),
     ("Lower centre", lambda n: n == "centre_lower"),
-    ("Lower wings and nose", lambda n: n == "front_lower" or (n.startswith("wing_") and n.endswith("_lower"))),
+    ("Lower wings", lambda n: n.startswith("wing_") and n.endswith("_lower")),
     ("Black and silver", lambda n: n == "radome" or n.startswith(("stand", "engine_face")) or "gear" in n),
     ("White small parts", lambda n: True),
 ]

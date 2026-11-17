@@ -11,7 +11,7 @@ Avro Vulcan B.2 at 1:96: 352 mm span, 317 mm long (336 mm with the refuelling pr
 
 ![shape in grey](docs/shape_grey.png)
 
-> **Status: v34: shape fitted to the Airfix A12011 plan and side views and refined through user review; split into 61 parts with joints, bays, gear, stand, Blue Steel and a camouflage colour pass with canopy glazing.** Nothing has been printed or sliced yet.
+> **Status: v35: shape fitted to the Airfix A12011 plan and side views and refined through user review; split into 61 parts with joints, bays, gear, stand, Blue Steel and a camouflage colour pass with canopy glazing.** Nothing has been printed or sliced yet.
 
 Intakes (v22, user: "the spline shape is an important detail to get right"). The mouth is one outline measured on two head-on photos: tall at its inner end (z -5.3 to 8.2 at y 23.8, a nearly upright inner edge with rounded corners), tapering through gently bowed lips to a round outer end at y 56 (`INTAKE_INNER`, `INTAKE_OUTER`, `INTAKE_BOW`; `mouth_outline` builds it as a convex hull with rounded corners, 144 points). The lip is a half-round whose thickness varies round the mouth (`lip_t`): a heavy brow on top, 6.2 mm at the fuselage end thinning to 3.2 outboard (4.65 to 2.4 printed), a lighter lower lip (4.4 to 2.8), 2.5 at the outer end. In plan it follows the wing's leading edge, so the notch at y 50-58 is its outer end. The inner wall is a separate hooked plate, 2.2 mm thick, standing 2.7 mm off the fuselage with an open slot behind it: its leading edge runs forward and down from the upper lip to a horn below and 8.6 mm ahead of the lower lip, then hooks back under it (`INTAKE_HORN`, `intake_horn`; photos of the blanked intake and the lip close-up). Behind the lip the fairing carries its shoulders 70 mm back into the wing (`INTAKE_FAIR`).
 
@@ -153,21 +153,35 @@ Still to do on the split: test coupons for every joint, separate jet nozzles, th
 - **Photos (in `ref/vulcan/`, not in git):** XH558 from below with the bomb bay open (camouflage wraps round the underside), a head-on photo from 1982 (intakes, nose, probe), a top view of a camouflaged Vulcan on a runway (2024, airframe not identified), a straight-down top view (watermarked stock photo: measure only, mind the watermarks when tracing), a top-view camouflage illustration, a wrapped-camouflage underside in flight, XH558's nose and intakes (roundel, badge, lettering, nose gear), XH558's fin (fin flash without white, Union flag, shield, serial, fin cap, jet pipes), and model photos from aircraftinplastic.com.
 - The trailing edge is the outermost line of a plan view. The line inboard of it is the elevon hinge line.
 
+## Assembly and joints (v35, user review before the first test print)
+
+- **Nose and tail are single pieces printed on end** (`front`, `tail`): the nose section from the radome to the wing root (x 24 to 105) stands on its rear face, the tail cone behind the trailing edge (x > 362, |y| < 18) on its front face. The canopy's layer lines run round it instead of across it, and the nose roundel no longer crosses a seam. Each plugs onto a tongue on the centre shells (half moulded on each shell, on the split plane: `FRONT_TONGUE`, `TAIL_TONGUE`); the radome plugs onto a tongue on the nose. The fin's slot runs on into the tail cone.
+- **Wings plug in.** Each outer wing has two tongues on its root (`WING_TONGUES`, `WING_TONGUE`: 12 and 13.5 mm wide, 5.3 mm thick, 9 mm deep, printed), half moulded on each wing shell in the wing's own split plane, so they print flat on the bed. Close each wing on its keys first; then lay its tongues in the sockets in the centre lower shell and close the centre upper shell over them.
+- **Spring keys** (`key_plate`, `KEY_SPRING_MIN`): every key at least 8 mm tall across the joint is a slit, waisted key like the Hawk's and Halifax's (`kitlib.spring_key`); the slots go deeper where there is room (up to 13 mm keys in the centre body). The outer wings are too thin for that (3.2 to 8 mm): those keys stay plain.
+- **Doors grip.** The closed doors (bomb, nose gear, main gear, Blue Steel, stand) and the gear-down frames drop in from below against a ledge; each now has press-fit pads on its edges (`grip_pads`, `DOOR_GRIP` 0.12 mm per side, near each corner and mid-edge, in the upper part of the door's thickness so they don't show).
+- **Sturdier gear and frames.** Legs 4.2 mm thick (was 3.3), struts 1.95 mm wide (was 1.3), the gear-down doors 1.95 mm thick (was 1.2), the gear bays' ledges and frame rims wider (2.1 mm printed).
+- **Stand.** The plinth is longer (202 x 100 x 8 mm), with a bevelled top edge and, across its front end under the nose, AVRO VULCAN B.2 and XM594 · RAF SCAMPTON · 1966 in white on black. Image: `docs/stand.png`.
+
+Image: `docs/joints_v35.png`.
+
 ## Test coupons (print these first)
 
-`vulcan/kit/vulcan_test_coupons.3mf`: one plate, one colour, 33 pieces cut from the real kit parts with the kit's fits and print poses (`vulcan/cad/test_coupons.py`; `KEY_AT` in `vulcan.py` names each key by position). Image: `docs/test_coupons.png`.
+`vulcan/kit/vulcan_test_coupons.3mf`: one plate, one colour, 42 pieces cut from the real kit parts with the kit's fits and print poses (`vulcan/cad/test_coupons.py`; `KEY_AT` in `vulcan.py` names each key by position). Image: `docs/test_coupons.png`.
 
 | Coupon | Tests | Fit constant |
 |---|---|---|
-| c1 shell key | a 6 x 10 key in the centre upper and lower shells | `KEY_FIT` |
-| c2 wing joint | the centre body / outer wing joint and its 22 mm key (four shell pieces) | `KEY_FIT` |
-| c3 radome | the radome on the front shells' tongue; the probe in the radome | `FIT` |
+| c1 shell key | a 6 x 13 spring key in the centre upper and lower shells | `KEY_FIT` |
+| c2 wing joint | the outer wing's root tongue in its socket in the centre body (four shell pieces) | `FIT` |
+| c3 radome | the radome on the nose's tongue; the probe in the radome | `FIT` |
 | c4 fin | the fin halves' root in the centre upper shell's slot | `FIN_FIT` |
-| c5 nose gear | the nose leg halves' plug in its socket, with the gear-down door frame | `GEAR_PLUG_FIT`, `FIT` |
-| c6 main gear | the starboard main leg in the wing shells, with its door frame | `GEAR_PLUG_FIT`, `FIT` |
+| c5 nose gear | the nose leg halves' plug in its socket, the gear-down door frame and the closed door (press-fit pads) | `GEAR_PLUG_FIT`, `DOOR_GRIP` |
+| c6 main gear | the starboard main leg in the wing shells, its door frame and closed door | `GEAR_PLUG_FIT`, `DOOR_GRIP` |
 | c7 engine face | an engine face plate in its slot between the centre shells (also the duct roof and floor bridges) | `KEY_FIT`, `FIT` |
 | c8 stand | the stand post's key through its bomb door panel into the bay roof plate | `FIT` |
 | c9 Blue Steel | the missile's key on its door panel | `FIT` |
+| c10 nose joint | the rear of the nose section (printed on end) on the centre shells' tongue | `FIT` |
+| c11 tail joint | the front of the tail cone (printed on end) on the centre shells' tongue | `FIT` |
+| c12 wing key | a plain outer-wing key in the wing shells | `KEY_FIT` |
 
 What to report: each joint as loose / good / tight / won't go, and whether anything printed badly (the duct bridges in c7, the probe).
 

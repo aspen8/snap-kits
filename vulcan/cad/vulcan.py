@@ -143,6 +143,17 @@ WING_CREST_BLEND = (25.0, 80.0)  # the inboard profile fades into the plain aero
 SPLIT_TIP_Z = -14.0
 WING_JOINT_Y = 59.0             # centre body / outer wing joint: just outboard of the intake lips' outer ends
                                 # (at 57 it cut through the lip and left a loose strip of duct floor)
+TAIL_X = 362.0                  # v35: the tail cone behind this is one piece, printed on end (|y| < TAIL_HW)
+TAIL_HW = 18.0
+# v35 (user): the nose section and the tail cone print as single pieces standing on end (smoother canopy,
+# no seam through the nose roundel). They join the centre shells by tongues on the centre shells' split
+# plane (half on each shell) that go into sockets in their end faces: (x, y half-width, z half-height, depth)
+FRONT_TONGUE = (10.0, 3.5, 10.0)    # front: half-width, half-height, depth into the nose section
+TAIL_TONGUE = (6.0, 3.0, 9.0)       # tail cone
+# v35 (user: "should the wings have keys built in?"): each outer wing has two tongues on its root, half in
+# each wing shell (in the wing's own split plane): close the wing first, then plug it into the centre body.
+WING_TONGUES = [(205.0, 16.0), (290.0, 18.0)]   # x centre, length along x
+WING_TONGUE = (3.5, 12.0)           # half-height, depth into the centre body
 RADOME_X = 24.0                 # the black radome is its own part ahead of this
 FRONT_X = 105.0                 # front fuselage / centre body joint, at the wing root's leading edge
 # The upper surface over the engines is smoothed: every concave crease on top (wing to fuselage,
@@ -200,38 +211,41 @@ UNDER_STBD = [[(360, 32), (298, 32), (285, 39.5), (298, 47), (360, 47)]]        
 # own skin drops in from below against the ledge (wheels up, bomb doors shut), or is left out.
 # name: (part, outline (x, y) starboard or centred, ledge z, roof z, mirrored to port too?)
 # name: (part, outline (x, y) starboard or centred, ledge z, roof z, mirrored to port too?, ledge width)
+DOOR_GRIP = 0.12 * _P           # v35 (user: how do the doors attach?): pads round each door and gear-down frame
+                                # stand this far into the opening's wall (printed mm per side): a press fit
+DOOR_PAD = 4.0                  # pad length along the edge; pads near both ends and the middle of each edge
 BAY_LEDGE_W = 1.4               # width of the bomb bay's ledge (the gear bays' are wider: they carry a frame)
 BAYS = {
     "bomb": ("centre", [(187, -21.5), (187, 21.5), (310, 21.5), (310, -21.5)], -12.3, SPLIT_Z - 2.0, False, 1.4),
-    "nose": ("centre", [(117, -8), (117, 8), (160, 8), (160, -8)], -11.5, -6.0, False, 2.0),
-    "main": ("wing", [(204, 61.5), (204, 71), (232, 75), (258, 75), (258, 61.5)], -12.5, -7.0, True, 2.0),
+    "nose": ("centre", [(117, -8), (117, 8), (160, 8), (160, -8)], -11.5, -6.0, False, 2.8),
+    "main": ("wing", [(204, 61.5), (204, 71), (232, 75), (258, 75), (258, 61.5)], -12.5, -7.0, True, 2.8),
 }
 
 # Landing gear (Airfix side view on a 5 mm grid; instruction pages 22-23; photos). Ground at z -46.5.
 # Each leg is two flat halves split on its own centre plane, printed lying on that plane with the
 # wheels moulded on top: no loose axles (LESSONS: small pins snap). Legs are thicker than scale.
 GROUND_Z = -46.5
-GEAR_T = 4.4                    # leg thickness across the split (two halves of 1.65 mm printed)
+GEAR_T = 5.6                    # leg thickness across the split (two halves of 2.1 mm printed; v35: was 1.65, user: delicate)
 GEAR_PLUG_FIT = 0.06 * _P       # plug to socket, per side: a firm push (socket sized from the closed halves)
 GEAR_PLUG_TOP = 1.0             # the plugs run up through the bay roof into the upper shell, to this z
 NOSE_GEAR = dict(
-    yc=0.0, wheel=(122.6, -41.5),
+    yc=0.0, wheel=(123.2, -41.5),
     # leg outline (x, z), from the plug down to the axle block (2.6 mm behind where the side view puts it,
     # to clear the gear-down door frame's front rim)
-    leg=[(120.3, GEAR_PLUG_TOP), (123.89999999999999, GEAR_PLUG_TOP), (123.89999999999999, -36.0), (124.8, -38.5), (124.8, -44.0),
-         (120.39999999999999, -44.0), (120.39999999999999, -38.5), (120.3, -36.0)],
-    struts=[((129.6, -6.3), (123.19999999999999, -27.0))],                 # retraction strut (clear of the roof)
-    plug=(120.3, 123.89999999999999),
-    wheel_profile=[(0.0, 3.0), (0.7, 3.0), (2.7, 5.0), (5.3, 5.0), (5.7, 4.4)],   # along the axle from the split: (pos, radius)
+    leg=[(120.4, GEAR_PLUG_TOP), (125.0, GEAR_PLUG_TOP), (125.0, -36.0), (125.9, -38.5), (125.9, -44.5),
+         (120.5, -44.5), (120.5, -38.5), (120.4, -36.0)],
+    struts=[((130.2, -6.3), (123.8, -27.0))],                 # retraction strut (clear of the roof)
+    plug=(120.4, 125.0),
+    wheel_profile=[(0.0, 3.0), (1.3, 3.0), (3.3, 5.0), (5.9, 5.0), (6.3, 4.4)],   # along the axle from the split: (pos, radius)
 )
 MAIN_GEAR = dict(
     yc=67.0, wheels=[(242.5, -42.0), (252.7, -42.0)],
-    leg=[(246.3, GEAR_PLUG_TOP), (250.5, GEAR_PLUG_TOP), (250.5, -7.0), (246.8, -38.0), (254.0, -39.6),
-         (254.0, -44.0), (241.2, -44.0), (241.2, -39.6), (243.0, -38.0), (246.3, -7.0)],
+    leg=[(245.8, GEAR_PLUG_TOP), (251.0, GEAR_PLUG_TOP), (251.0, -7.0), (247.6, -37.5), (254.5, -39.4),
+         (254.5, -44.5), (240.7, -44.5), (240.7, -39.4), (242.4, -37.5), (245.8, -7.0)],
     struts=[((237.4, -9.0), (242.0, -29.0)), ((248.6, -25.0), (248.6, -39.0)), ((242.0, -29.0), (238.5, -33.5)),
             ((238.5, -33.5), (243.0, -37.0))],
-    plug=(246.3, 250.5),
-    wheel_profile=[(0.0, 2.9), (0.1, 2.9), (1.7, 4.5), (4.0, 4.5), (4.8, 3.7), (5.6, 4.5), (7.7, 4.5), (8.0, 4.2)],   # flares and the groove between the twin tyres at 45 degrees: no overhang
+    plug=(245.8, 251.0),
+    wheel_profile=[(0.0, 2.9), (0.7, 2.9), (2.3, 4.5), (4.6, 4.5), (5.4, 3.7), (6.2, 4.5), (8.3, 4.5), (8.6, 4.2)],   # flares and the groove between the twin tyres at 45 degrees: no overhang
 )
 # Blue Steel stand-off missile (Airfix scheme A underside sheet: side and plan views; real length
 # 10.7 m, body 1.27 m, wing span 3.96 m). Carried half sunk in the bomb bay: the kit part is the
@@ -254,8 +268,11 @@ STAND_HEIGHT = 107.0            # belly above the plinth at the key (80 mm print
 STAND_SWEEP = 20.0              # the foot sits this far behind the key
 STAND_SHOULDER = (22.0, 30.0)   # post width under the belly, and at the foot
 STAND_TENON = (16.0, 8.0)       # tenon length along the plinth, depth into it
-STAND_BASE = (200.0, 133.0, 10.7, 14.0)   # plinth length, width, thickness, corner radius (150 x 100 x 8 printed)
-STAND_BASE_DX = -30.0           # plinth centre from the foot, along the plinth (forward)
+STAND_BASE = (270.0, 133.0, 10.7, 14.0)   # plinth length, width, thickness, corner radius (202 x 100 x 8 printed; v35: longer
+                                # forward, the name across its front end under the nose)
+STAND_BEVEL = 2.0               # the plinth's top edge is bevelled this much
+# The plinth's top carries the name and the aircraft's identity in white (colour.py: STAND_TEXT).
+STAND_BASE_DX = -60.0           # plinth centre from the foot, along the plinth (forward)
 # Joints. Every key is a flat plate standing on edge across the split surface, upright in the
 # assembled frame, so all the upper shells go straight down onto the lower ones. The long ones also
 # cross a joint between sections. Slot depth is found per key from the material there.
@@ -263,20 +280,19 @@ KEY_T = 3.0 * _P                # key thickness (3 mm printed)
 KEY_FIT = 0.08 * _P             # per side across the thickness: a firm push (to be set from test coupons)
 KEY_WALL = 1.0 * _P             # skin left beyond a slot's end
 KEY_GAP = 0.3 * _P              # slot deeper than the key by this, each end
-KEY_H = [h * _P for h in (5.0, 4.5, 4.0, 3.5, 3.0, 2.5, 2.0, 1.6)]   # half-heights tried, deepest first
+KEY_H = [h * _P for h in (6.5, 6.0, 5.5, 5.0, 4.5, 4.0, 3.5, 3.0, 2.5, 2.0, 1.6)]   # half-heights tried, deepest first
+KEY_SPRING_MIN = 8.0 * _P       # keys at least this tall (across the joint) are spring keys: each end split in
+                                # two prongs, waisted in the middle (kitlib.spring_key, as on the Hawk and Halifax)
 # (parts' name prefixes, (x, y) centre, direction of the key's length, length), y mirrored when != 0
 KEYS = (
-    [(("front",), (x, 0.0), "x", 6.0 * _P) for x in (45.0, 80.0)]
-    + [(("front", "centre"), (102.0, 9.0), "x", 18.0 * _P)]
-    + [(("centre",), xy, "x", 6.0 * _P) for xy in ((172.0, 14.0), (201.0, 30.0), (250.0, 42.0), (312.0, 42.0),
-                                                   (335.0, 0.0), (385.0, 0.0))]
-    + [(("centre", "wing"), (199.5, WING_JOINT_Y), "y", 22.0 * _P), (("centre", "wing"), (290.0, WING_JOINT_Y), "y", 30.0 * _P)]
-    + [(("wing",), xy, "x", 6.0 * _P) for xy in ((245.0, 100.0), (310.0, 100.0), (280.0, 145.0), (298.0, 145.0))]
+    [(("centre",), xy, "x", 6.0 * _P) for xy in ((128.0, 12.0), (172.0, 14.0), (201.0, 30.0), (250.0, 42.0),
+                                                   (312.0, 42.0), (335.0, 0.0))]
+    + [(("wing",), xy, "x", 6.0 * _P) for xy in ((222.0, 82.0), (245.0, 100.0), (310.0, 100.0), (280.0, 145.0), (298.0, 145.0))]
 )
 RADOME_TONGUE = (10.0, 5.0, 2.5)   # front shells' tongue into the radome: length, half-width, half-height
 FIN_FIT = 0.10 * _P             # fin root in its slot, per side
-STRUT_W = 1.7
-DOOR_T = 1.6                    # open gear doors: 1.2 mm printed
+STRUT_W = 2.6                   # (v35: was 1.7)
+DOOR_T = 2.6                    # open gear doors: 1.95 mm printed (v35: was 1.2, user: flimsy)
 NOSE_DOORS = (118.5, 158.5, 7.0)          # x range and how far the two doors hang below the belly
 MAIN_DOOR = (212.0, 230.0, 16.0)          # the big door on the bay's outboard edge: x range, drop
 BOMB_ROOF = (2.0, 2.0, 12.0, 1.2, 1.5)   # roof plate: thickness, margin round the bay, rib pitch, rib width, rib depth
@@ -933,7 +949,9 @@ def region(name):
     if name == "front":
         return box(RADOME_X, FRONT_X, -BIG, BIG, -BIG, BIG)
     if name == "centre":
-        return box(FRONT_X, BIG, -j, j, -BIG, BIG)
+        return box(FRONT_X, BIG, -j, j, -BIG, BIG) - box(TAIL_X, BIG, -TAIL_HW, TAIL_HW, -BIG, BIG)
+    if name == "tail":
+        return box(TAIL_X, BIG, -TAIL_HW, TAIL_HW, -BIG, BIG)
     if name == "wing_stbd":
         return box(FRONT_X, BIG, j, BIG, -BIG, BIG)
     if name == "wing_port":
@@ -982,6 +1000,26 @@ def flip(m):
     return m.rotate([180, 0, 0])
 
 
+def grip_pads(sec, z_ledge, z_bottom):
+    """Press-fit pads on a door's edges: they stand DOOR_GRIP into the opening's wall, in the upper
+    part of the door's thickness only (out of sight from below)."""
+    ring = sec.offset(DOOR_GRIP, mf.JoinType.Miter, 2.0) - sec.offset(-FIT - 0.05, mf.JoinType.Miter, 2.0)
+    pts = np.asarray(sec.to_polygons()[0])
+    marks = []
+    for a, b in zip(pts, np.roll(pts, -1, 0)):
+        L = float(np.linalg.norm(b - a))
+        if L < 3 * DOOR_PAD:
+            ts = [0.5]
+        else:
+            ts = [DOOR_PAD * 1.5 / L, 0.5, 1 - DOOR_PAD * 1.5 / L]
+        for t in ts:
+            c = a + (b - a) * t
+            marks.append(mf.CrossSection.circle(DOOR_PAD / 2, 24).translate(list(c)))
+    zone = mf.CrossSection.batch_boolean(marks, mf.OpType.Add)
+    z0 = max(z_bottom + 0.6, z_ledge - 1.6)
+    return K.prism_z(ring ^ zone) ^ K.box(-BIG, BIG, -BIG, BIG, z0, z_ledge)
+
+
 def _bay_cut(shell, outline, z_ledge, z_roof, side=1, ledge_w=BAY_LEDGE_W):
     """(shell with the bay cut, the door panel) for one bay."""
     sec = K.cs([[(x, side * y) for x, y in outline]])
@@ -989,7 +1027,7 @@ def _bay_cut(shell, outline, z_ledge, z_roof, side=1, ledge_w=BAY_LEDGE_W):
     opening = K.prism_z(sec) ^ lo
     cavity = K.prism_z(sec.offset(-ledge_w, mf.JoinType.Miter, 2.0)) ^ K.box(-BIG, BIG, -BIG, BIG, -BIG, z_roof)
     door = shell ^ K.prism_z(sec.offset(-FIT, mf.JoinType.Miter, 2.0)) ^ lo
-    return shell - opening - cavity, door
+    return shell - opening - cavity, door + grip_pads(sec, z_ledge, door.bounding_box()[2])
 
 
 def _open_frame(shell, outline, z_ledge, ledge_w, side, door_edges, drop):
@@ -1000,6 +1038,7 @@ def _open_frame(shell, outline, z_ledge, ledge_w, side, door_edges, drop):
     lo = K.box(-BIG, BIG, -BIG, BIG, -BIG, z_ledge)
     outer, inner = sec.offset(-FIT, mf.JoinType.Miter, 2.0), sec.offset(-ledge_w - 0.3, mf.JoinType.Miter, 2.0)
     rim = shell ^ K.prism_z(outer - inner) ^ lo
+    rim = rim + grip_pads(sec, z_ledge, rim.bounding_box()[2])
     doors = []
     for a, b in door_edges:
         band = K.band((a[0], side * a[1]), (b[0], side * b[1]), DOOR_T)
@@ -1074,7 +1113,9 @@ def stand_parts():
     hole = K.box(STAND_X - k - FIT, STAND_X + k + FIT, -k - FIT, k + FIT, belly - 1.0, SPLIT_Z + 0.01)
     L, W, T, R = STAND_BASE
     sec = K.cs([[(-L / 2 + R, -W / 2 + R), (L / 2 - R, -W / 2 + R), (L / 2 - R, W / 2 - R), (-L / 2 + R, W / 2 - R)]]).offset(R, mf.JoinType.Round, 2.0, 48)
-    slab = sec.extrude(T).translate([STAND_BASE_DX, 0, -T])
+    ch = STAND_BEVEL                       # bevelled top edge (v35: a display plinth, user)
+    slab = (sec.extrude(T - ch) + sec.offset(-ch, mf.JoinType.Round, 2.0, 48).extrude(T).translate([0, 0, 0])).hull()
+    slab = slab.translate([STAND_BASE_DX, 0, -T])
     slot = K.box(-tl / 2 - FIT, tl / 2 + FIT, -k - FIT, k + FIT, -td - 0.4, 1.0)
     local = slab - slot
 
@@ -1087,7 +1128,10 @@ def stand_parts():
 
 
 def key_plate(length, height, t):
-    """A key lying flat (length x height on the bed), its insertion ends chamfered."""
+    """A key lying flat (length x height on the bed), its insertion ends chamfered. Tall enough, it is a
+    spring key: the ends that go into each shell split into prongs that flex across its length."""
+    if height >= KEY_SPRING_MIN:
+        return K.spring_key((height, length, t)).rotate([0, 0, 90])
     c = 0.5 * _P
     a = mf.CrossSection.square([length, height - 2 * c], True)
     b = mf.CrossSection.square([length - 2 * c, height], True)
@@ -1135,22 +1179,48 @@ def add_joints(parts):
     print(f"keys: {n_keys} in {len(sizes)} sizes (length x height, printed): "
           + ", ".join(f"{len(w)} of {lp:g} x {hp:g}" for (lp, hp), w in sorted(sizes.items())))
 
-    # radome: a tongue on the front shells (half on each, lying on the split plane) into a socket
+    # radome: a tongue on the nose section into a socket in the radome
     tl, tw, th = RADOME_TONGUE
     tongue = K.box(RADOME_X - tl, RADOME_X + 1.0, -tw, tw, SPLIT_Z - th, SPLIT_Z + th)
     socket = K.box(RADOME_X - tl - 0.5, RADOME_X + 0.01, -tw - FIT, tw + FIT, SPLIT_Z - th - FIT, SPLIT_Z + th + FIT)
-    up = above_split(0)
-    parts["front_upper"] = (parts["front_upper"][0] + (tongue ^ up), parts["front_upper"][1])
-    parts["front_lower"] = (parts["front_lower"][0] + (tongue - up), parts["front_lower"][1])
+    parts["front"] = (parts["front"][0] + tongue, parts["front"][1])
     rod, hole = probe()
     parts["radome"] = (parts["radome"][0] - socket - hole, parts["radome"][1])
     parts["probe"] = (rod, lambda m: m)
+
+    # nose section and tail cone: tongues on the centre shells (half on each) into their end faces
+    up = above_split(0)
+    for other, (hw, hh, depth), x0, sgn in (("front", FRONT_TONGUE, FRONT_X, -1), ("tail", TAIL_TONGUE, TAIL_X, 1)):
+        xa, xb = sorted((x0 - sgn * 1.0, x0 + sgn * depth))
+        tongue = K.box(xa, xb, -hw, hw, SPLIT_Z - hh, SPLIT_Z + hh)
+        ga, gb = sorted((x0 - sgn * 0.01, x0 + sgn * (depth + 0.5)))
+        socket = K.box(ga, gb, -hw - FIT, hw + FIT, SPLIT_Z - hh - FIT, SPLIT_Z + hh + FIT)
+        parts[other] = (parts[other][0] - socket, parts[other][1])
+        parts["centre_upper"] = (parts["centre_upper"][0] + (tongue ^ up), parts["centre_upper"][1])
+        parts["centre_lower"] = (parts["centre_lower"][0] + (tongue - up), parts["centre_lower"][1])
+
+    # outer wings: tongues on the root, in the wing's own split plane (flat on the bed when printed)
+    hh, depth = WING_TONGUE
+    j = WING_JOINT_Y
+    for side, wname in ((1, "wing_stbd"), (-1, "wing_port")):
+        unlevel = lambda m, s=side: rot_x(m, -s * SPLIT_TILT, s * j, SPLIT_Z)
+        up_w = above_split(side)
+        for xc, ln in WING_TONGUES:
+            ya, yb = sorted((side * (j + 1.0), side * (j - depth)))
+            tongue = unlevel(K.box(xc - ln / 2, xc + ln / 2, ya, yb, SPLIT_Z - hh, SPLIT_Z + hh))
+            ga, gb = sorted((side * (j + 1.0), side * (j - depth - 0.5)))   # (past the joint: it is tilted)
+            socket = unlevel(K.box(xc - ln / 2 - FIT, xc + ln / 2 + FIT, ga, gb, SPLIT_Z - hh - FIT, SPLIT_Z + hh + FIT))
+            for n in ("centre_upper", "centre_lower"):
+                parts[n] = (parts[n][0] - socket, parts[n][1])
+            parts[f"{wname}_upper"] = (parts[f"{wname}_upper"][0] + (tongue ^ up_w), parts[f"{wname}_upper"][1])
+            parts[f"{wname}_lower"] = (parts[f"{wname}_lower"][0] + (tongue - up_w), parts[f"{wname}_lower"][1])
 
     # fin: two halves printed on their split faces; the root sits in a slot of its own shape
     f = fin()
     grown = union([f.translate([dx, dy, 0]) for dx in (-FIN_FIT, FIN_FIT) for dy in (-FIN_FIT, FIN_FIT)]
                   + [f.translate([0, 0, -0.3])])
     parts["centre_upper"] = (parts["centre_upper"][0] - grown, parts["centre_upper"][1])
+    parts["tail"] = (parts["tail"][0] - grown, parts["tail"][1])
     half = K.box(-BIG, BIG, 0.0, BIG, -BIG, BIG)
     parts["fin_stbd"] = (f ^ half, lambda m: m.rotate([90, 0, 0]))
     parts["fin_port"] = (f - half, lambda m: m.rotate([-90, 0, 0]))
@@ -1184,13 +1254,13 @@ def build():
     sockets = gear_sockets()
     parts = {"radome": (a ^ region("radome"),
                         lambda m: m.rotate([0, 90, 0]))}             # on end, on its joint face
-    for name, side in (("front", 0), ("centre", 0), ("wing_stbd", 1), ("wing_port", -1)):
+    parts["front"] = (a ^ region("front"), lambda m: m.rotate([0, 90, 0]))     # on end, on its rear face
+    parts["tail"] = (engrave_top(a ^ region("tail")), lambda m: m.rotate([0, -90, 0]))   # on end, on its front face
+    for name, side in (("centre", 0), ("wing_stbd", 1), ("wing_port", -1)):
         blk = a ^ region(name)
         up = above_split(side)
         level = (lambda m, s=side: rot_x(m, s * SPLIT_TILT, s * WING_JOINT_Y, SPLIT_Z)) if side else (lambda m: m)
-        upper = blk ^ up
-        if name != "front":
-            upper = engrave_top(upper) - sockets
+        upper = engrave_top(blk ^ up) - sockets
         parts[f"{name}_upper"] = (upper, level)
         lower = engrave_under(blk - up)
         under_pose = lambda m, lv=level: flip(lv(m))

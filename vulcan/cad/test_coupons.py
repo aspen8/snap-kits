@@ -6,15 +6,19 @@ GEAR_PLUG_FIT, FIN_FIT in vulcan.py).
 Run from the repository root:
   .venv/bin/python vulcan/cad/test_coupons.py OUT_DIR      (writes OUT_DIR/vulcan_test_coupons.3mf, stl/)
 
-  c1 shell key       a block of the centre upper and lower shells round one 6 x 10 key, and the key
-  c2 wing joint      the centre body / outer wing joint round its 22 mm key (four shell pieces), and the key
-  c3 radome          the radome, the probe, and the front shells' nose with the tongue
+  c1 shell key       a block of the centre upper and lower shells round one 6 x 13 spring key, and the key
+  c2 wing joint      the centre body / outer wing joint: the wing's root tongue in its socket (four shell pieces)
+  c3 radome          the radome, the probe, and the tip of the nose section (one piece, on end) with its tongue
   c4 fin             the fin halves' root (x 300-350) and the centre upper shell's slot there
-  c5 nose gear       both nose leg halves, the gear-down door frame, and the centre shells round the socket
-  c6 main gear       both starboard main leg halves, its door frame, and the wing shells round the socket
+  c5 nose gear       both nose leg halves, the gear-down door frame, the closed door (press-fit pads) and
+                     the centre shells round the bay
+  c6 main gear       both starboard main leg halves, its door frame and door, and the wing shells round the bay
   c7 engine face     the starboard inner engine face and the centre shells round its slot
   c8 stand           the top of the stand post, the stand's bomb door panel and the bay roof round the key
   c9 Blue Steel      the missile's front key, and the Blue Steel door round it
+  c10 nose joint     the rear of the nose section (on end) and the centre shells' tongue
+  c11 tail joint     the front of the tail cone (on end) and the centre shells' tongue
+  c12 wing key       an outer wing key (plain: the wing is too thin for a spring key) in the wing shells
 """
 import sys
 from pathlib import Path
@@ -50,28 +54,28 @@ def coupons():
         ("c1_centre_upper", "centre_upper", box(160, 184, 4, 24)),
         ("c1_centre_lower", "centre_lower", box(160, 184, 4, 24)),
         ("c1_key", k[(172.0, 14.0)], None),
-        ("c2_centre_upper", "centre_upper", box(186, 214, 48, 59.5)),
-        ("c2_centre_lower", "centre_lower", box(186, 214, 48, 59.5)),
-        ("c2_wing_upper", "wing_stbd_upper", box(186, 214, 58.5, 70)),
-        ("c2_wing_lower", "wing_stbd_lower", box(186, 214, 58.5, 70)),
-        ("c2_key", k[(199.5, 59.0)], None),
+        ("c2_centre_upper", "centre_upper", box(194, 216, 44, 59.5)),
+        ("c2_centre_lower", "centre_lower", box(194, 216, 44, 59.5)),
+        ("c2_wing_upper", "wing_stbd_upper", box(194, 216, 58.5, 68)),
+        ("c2_wing_lower", "wing_stbd_lower", box(194, 216, 58.5, 68)),
         ("c3_radome", "radome", None),
         ("c3_probe", "probe", None),
-        ("c3_front_upper", "front_upper", box(-B, 40, -B, B)),
-        ("c3_front_lower", "front_lower", box(-B, 40, -B, B)),
+        ("c3_nose", "front", box(-B, 40, -B, B)),
         ("c4_fin_stbd", "fin_stbd", box(300, 350, -B, B, -B, 32)),
         ("c4_fin_port", "fin_port", box(300, 350, -B, B, -B, 32)),
         ("c4_centre_upper", "centre_upper", box(295, 355, -12, 12)),
         ("c5_leg_a", "nose_gear_a", None),
         ("c5_leg_b", "nose_gear_b", None),
         ("c5_door_frame", "doors_open_nose", None),
-        ("c5_centre_upper", "centre_upper", box(112, 136, -12, 12)),
-        ("c5_centre_lower", "centre_lower", box(112, 136, -12, 12)),
+        ("c5_door", "door_nose", None),
+        ("c5_centre_upper", "centre_upper", box(112, 165, -12, 12)),
+        ("c5_centre_lower", "centre_lower", box(112, 165, -12, 12)),
         ("c6_leg_a", "main_gear_stbd_a", None),
         ("c6_leg_b", "main_gear_stbd_b", None),
         ("c6_door_frame", "doors_open_main_stbd", None),
-        ("c6_wing_upper", "wing_stbd_upper", box(234, 262, 59.5, 80)),
-        ("c6_wing_lower", "wing_stbd_lower", box(234, 262, 59.5, 80)),
+        ("c6_door", "door_main_stbd", None),
+        ("c6_wing_upper", "wing_stbd_upper", box(200, 262, 59.5, 80)),
+        ("c6_wing_lower", "wing_stbd_lower", box(200, 262, 59.5, 80)),
         ("c7_face", "engine_face_stbd_inner", None),
         ("c7_centre_upper", "centre_upper", box(183, 201, 21, 40)),
         ("c7_centre_lower", "centre_lower", box(183, 201, 21, 40)),
@@ -80,6 +84,15 @@ def coupons():
         ("c8_bay_roof", "bomb_bay_roof", box(226, 254, -B, B)),
         ("c9_missile", "blue_steel", box(203, 227, -B, B)),
         ("c9_door", "door_bluesteel", box(203, 227, -B, B)),
+        ("c10_nose_end", "front", box(90, B, -B, B)),
+        ("c10_centre_upper", "centre_upper", box(105, 116, -14, 14)),
+        ("c10_centre_lower", "centre_lower", box(105, 116, -14, 14)),
+        ("c11_tail_end", "tail", box(-B, 374, -B, B)),
+        ("c11_centre_upper", "centre_upper", box(350, 362, -16, 16)),
+        ("c11_centre_lower", "centre_lower", box(350, 362, -16, 16)),
+        ("c12_wing_key_upper", "wing_stbd_upper", box(212, 232, 76, 88)),
+        ("c12_wing_key_lower", "wing_stbd_lower", box(212, 232, 76, 88)),
+        ("c12_key", k[(222.0, 82.0)], None),
     ]
 
 
